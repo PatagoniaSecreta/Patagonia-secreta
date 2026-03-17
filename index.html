@@ -1,179 +1,525 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#2D6A4F">
+<meta name="description" content="Patagonia Secreta - App turística de la Patagonia Argentina. Descubrí lugares secretos, clima en vivo y cómo llegar a cada destino.">
+<title>Patagonia Secreta</title>
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Lato:wght@300;400;700&display=swap');
 *{margin:0;padding:0;box-sizing:border-box;}
-:root{--verde:#2D6A4F;--verde2:#40916C;--azul:#1B4F72;--blanco:#FAFAF8;--oscuro:#1a1a2e;--texto:#2c3e50;--arena:#F4E4C1;}
-body{font-family:'Lato',sans-serif;background:var(--blanco);color:var(--texto);}
-.page-wrapper{max-width:480px;margin:0 auto;padding-bottom:80px;}
+:root{--verde:#2D6A4F;--verde2:#40916C;--verde3:#74C69D;--azul:#1B4F72;--blanco:#FAFAF8;--oscuro:#1a1a2e;--texto:#2c3e50;--arena:#F4E4C1;}
+body{font-family:'Lato',sans-serif;background:var(--blanco);color:var(--texto);overflow-x:hidden;max-width:480px;margin:0 auto;}
+.page-wrapper{padding-bottom:80px;}
+.screen{display:none;}.screen.active{display:block;}
+
+/* LANG */
+.lang-toggle{position:absolute;top:16px;right:16px;z-index:30;display:flex;gap:6px;}
+.lang-btn{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;padding:4px 10px;border-radius:20px;font-size:0.65rem;font-weight:700;cursor:pointer;font-family:'Lato',sans-serif;}
+.lang-btn.active{background:white;color:var(--verde);}
 
 /* HEADER */
-.about-header{background:linear-gradient(135deg,var(--oscuro),var(--azul),var(--verde));padding:30px 20px 50px;position:relative;overflow:hidden;text-align:center;}
-.about-header::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");}
-.app-logo{font-size:4rem;margin-bottom:10px;display:block;}
-.app-name{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;color:white;text-shadow:0 2px 20px rgba(0,0,0,0.3);}
-.app-version{display:inline-block;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;font-size:0.65rem;padding:3px 12px;border-radius:20px;letter-spacing:2px;margin-top:8px;}
+.app-header{background:linear-gradient(135deg,var(--azul),var(--verde),var(--verde2));padding:30px 20px 70px;position:relative;overflow:hidden;min-height:200px;}
+.app-badge{display:inline-block;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;font-size:0.65rem;padding:3px 12px;border-radius:20px;letter-spacing:2px;margin-bottom:10px;}
+.app-title{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:900;color:white;line-height:1.1;margin-bottom:6px;text-shadow:0 2px 20px rgba(0,0,0,0.3);}
+.app-subtitle{color:rgba(255,255,255,0.8);font-size:0.82rem;margin-bottom:16px;}
+.header-stats{display:flex;gap:16px;}
+.hstat-num{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;color:white;}
+.hstat-label{font-size:0.6rem;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:1px;}
 .mountains-svg{position:absolute;bottom:0;left:0;right:0;}
 
-/* CREATOR CARD */
-.creator-card{background:white;border-radius:16px;margin:0 16px;margin-top:-24px;position:relative;z-index:10;box-shadow:0 4px 20px rgba(0,0,0,0.12);overflow:hidden;}
-.creator-header{background:linear-gradient(135deg,var(--verde),var(--verde2));padding:16px 20px;display:flex;align-items:center;gap:14px;}
-.creator-avatar{width:56px;height:56px;background:rgba(255,255,255,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.8rem;border:3px solid rgba(255,255,255,0.4);}
-.creator-name{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:white;}
-.creator-role{font-size:0.68rem;color:rgba(255,255,255,0.8);margin-top:2px;}
-.creator-location{font-size:0.65rem;color:rgba(255,255,255,0.7);margin-top:3px;}
-.creator-body{padding:16px;}
-.contact-btn{display:flex;align-items:center;gap:12px;background:#f8fffe;border-radius:12px;padding:12px 14px;margin-bottom:10px;cursor:pointer;border:1px solid #e8f5ee;transition:all 0.2s;text-decoration:none;}
-.contact-btn:hover{border-color:var(--verde2);background:#f0faf5;}
-.contact-icon{font-size:1.5rem;min-width:32px;text-align:center;}
-.contact-label{font-size:0.65rem;color:#888;text-transform:uppercase;letter-spacing:1px;}
-.contact-value{font-size:0.8rem;font-weight:700;color:var(--oscuro);margin-top:1px;}
-
-/* DESCRIPCION */
-.desc-section{padding:16px;}
-.section-title{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--oscuro);margin-bottom:12px;padding-bottom:6px;border-bottom:2px solid var(--arena);}
-.desc-text{font-size:0.82rem;color:#555;line-height:1.7;margin-bottom:16px;}
-
-/* COLABORAR */
-.collab-card{background:linear-gradient(135deg,var(--azul),var(--verde));border-radius:14px;padding:18px;margin-bottom:12px;color:white;}
-.collab-title{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;margin-bottom:8px;}
-.collab-text{font-size:0.78rem;line-height:1.6;opacity:0.9;margin-bottom:14px;}
-.collab-items{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;}
-.collab-item{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.12);border-radius:10px;padding:10px 12px;}
-.collab-item-emoji{font-size:1.3rem;}
-.collab-item-text{font-size:0.75rem;line-height:1.4;}
-.collab-item-title{font-weight:700;margin-bottom:2px;}
-.collab-btn{background:white;color:var(--verde);border:none;border-radius:50px;padding:12px 20px;font-family:'Lato',sans-serif;font-size:0.82rem;font-weight:700;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:center;gap:8px;}
+/* SEARCH */
+.search-box{background:white;border-radius:50px;padding:12px 20px;display:flex;align-items:center;gap:10px;box-shadow:0 4px 20px rgba(0,0,0,0.15);margin:0 20px;position:relative;z-index:10;margin-top:-24px;}
+.search-box input{border:none;outline:none;font-family:'Lato',sans-serif;font-size:0.9rem;flex:1;color:var(--texto);}
 
 /* STATS */
-.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
-.stat-item{background:white;border-radius:12px;padding:12px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.06);border-bottom:3px solid var(--verde2);}
-.stat-num{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--verde);}
-.stat-label{font-size:0.58rem;color:#888;text-transform:uppercase;letter-spacing:1px;margin-top:3px;}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:16px 16px 0;}
+.stat-card{background:white;border-radius:12px;padding:12px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,0.06);border-bottom:3px solid var(--verde3);}
+.stat-num{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--verde);}
+.stat-label{font-size:0.6rem;color:#888;margin-top:3px;text-transform:uppercase;letter-spacing:1px;}
 
-/* DERECHOS */
-.rights-box{background:#f8f9fa;border-radius:12px;padding:14px;margin-bottom:12px;text-align:center;}
-.rights-text{font-size:0.7rem;color:#999;line-height:1.6;}
-.rights-logo{font-size:2rem;margin-bottom:8px;}
+/* TABS */
+.tabs{display:flex;gap:6px;padding:16px 16px 0;overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{background:white;border:2px solid #e0e0e0;border-radius:25px;padding:7px 14px;font-size:0.72rem;font-weight:700;cursor:pointer;white-space:nowrap;color:#666;}
+.tab.active{background:var(--verde);border-color:var(--verde);color:white;}
 
+/* PLACE CARDS */
+.province-section{padding:16px 16px 0;}
+.province-header{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.province-name{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--oscuro);}
+.province-count{font-size:0.68rem;color:#888;margin-left:auto;}
+.places-scroll{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px;}
+.places-scroll::-webkit-scrollbar{display:none;}
+.place-card{min-width:150px;background:white;border-radius:14px;overflow:hidden;box-shadow:0 3px 12px rgba(0,0,0,0.08);cursor:pointer;flex-shrink:0;border:2px solid transparent;}
+.place-card.favorited{border-color:gold;}
+.place-photo{height:90px;position:relative;display:flex;align-items:center;justify-content:center;font-size:2.5rem;}
+.place-photo-overlay{position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,0.5) 100%);}
+.fav-icon{position:absolute;top:6px;right:6px;font-size:0.9rem;cursor:pointer;z-index:2;background:rgba(255,255,255,0.85);border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;}
+.place-info{padding:8px 10px;}
+.place-name{font-family:'Playfair Display',serif;font-size:0.82rem;font-weight:700;color:var(--oscuro);}
+.place-region{font-size:0.6rem;color:#888;margin-top:1px;}
+.place-clima{font-size:0.62rem;color:var(--verde);font-weight:700;margin-top:2px;}
+.section-divider{height:1px;background:#eee;margin:12px 16px 0;}
+
+/* MAP */
+.map-container{margin:16px;background:white;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.1);}
+.map-header{background:linear-gradient(135deg,var(--azul),var(--verde));padding:12px 16px;display:flex;align-items:center;justify-content:space-between;}
+.map-title-text{color:white;font-size:0.82rem;font-weight:700;letter-spacing:1px;}
+#map-svg{width:100%;background:#e8f4f0;}
+.map-dot{cursor:pointer;}
+.map-places-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 16px 16px;}
+.map-place-item{background:white;border-radius:10px;padding:8px 10px;display:flex;align-items:center;gap:8px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
+
+/* FAVORITOS */
+.fav-header{background:linear-gradient(135deg,var(--verde),var(--verde2));padding:20px;color:white;}
+.fav-list{display:flex;flex-direction:column;gap:8px;padding:16px;}
+.fav-item{background:white;border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:10px;box-shadow:0 2px 8px rgba(0,0,0,0.06);cursor:pointer;}
+.fav-empty{text-align:center;padding:30px;color:#aaa;font-size:0.82rem;line-height:1.7;}
+
+/* LEYENDAS */
+.ley-header{background:linear-gradient(135deg,var(--oscuro),#2d1b4e);padding:20px;color:white;}
+.leyenda-card{background:linear-gradient(135deg,var(--oscuro),#2d1b4e);border-radius:14px;padding:16px;margin-bottom:12px;cursor:pointer;}
+.leyenda-lugar{font-size:0.65rem;color:#CE93D8;font-weight:700;letter-spacing:2px;margin-bottom:6px;}
+.leyenda-titulo{font-family:'Playfair Display',serif;font-size:0.95rem;font-weight:700;color:white;margin-bottom:8px;}
+.leyenda-texto{font-size:0.75rem;color:#bbb;line-height:1.6;font-style:italic;}
+
+/* ABOUT */
+.about-header-sec{background:linear-gradient(135deg,var(--oscuro),var(--azul),var(--verde));padding:30px 20px 50px;position:relative;overflow:hidden;text-align:center;}
+.creator-card{background:white;border-radius:16px;margin:0 16px;margin-top:-24px;position:relative;z-index:10;box-shadow:0 4px 20px rgba(0,0,0,0.12);overflow:hidden;}
+.creator-header-inner{background:linear-gradient(135deg,var(--verde),var(--verde2));padding:16px 20px;display:flex;align-items:center;gap:14px;}
+.creator-avatar{width:56px;height:56px;background:rgba(255,255,255,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.8rem;border:3px solid rgba(255,255,255,0.4);}
+.contact-btn{display:flex;align-items:center;gap:12px;background:#f8fffe;border-radius:12px;padding:12px 14px;margin-bottom:10px;cursor:pointer;border:1px solid #e8f5ee;text-decoration:none;}
+.collab-card{background:linear-gradient(135deg,var(--azul),var(--verde));border-radius:14px;padding:18px;margin-bottom:12px;color:white;}
+.collab-btn{background:white;color:var(--verde);border:none;border-radius:50px;padding:12px 20px;font-family:'Lato',sans-serif;font-size:0.82rem;font-weight:700;cursor:pointer;width:100%;}
+.rights-box{background:#f8f9fa;border-radius:12px;padding:14px;margin-bottom:12px;text-align:center;font-size:0.7rem;color:#999;line-height:1.6;}
+
+/* DETAIL */
+#detail-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:100;overflow-y:auto;}
+#detail-overlay.open{display:block;}
+#detail-panel{background:white;border-radius:20px 20px 0 0;margin-top:60px;min-height:calc(100vh - 60px);padding-bottom:40px;}
+.detail-hero{height:200px;position:relative;display:flex;align-items:center;justify-content:center;font-size:6rem;border-radius:20px 20px 0 0;}
+.detail-hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,0.7) 100%);border-radius:20px 20px 0 0;}
+.detail-hero-text{position:absolute;bottom:16px;left:20px;right:60px;}
+.detail-title{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:900;color:white;}
+.detail-sub{color:rgba(255,255,255,0.8);font-size:0.72rem;margin-top:4px;}
+.close-btn{position:absolute;top:14px;right:14px;background:rgba(255,255,255,0.9);border:none;border-radius:50%;width:36px;height:36px;font-size:1.1rem;cursor:pointer;font-weight:bold;z-index:10;}
+.detail-body{padding:20px;}
+.detail-info-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;}
+.detail-info-item{background:#f8fffe;border-radius:8px;padding:10px;text-align:center;border:1px solid #e8f5ee;}
+.detail-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
+.detail-tag{background:#f0f7f4;color:var(--verde);font-size:0.65rem;padding:4px 10px;border-radius:20px;font-weight:700;}
+.detail-legend{background:linear-gradient(135deg,var(--oscuro),#2d1b4e);border-radius:12px;padding:14px;margin:16px 0;}
+.detail-legend-title{color:#CE93D8;font-size:0.72rem;font-weight:700;margin-bottom:6px;letter-spacing:1px;}
+.detail-legend-text{color:#ddd;font-size:0.75rem;line-height:1.7;font-style:italic;}
+.action-btn{border:none;border-radius:50px;padding:12px 20px;font-family:'Lato',sans-serif;font-size:0.82rem;font-weight:700;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px;}
+.maps-btn-d{background:linear-gradient(135deg,#1565C0,#1976D2);color:white;}
+.booking-btn-d{background:linear-gradient(135deg,#003580,#0071c2);color:white;}
+.fav-btn-d{color:white;}
+
+/* BOTTOM NAV */
 #bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:white;border-top:1px solid #eee;display:flex;justify-content:space-around;padding:10px 0 14px;z-index:50;box-shadow:0 -4px 20px rgba(0,0,0,0.08);}
 .nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:0 12px;}
 .nav-icon{font-size:1.3rem;}
 .nav-label{font-size:0.58rem;color:#aaa;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;}
 .nav-item.active .nav-label{color:var(--verde);}
 </style>
-
+</head>
+<body>
 <div class="page-wrapper">
 
-<!-- HEADER -->
-<div class="about-header">
-  <span class="app-logo">🏔️</span>
-  <div class="app-name">Patagonia Secreta</div>
-  <div class="app-version">VERSIÓN 1.0 · 2025</div>
-  <svg class="mountains-svg" viewBox="0 0 480 40" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-    <path d="M0,40 L0,20 L60,5 L120,20 L180,2 L240,18 L300,4 L360,20 L420,6 L480,18 L480,40 Z" fill="rgba(255,255,255,0.08)"/>
-    <path d="M0,40 L0,30 L80,18 L140,28 L200,14 L260,26 L320,16 L380,28 L440,18 L480,26 L480,40 Z" fill="white"/>
-  </svg>
-</div>
-
-<!-- CREATOR CARD -->
-<div class="creator-card">
-  <div class="creator-header">
-    <div class="creator-avatar">👨‍💻</div>
-    <div>
-      <div class="creator-name">Ignacio Alejandro Espinoza</div>
-      <div class="creator-role">🎯 Creador & Desarrollador</div>
-      <div class="creator-location">📍 Isla Choele Choel, Río Negro, Argentina</div>
+<!-- DETAIL -->
+<div id="detail-overlay" onclick="handleOverlayClick(event)">
+  <div id="detail-panel">
+    <div class="detail-hero" id="detail-hero">
+      <div id="detail-emoji" style="position:relative;z-index:1;">🏔️</div>
+      <div class="detail-hero-overlay"></div>
+      <button class="close-btn" onclick="closeDetail()">✕</button>
+      <div class="detail-hero-text">
+        <div class="detail-title" id="detail-name">---</div>
+        <div class="detail-sub" id="detail-sub">---</div>
+      </div>
     </div>
-  </div>
-  <div class="creator-body">
-    <a class="contact-btn" href="mailto:espinozaalejandro327@gmail.com">
-      <div class="contact-icon">📧</div>
-      <div><div class="contact-label">Email</div><div class="contact-value">espinozaalejandro327@gmail.com</div></div>
-    </a>
-    <a class="contact-btn" href="https://wa.me/5492984307533" target="_blank">
-      <div class="contact-icon">💬</div>
-      <div><div class="contact-label">WhatsApp</div><div class="contact-value">+54 9 2984 307533</div></div>
-    </a>
+    <div class="detail-body" id="detail-body"></div>
   </div>
 </div>
 
-<!-- DESCRIPCION -->
-<div class="desc-section">
-  <div class="section-title">📱 Sobre la App</div>
-  <div class="desc-text">
-    <strong>Patagonia Secreta</strong> nació de un sueño simple: mostrarle al mundo los lugares increíbles de la Patagonia Argentina que pocas apps y guías turísticas muestran en detalle.
-    <br><br>
-    Creada desde la <strong>Isla Choele Choel</strong> — una ciudad única rodeada completamente por el Río Negro — esta app reúne información real, lugares secretos, leyendas locales y todo lo que necesitás para explorar la Patagonia de punta a punta.
-    <br><br>
-    Desde los bosques de araucarias de Villa Pehuenia hasta el fin del mundo en Ushuaia. Desde las ballenas de Las Grutas hasta los glaciares de El Calafate. <strong>Todo en un solo lugar.</strong>
+<!-- HOME -->
+<div id="screen-home" class="screen active">
+  <div class="app-header">
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang('es',this)">🇦🇷 ES</button>
+      <button class="lang-btn" onclick="setLang('en',this)">🇺🇸 EN</button>
+    </div>
+    <div class="app-badge" id="badge-text">🇦🇷 APP OFICIAL</div>
+    <div class="app-title" id="app-title">Patagonia<br>Secreta</div>
+    <div class="app-subtitle" id="app-subtitle">Descubrí la magia del sur argentino</div>
+    <div class="header-stats">
+      <div class="hstat"><div class="hstat-num">12</div><div class="hstat-label" id="stat-dest">Destinos</div></div>
+      <div class="hstat"><div class="hstat-num">5</div><div class="hstat-label" id="stat-prov">Provincias</div></div>
+      <div class="hstat"><div class="hstat-num">3M+</div><div class="hstat-label" id="stat-t">Turistas/año</div></div>
+    </div>
+    <svg class="mountains-svg" viewBox="0 0 480 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,60 L0,40 L40,15 L80,35 L120,10 L160,30 L200,5 L240,25 L280,8 L320,28 L360,12 L400,32 L440,18 L480,38 L480,60 Z" fill="rgba(255,255,255,0.08)"/>
+      <path d="M0,60 L0,55 L80,40 L140,52 L200,38 L260,50 L320,36 L380,50 L440,42 L480,54 L480,60 Z" fill="white"/>
+    </svg>
   </div>
-
-  <!-- STATS -->
-  <div class="stats-grid">
-    <div class="stat-item"><div class="stat-num">12</div><div class="stat-label">Ciudades</div></div>
-    <div class="stat-item"><div class="stat-num">80+</div><div class="stat-label">Lugarcitos</div></div>
-    <div class="stat-item"><div class="stat-num">5</div><div class="stat-label">Provincias</div></div>
+  <div class="search-box">
+    <span style="color:var(--verde2);font-size:1.1rem;">🔍</span>
+    <input type="text" id="search-input" placeholder="Buscá tu próximo destino..." oninput="handleSearch(this.value)"/>
   </div>
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-num">12</div><div class="stat-label" id="sl-dest">Destinos</div></div>
+    <div class="stat-card"><div class="stat-num" id="sl-fav-num">0</div><div class="stat-label" id="sl-fav">Favoritos</div></div>
+    <div class="stat-card"><div class="stat-num">🌡️</div><div class="stat-label" id="sl-clima">Clima en vivo</div></div>
+  </div>
+  <div class="tabs" id="tabs-container">
+    <div class="tab active" onclick="filterTab('todas',this)">🗺️ Todas</div>
+    <div class="tab" onclick="filterTab('rio-negro',this)">🏔️ Río Negro</div>
+    <div class="tab" onclick="filterTab('neuquen',this)">🌋 Neuquén</div>
+    <div class="tab" onclick="filterTab('chubut',this)">🐋 Chubut</div>
+    <div class="tab" onclick="filterTab('santa-cruz',this)">🧊 Santa Cruz</div>
+    <div class="tab" onclick="filterTab('tierra-del-fuego',this)">🌎 T. del Fuego</div>
+  </div>
+  <div id="places-container"></div>
+</div>
 
-  <!-- COLABORAR -->
-  <div class="collab-card">
-    <div class="collab-title">🤝 ¿Querés colaborar?</div>
-    <div class="collab-text">Si tenés un negocio turístico, hotel, restaurante o agencia en la Patagonia, podés aparecer en la app y llegar a miles de turistas.</div>
-    <div class="collab-items">
-      <div class="collab-item">
-        <div class="collab-item-emoji">🏨</div>
-        <div class="collab-item-text">
-          <div class="collab-item-title">Hoteles y alojamientos</div>
-          Aparecé destacado en tu ciudad con foto, descripción y link directo.
-        </div>
+<!-- MAP -->
+<div id="screen-map" class="screen">
+  <div style="padding:16px;">
+    <div style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--oscuro);margin-bottom:12px;" id="map-title-text">🗺️ Mapa de la Patagonia</div>
+    <div class="map-container">
+      <div class="map-header">
+        <span class="map-title-text" id="map-header-text">📍 TODOS LOS DESTINOS</span>
+        <span style="color:rgba(255,255,255,0.7);font-size:0.65rem;" id="map-tip-text">Tocá un punto</span>
       </div>
-      <div class="collab-item">
-        <div class="collab-item-emoji">🍽️</div>
-        <div class="collab-item-text">
-          <div class="collab-item-title">Restaurantes y bares</div>
-          Llega a turistas que buscan dónde comer en tu zona.
-        </div>
-      </div>
-      <div class="collab-item">
-        <div class="collab-item-emoji">🥾</div>
-        <div class="collab-item-text">
-          <div class="collab-item-title">Agencias y guías de turismo</div>
-          Ofrecé tus excursiones directamente desde la app.
-        </div>
-      </div>
-      <div class="collab-item">
-        <div class="collab-item-emoji">📍</div>
-        <div class="collab-item-text">
-          <div class="collab-item-title">Sugerí un lugar nuevo</div>
-          ¿Conocés un lugarcito secreto que falta en la app? ¡Escribinos!
-        </div>
+      <svg id="map-svg" viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg">
+        <rect width="400" height="500" fill="#e8f4f0"/>
+        <rect x="280" y="0" width="120" height="500" fill="#B3E0F2" opacity="0.4"/>
+        <rect x="0" y="420" width="400" height="80" fill="#B3E0F2" opacity="0.3"/>
+        <path d="M60,0 L80,50 L60,100 L90,150 L70,200 L100,250 L80,300 L110,350 L90,400 L120,450 L100,500" stroke="#c8d8c0" stroke-width="30" fill="none" opacity="0.4"/>
+        <text x="150" y="75" font-family="Lato" font-size="11" fill="#888" font-weight="bold">Neuquén</text>
+        <text x="140" y="138" font-family="Lato" font-size="11" fill="#888" font-weight="bold">Río Negro</text>
+        <text x="160" y="228" font-family="Lato" font-size="10" fill="#888" font-weight="bold">Chubut</text>
+        <text x="155" y="338" font-family="Lato" font-size="10" fill="#888" font-weight="bold">Santa Cruz</text>
+        <text x="125" y="455" font-family="Lato" font-size="9" fill="#888" font-weight="bold">Tierra del Fuego</text>
+        <path d="M120,60 L110,100 L115,140 L120,180 L130,230 L140,290 L150,340 L155,400 L160,460" stroke="#40916C" stroke-width="2" stroke-dasharray="6,4" fill="none" opacity="0.5"/>
+      </svg>
+    </div>
+    <div class="map-places-grid" id="map-places-grid"></div>
+  </div>
+</div>
+
+<!-- FAVORITOS -->
+<div id="screen-favoritos" class="screen">
+  <div class="fav-header">
+    <div style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;" id="fav-title">❤️ Mis Favoritos</div>
+    <div style="font-size:0.75rem;opacity:0.8;margin-top:4px;" id="fav-subtitle">Tus destinos guardados</div>
+  </div>
+  <div id="favoritos-content"></div>
+</div>
+
+<!-- LEYENDAS -->
+<div id="screen-leyendas" class="screen">
+  <div class="ley-header">
+    <div style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;" id="ley-title">👻 Leyendas Patagónicas</div>
+    <div style="font-size:0.75rem;opacity:0.8;margin-top:4px;" id="ley-subtitle">Misterios del sur del mundo</div>
+  </div>
+  <div style="padding:16px;" id="leyendas-content"></div>
+</div>
+
+<!-- ABOUT -->
+<div id="screen-about" class="screen">
+  <div class="about-header-sec">
+    <div style="font-size:4rem;margin-bottom:10px;">🏔️</div>
+    <div style="font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;color:white;">Patagonia Secreta</div>
+    <div style="display:inline-block;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;font-size:0.65rem;padding:3px 12px;border-radius:20px;letter-spacing:2px;margin-top:8px;">VERSIÓN 1.0 · 2025</div>
+    <svg style="position:absolute;bottom:0;left:0;right:0;" viewBox="0 0 480 40" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,40 L0,20 L60,5 L120,20 L180,2 L240,18 L300,4 L360,20 L420,6 L480,18 L480,40 Z" fill="rgba(255,255,255,0.08)"/>
+      <path d="M0,40 L0,30 L80,18 L140,28 L200,14 L260,26 L320,16 L380,28 L440,18 L480,26 L480,40 Z" fill="white"/>
+    </svg>
+  </div>
+  <div class="creator-card">
+    <div class="creator-header-inner">
+      <div class="creator-avatar">👨‍💻</div>
+      <div>
+        <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:white;">Ignacio Alejandro Espinoza</div>
+        <div style="font-size:0.68rem;color:rgba(255,255,255,0.8);margin-top:2px;">🎯 Creador & Desarrollador</div>
+        <div style="font-size:0.65rem;color:rgba(255,255,255,0.7);margin-top:3px;">📍 Isla Choele Choel, Río Negro, Argentina</div>
       </div>
     </div>
-    <button class="collab-btn" onclick="window.open('https://wa.me/5492984307533?text=Hola%20Ignacio!%20Me%20interesa%20colaborar%20con%20Patagonia%20Secreta','_blank')">
-      💬 Contactar por WhatsApp
-    </button>
+    <div style="padding:16px;">
+      <a class="contact-btn" href="mailto:espinozaalejandro327@gmail.com">
+        <div style="font-size:1.5rem;">📧</div>
+        <div><div style="font-size:0.65rem;color:#888;text-transform:uppercase;letter-spacing:1px;">Email</div><div style="font-size:0.8rem;font-weight:700;color:var(--oscuro);">espinozaalejandro327@gmail.com</div></div>
+      </a>
+      <a class="contact-btn" href="https://wa.me/5492984307533" target="_blank">
+        <div style="font-size:1.5rem;">💬</div>
+        <div><div style="font-size:0.65rem;color:#888;text-transform:uppercase;letter-spacing:1px;">WhatsApp</div><div style="font-size:0.8rem;font-weight:700;color:var(--oscuro);">+54 9 2984 307533</div></div>
+      </a>
+    </div>
   </div>
-
-  <!-- DERECHOS -->
-  <div class="rights-box">
-    <div class="rights-logo">🏔️</div>
-    <div class="rights-text">
-      <strong>Patagonia Secreta v1.0</strong><br>
+  <div style="padding:16px;">
+    <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--oscuro);margin-bottom:12px;padding-bottom:6px;border-bottom:2px solid var(--arena);">📱 Sobre la App</div>
+    <div style="font-size:0.82rem;color:#555;line-height:1.7;margin-bottom:16px;"><strong>Patagonia Secreta</strong> nació de un sueño simple: mostrarle al mundo los lugares increíbles de la Patagonia Argentina que pocas apps muestran en detalle.<br><br>Creada desde la <strong>Isla Choele Choel</strong> — ciudad única rodeada por el Río Negro — esta app reúne información real, lugares secretos, leyendas locales y todo lo que necesitás para explorar la Patagonia de punta a punta.</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;">
+      <div style="background:white;border-radius:12px;padding:12px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.06);border-bottom:3px solid var(--verde2);"><div style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--verde);">12</div><div style="font-size:0.6rem;color:#888;text-transform:uppercase;letter-spacing:1px;margin-top:3px;">Ciudades</div></div>
+      <div style="background:white;border-radius:12px;padding:12px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.06);border-bottom:3px solid var(--verde2);"><div style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--verde);">80+</div><div style="font-size:0.6rem;color:#888;text-transform:uppercase;letter-spacing:1px;margin-top:3px;">Lugarcitos</div></div>
+      <div style="background:white;border-radius:12px;padding:12px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.06);border-bottom:3px solid var(--verde2);"><div style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--verde);">5</div><div style="font-size:0.6rem;color:#888;text-transform:uppercase;letter-spacing:1px;margin-top:3px;">Provincias</div></div>
+    </div>
+    <div class="collab-card">
+      <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;margin-bottom:8px;">🤝 ¿Querés colaborar?</div>
+      <div style="font-size:0.78rem;line-height:1.6;opacity:0.9;margin-bottom:14px;">Hoteles, restaurantes, agencias de turismo o guías locales pueden aparecer destacados en la app y llegar a miles de turistas.</div>
+      <button class="collab-btn" onclick="window.open('https://wa.me/5492984307533?text=Hola%20Ignacio!%20Me%20interesa%20colaborar%20con%20Patagonia%20Secreta','_blank')">💬 Contactar por WhatsApp</button>
+    </div>
+    <div class="rights-box">
+      <div style="font-size:2rem;margin-bottom:8px;">🏔️</div>
       © 2025 Ignacio Alejandro Espinoza<br>
       Isla Choele Choel, Río Negro, Argentina<br><br>
-      Toda la información es de carácter orientativo.<br>
-      Los precios, horarios y disponibilidad pueden variar.<br>
-      Consultá siempre con los operadores locales antes de tu viaje.<br><br>
       <strong>Hecho con ❤️ desde la Patagonia Argentina 🇦🇷</strong>
     </div>
   </div>
-
-</div>
 </div>
 
+</div><!-- end page-wrapper -->
+
+<!-- BOTTOM NAV -->
 <div id="bottom-nav">
-  <div class="nav-item"><div class="nav-icon">🏠</div><div class="nav-label">Inicio</div></div>
-  <div class="nav-item"><div class="nav-icon">🗺️</div><div class="nav-label">Mapa</div></div>
-  <div class="nav-item"><div class="nav-icon">❤️</div><div class="nav-label">Favoritos</div></div>
-  <div class="nav-item"><div class="nav-icon">👻</div><div class="nav-label">Leyendas</div></div>
-  <div class="nav-item active"><div class="nav-icon">⚙️</div><div class="nav-label">Acerca de</div></div>
+  <div class="nav-item active" onclick="showScreen('home',this)"><div class="nav-icon">🏠</div><div class="nav-label" id="nav-home">Inicio</div></div>
+  <div class="nav-item" onclick="showScreen('map',this)"><div class="nav-icon">🗺️</div><div class="nav-label" id="nav-map">Mapa</div></div>
+  <div class="nav-item" onclick="showScreen('favoritos',this)"><div class="nav-icon">❤️</div><div class="nav-label" id="nav-fav">Favoritos</div></div>
+  <div class="nav-item" onclick="showScreen('leyendas',this)"><div class="nav-icon">👻</div><div class="nav-label" id="nav-ley">Leyendas</div></div>
+  <div class="nav-item" onclick="showScreen('about',this)"><div class="nav-icon">⚙️</div><div class="nav-label" id="nav-about">Acerca de</div></div>
 </div>
+
+<script>
+const PLACES=[
+  {id:1,name:'Bariloche',nameEn:'Bariloche',region:'rio-negro',regionName:'Río Negro',emoji:'🏔️',color:'#1B4F72',rating:4.9,lat:-41.13,lon:-71.31,tags:['Nieve','Lagos','Chocolate'],desc:'La joya de la Patagonia. Lago Nahuel Huapi, chocolate artesanal y Cerro Catedral.',descEn:'The jewel of Patagonia. Nahuel Huapi Lake, artisanal chocolate and Cerro Catedral.',info:{clima:'8°C',climaEn:'46°F',epoca:'Todo el año',epocaEn:'Year-round',dist:'1.600 km Bs.As.',tipo:'Ciudad turística',tipoEn:'Tourist city'},leyenda:'El Nahuelito — una criatura misteriosa habita las profundidades del Lago Nahuel Huapi...',leyendaEn:'The Nahuelito — a mysterious creature inhabits the depths of Nahuel Huapi Lake...'},
+  {id:2,name:'El Bolsón',nameEn:'El Bolsón',region:'rio-negro',regionName:'Río Negro',emoji:'🌿',color:'#2D6A4F',rating:4.8,lat:-41.97,lon:-71.53,tags:['Cerveza','Artesanal','Trekking'],desc:'Municipio ecológico con la mayor red de refugios de montaña de Sudamérica.',descEn:'Ecological municipality with the largest mountain refuge network in South America.',info:{clima:'14°C',climaEn:'57°F',epoca:'Todo el año',epocaEn:'Year-round',dist:'130 km Bariloche',tipo:'Pueblo ecológico',tipoEn:'Eco village'},leyenda:'El Espíritu del Piltriquitrón habita las cumbres del cerro sagrado mapuche...',leyendaEn:'The Spirit of Piltriquitrón inhabits the peaks of the Mapuche sacred mountain...'},
+  {id:3,name:'Isla Choele Choel',nameEn:'Choele Choel Island',region:'rio-negro',regionName:'Río Negro',emoji:'🏝️',color:'#40916C',rating:4.6,lat:-39.28,lon:-65.65,tags:['Secreta','Isla','Río'],desc:'⭐ LUGAR SECRETO ⭐ Ciudad única rodeada por el Río Negro. Tranquila y mágica.',descEn:'⭐ SECRET PLACE ⭐ Unique city surrounded by the Río Negro. Peaceful and magical.',info:{clima:'16°C',climaEn:'61°F',epoca:'Primavera-Verano',epocaEn:'Spring-Summer',dist:'300 km Bariloche',tipo:'Ciudad isla única',tipoEn:'Unique island city'},leyenda:'El Chimango, ave guardiana de la isla, trae buena suerte a quien lo mira a los ojos...',leyendaEn:'The Chimango bird brings good luck to those who meet its gaze...'},
+  {id:4,name:'Las Grutas',nameEn:'Las Grutas',region:'rio-negro',regionName:'Río Negro',emoji:'🏖️',color:'#E67E22',rating:4.7,lat:-40.82,lon:-65.1,tags:['Playa','Ballenas','Mar'],desc:'Aguas más cálidas de la Patagonia. Ballenas francas de agosto a octubre.',descEn:'Warmest waters in Patagonia. Southern right whales from August to October.',info:{clima:'24°C verano',climaEn:'75°F summer',epoca:'Nov-Mar / Ago-Oct ballenas',epocaEn:'Nov-Mar / Aug-Oct whales',dist:'430 km Bariloche',tipo:'Resort playero',tipoEn:'Beach resort'},leyenda:'La Luz Mala aparece sobre el mar en las noches de tormenta del Golfo San Matías...',leyendaEn:'The Evil Light appears over the sea on stormy nights in the San Matías Gulf...'},
+  {id:5,name:'San Martín de los Andes',nameEn:'San Martín de los Andes',region:'neuquen',regionName:'Neuquén',emoji:'⛷️',color:'#2C3E50',rating:4.9,lat:-40.16,lon:-71.36,tags:['Esquí','Lagos','7 Lagos'],desc:'La ciudad más elegante de la Patagonia. Lago Lácar y Ruta de los 7 Lagos.',descEn:'The most elegant city in Patagonia. Lácar Lake and Route of 7 Lakes.',info:{clima:'9°C',climaEn:'48°F',epoca:'Todo el año',epocaEn:'Year-round',dist:'160 km Bariloche',tipo:'Ciudad premium',tipoEn:'Premium city'},leyenda:'Los tambores del Lago Lácar suenan en las noches de viento sur...',leyendaEn:'The drums of Lácar Lake sound on south wind nights...'},
+  {id:6,name:'Villa Pehuenia',nameEn:'Villa Pehuenia',region:'neuquen',regionName:'Neuquén',emoji:'🌳',color:'#1B5E20',rating:4.7,lat:-38.93,lon:-71.18,tags:['Araucarias','Lagos','Mapuche'],desc:'Aldea secreta con araucarias milenarias y Volcán Batea Mahuida.',descEn:'Secret village with ancient araucaria trees and Batea Mahuida Volcano.',info:{clima:'20°C lago',climaEn:'68°F lake',epoca:'Oct-Abr',epocaEn:'Oct-Apr',dist:'310 km Neuquén',tipo:'Aldea mapuche',tipoEn:'Mapuche village'},leyenda:'El Pombero ronda los bosques de pehuén. No respondas si escuchás un silbido...',leyendaEn:'The Pombero roams the forests. Don\'t answer if you hear a whistle...'},
+  {id:7,name:'Península Valdés',nameEn:'Valdés Peninsula',region:'chubut',regionName:'Chubut',emoji:'🐋',color:'#0D47A1',rating:5.0,lat:-42.5,lon:-64.0,tags:['Ballenas','UNESCO','Orcas'],desc:'Patrimonio UNESCO. El único lugar donde las orcas cazan en tierra.',descEn:'UNESCO Heritage. The only place where orcas hunt on land.',info:{clima:'Frío ventoso',climaEn:'Cold windy',epoca:'Jul-Dic',epocaEn:'Jul-Dec',dist:'65 km Madryn',tipo:'Reserva UNESCO',tipoEn:'UNESCO Reserve'},leyenda:'Las almas de los naufragios nadan con los lobos marinos de Punta Norte...',leyendaEn:'The souls of shipwrecks swim with the sea lions of Punta Norte...'},
+  {id:8,name:'Puerto Madryn',nameEn:'Puerto Madryn',region:'chubut',regionName:'Chubut',emoji:'🌊',color:'#1565C0',rating:4.6,lat:-42.77,lon:-65.04,tags:['Buceo','Lobos','Playa'],desc:'Capital Nacional del Buceo. 10 parques submarinos con naufragios.',descEn:'National Diving Capital. 10 underwater parks with shipwrecks.',info:{clima:'13°C',climaEn:'55°F',epoca:'Todo el año',epocaEn:'Year-round',dist:'1.400 km Bs.As.',tipo:'Ciudad costera',tipoEn:'Coastal city'},leyenda:'La sirena del Golfo Nuevo canta y enamora del mar para siempre...',leyendaEn:'The siren of Nuevo Gulf sings and makes you fall in love with the sea forever...'},
+  {id:9,name:'Esquel',nameEn:'Esquel',region:'chubut',regionName:'Chubut',emoji:'🚂',color:'#4E342E',rating:4.5,lat:-42.91,lon:-71.33,tags:['La Trochita','Alerces','Esquí'],desc:'La Trochita, Parque Nacional Los Alerces UNESCO y el pueblo galés Trevelin.',descEn:'La Trochita, Los Alerces National Park UNESCO and Welsh village Trevelin.',info:{clima:'8°C',climaEn:'46°F',epoca:'Todo el año',epocaEn:'Year-round',dist:'280 km Bariloche',tipo:'Ciudad andina',tipoEn:'Andean city'},leyenda:'El maquinista fantasma recorre las vías buscando completar su último viaje...',leyendaEn:'The phantom engineer travels the tracks seeking to complete his last journey...'},
+  {id:10,name:'El Calafate',nameEn:'El Calafate',region:'santa-cruz',regionName:'Santa Cruz',emoji:'🧊',color:'#1B4F72',rating:5.0,lat:-50.34,lon:-72.26,tags:['Glaciar','UNESCO','Hielo'],desc:'Puerta al Glaciar Perito Moreno — el único que sigue creciendo en el mundo.',descEn:'Gateway to Perito Moreno Glacier — the only one still growing in the world.',info:{clima:'5°C',climaEn:'41°F',epoca:'Oct-Abr',epocaEn:'Oct-Apr',dist:'2.800 km Bs.As.',tipo:'Turismo glaciar',tipoEn:'Glacier tourism'},leyenda:'Quien come las bayas de calafate siempre regresa a la Patagonia...',leyendaEn:'Whoever eats calafate berries will always return to Patagonia...'},
+  {id:11,name:'El Chaltén',nameEn:'El Chaltén',region:'santa-cruz',regionName:'Santa Cruz',emoji:'🏔️',color:'#B71C1C',rating:4.9,lat:-49.33,lon:-72.89,tags:['Fitz Roy','Trekking','Montaña'],desc:'Capital Nacional del Trekking. Cerro Fitz Roy y Laguna de los Tres.',descEn:'National Trekking Capital. Fitz Roy Peak and Laguna de los Tres.',info:{clima:'Muy frío',climaEn:'Very cold',epoca:'Nov-Mar',epocaEn:'Nov-Mar',dist:'220 km Calafate',tipo:'Pueblo mochilero',tipoEn:'Backpacker village'},leyenda:'El Chaltén — montaña humeante. Cuando se despeja algo importante sucede...',leyendaEn:'El Chaltén — smoking mountain. When it clears, something important happens...'},
+  {id:12,name:'Ushuaia',nameEn:'Ushuaia',region:'tierra-del-fuego',regionName:'Tierra del Fuego',emoji:'🌎',color:'#2C3E50',rating:4.9,lat:-54.80,lon:-68.30,tags:['Fin del Mundo','Canal Beagle','Pingüinos'],desc:'La ciudad más austral del mundo. Canal Beagle y Tren del Fin del Mundo.',descEn:'The southernmost city in the world. Beagle Channel and End of the World Train.',info:{clima:'4°C',climaEn:'39°F',epoca:'Nov-Mar',epocaEn:'Nov-Mar',dist:'3.300 km Bs.As.',tipo:'Ciudad austral',tipoEn:'Southernmost city'},leyenda:'Las voces de los Yaganes suenan en el Canal Beagle en noches de niebla...',leyendaEn:'The Yaghan voices sound in the Beagle Channel on foggy nights...'},
+];
+
+const MAP_POS={1:{x:95,y:132},2:{x:85,y:152},3:{x:195,y:148},4:{x:295,y:152},5:{x:98,y:108},6:{x:78,y:92},7:{x:290,y:218},8:{x:302,y:208},9:{x:88,y:212},10:{x:142,y:352},11:{x:128,y:332},12:{x:152,y:458}};
+const WI={0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',51:'🌦️',61:'🌧️',71:'❄️',80:'🌦️',95:'⛈️'};
+let lang='es',favorites=new Set(),climaCache={},currentFilter='todas';
+
+const T={
+  es:{appTitle:'Patagonia<br>Secreta',appSub:'Descubrí la magia del sur argentino',search:'Buscá tu próximo destino...',navHome:'Inicio',navMap:'Mapa',navFav:'Favoritos',navLey:'Leyendas',navAbout:'Acerca de',statDest:'Destinos',statProv:'Provincias',statT:'Turistas/año',slFav:'Favoritos',slClima:'Clima en vivo',mapTitle:'🗺️ Mapa de la Patagonia',mapHeader:'📍 TODOS LOS DESTINOS',mapTip:'Tocá un punto',favTitle:'❤️ Mis Favoritos',favSub:'Tus destinos guardados',favEmpty:'Todavía no tenés favoritos.\nTocá ❤️ en cualquier destino.',leyTitle:'👻 Leyendas Patagónicas',leySub:'Misterios del sur del mundo',clima:'Clima',epoca:'Mejor época',dist:'Distancia',tipo:'Tipo',openMaps:'🗺️ Cómo llegar — Google Maps',viewHotels:'🏨 Ver hoteles en Booking',addFav:'🤍 Agregar a Favoritos',remFav:'❤️ En Favoritos',badge:'🇦🇷 APP OFICIAL'},
+  en:{appTitle:'Secret<br>Patagonia',appSub:'Discover the magic of southern Argentina',search:'Search your next destination...',navHome:'Home',navMap:'Map',navFav:'Favorites',navLey:'Legends',navAbout:'About',statDest:'Destinations',statProv:'Provinces',statT:'Tourists/year',slFav:'Favorites',slClima:'Live Weather',mapTitle:'🗺️ Patagonia Map',mapHeader:'📍 ALL DESTINATIONS',mapTip:'Tap a point',favTitle:'❤️ My Favorites',favSub:'Your saved destinations',favEmpty:'No favorites yet.\nTap ❤️ on any destination.',leyTitle:'👻 Patagonian Legends',leySub:'Mysteries of the end of the world',clima:'Climate',epoca:'Best time',dist:'Distance',tipo:'Type',openMaps:'🗺️ How to get there — Google Maps',viewHotels:'🏨 View hotels on Booking',addFav:'🤍 Add to Favorites',remFav:'❤️ In Favorites',badge:'🇦🇷 OFFICIAL APP'}
+};
+
+function setLang(l,btn){lang=l;document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');updateTexts();renderPlaces(currentFilter);renderMapPlaces();renderFavoritos();renderLeyendas();}
+
+function updateTexts(){
+  const t=T[lang];
+  document.getElementById('app-title').innerHTML=t.appTitle;
+  document.getElementById('app-subtitle').textContent=t.appSub;
+  document.getElementById('search-input').placeholder=t.search;
+  document.getElementById('badge-text').textContent=t.badge;
+  document.getElementById('stat-dest').textContent=t.statDest;
+  document.getElementById('stat-prov').textContent=t.statProv;
+  document.getElementById('stat-t').textContent=t.statT;
+  document.getElementById('sl-fav-num').textContent=favorites.size;
+  document.getElementById('sl-fav').textContent=t.slFav;
+  document.getElementById('sl-clima').textContent=t.slClima;
+  document.getElementById('map-title-text').textContent=t.mapTitle;
+  document.getElementById('map-header-text').textContent=t.mapHeader;
+  document.getElementById('map-tip-text').textContent=t.mapTip;
+  document.getElementById('fav-title').textContent=t.favTitle;
+  document.getElementById('fav-subtitle').textContent=t.favSub;
+  document.getElementById('ley-title').textContent=t.leyTitle;
+  document.getElementById('ley-subtitle').textContent=t.leySub;
+  document.getElementById('nav-home').textContent=t.navHome;
+  document.getElementById('nav-map').textContent=t.navMap;
+  document.getElementById('nav-fav').textContent=t.navFav;
+  document.getElementById('nav-ley').textContent=t.navLey;
+  document.getElementById('nav-about').textContent=t.navAbout;
+}
+
+function showScreen(s,el){
+  document.querySelectorAll('.screen').forEach(d=>d.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  if(el) el.classList.add('active');
+  document.getElementById('screen-'+s).classList.add('active');
+  if(s==='map') renderMapPlaces();
+  if(s==='favoritos') renderFavoritos();
+  if(s==='leyendas') renderLeyendas();
+  window.scrollTo(0,0);
+}
+
+function filterTab(region,btn){
+  currentFilter=region;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  renderPlaces(region);
+}
+
+function handleSearch(q){
+  if(!q){renderPlaces(currentFilter);return;}
+  const filtered=PLACES.filter(p=>{
+    const n=lang==='es'?p.name:p.nameEn;
+    return n.toLowerCase().includes(q.toLowerCase())||p.tags.some(t=>t.toLowerCase().includes(q.toLowerCase()))||p.regionName.toLowerCase().includes(q.toLowerCase());
+  });
+  const c=document.getElementById('places-container');
+  c.innerHTML=`<div style="padding:12px 16px;font-size:0.78rem;color:#888;">${filtered.length} ${lang==='es'?'resultados':'results'}</div>`+
+  filtered.map(p=>`<div style="margin:0 16px 10px;background:white;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06);cursor:pointer;" onclick="openDetail(${p.id})">
+    <div style="font-size:2rem;background:${p.color}22;width:48px;height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center;">${p.emoji}</div>
+    <div style="flex:1;"><div style="font-family:'Playfair Display',serif;font-size:0.9rem;font-weight:700;color:var(--oscuro);">${lang==='es'?p.name:p.nameEn}</div><div style="font-size:0.65rem;color:#888;">${p.regionName}</div></div>
+    <div style="color:#ccc;">›</div></div>`).join('');
+}
+
+function renderPlaces(region){
+  const provinces=[{id:'rio-negro',name:'Río Negro',emoji:'🏔️'},{id:'neuquen',name:'Neuquén',emoji:'🌋'},{id:'chubut',name:'Chubut',emoji:'🐋'},{id:'santa-cruz',name:'Santa Cruz',emoji:'🧊'},{id:'tierra-del-fuego',name:'Tierra del Fuego',emoji:'🌎'}];
+  const c=document.getElementById('places-container');
+  const makeCards=(places)=>places.map(p=>`
+    <div class="place-card ${favorites.has(p.id)?'favorited':''}" onclick="openDetail(${p.id})" style="position:relative;">
+      <div class="place-photo" style="background:linear-gradient(135deg,${p.color}cc,${p.color}66);">
+        <span style="z-index:1;">${p.emoji}</span>
+        <div class="place-photo-overlay"></div>
+        <div class="fav-icon" onclick="event.stopPropagation();toggleFav(${p.id})">${favorites.has(p.id)?'❤️':'🤍'}</div>
+      </div>
+      <div class="place-info">
+        <div class="place-name">${lang==='es'?p.name:p.nameEn}</div>
+        <div class="place-region">${p.regionName}</div>
+        <div class="place-clima" id="cc-${p.id}">🌡️ ...</div>
+      </div>
+    </div>`).join('');
+  if(region!=='todas'){
+    const filtered=PLACES.filter(p=>p.region===region);
+    c.innerHTML=`<div style="padding:12px 16px 0;"><div style="display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;">${makeCards(filtered)}</div></div>`;
+    filtered.forEach(p=>loadClimaCard(p));
+    return;
+  }
+  c.innerHTML=provinces.map(prov=>{
+    const places=PLACES.filter(p=>p.region===prov.id);
+    return `<div class="province-section">
+      <div class="province-header"><span style="font-size:1.4rem;">${prov.emoji}</span><span class="province-name">${prov.name}</span><span class="province-count">${places.length} ${lang==='es'?'destinos':'destinations'}</span></div>
+      <div class="places-scroll">${makeCards(places)}</div>
+    </div><div class="section-divider"></div>`;
+  }).join('');
+  PLACES.forEach(p=>loadClimaCard(p));
+}
+
+async function loadClimaCard(p){
+  if(climaCache[p.id]){updateCC(p.id,climaCache[p.id]);return;}
+  try{
+    const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${p.lat}&longitude=${p.lon}&current=temperature_2m,weathercode&timezone=America%2FArgentina%2FBuenos_Aires`);
+    const d=await r.json();climaCache[p.id]=d;updateCC(p.id,d);
+  }catch(e){}
+}
+function updateCC(id,d){
+  const el=document.getElementById('cc-'+id);
+  if(el&&d&&d.current) el.textContent=`${WI[d.current.weathercode]||'🌡️'} ${Math.round(d.current.temperature_2m)}°C`;
+}
+
+function renderMapPlaces(){
+  const svg=document.getElementById('map-svg');
+  document.querySelectorAll('.map-dot').forEach(d=>d.remove());
+  PLACES.forEach(p=>{
+    const pos=MAP_POS[p.id];if(!pos) return;
+    const g=document.createElementNS('http://www.w3.org/2000/svg','g');
+    g.setAttribute('class','map-dot');g.setAttribute('transform',`translate(${pos.x},${pos.y})`);
+    const circle=document.createElementNS('http://www.w3.org/2000/svg','circle');
+    circle.setAttribute('r','10');circle.setAttribute('fill',p.color);circle.setAttribute('stroke','white');circle.setAttribute('stroke-width','2');circle.setAttribute('opacity','0.9');
+    const text=document.createElementNS('http://www.w3.org/2000/svg','text');
+    text.setAttribute('text-anchor','middle');text.setAttribute('dy','4');text.setAttribute('font-size','10');text.textContent=p.emoji;
+    g.appendChild(circle);g.appendChild(text);g.onclick=()=>openDetail(p.id);svg.appendChild(g);
+  });
+  document.getElementById('map-places-grid').innerHTML=PLACES.map(p=>`
+    <div class="map-place-item" onclick="openDetail(${p.id})">
+      <span style="font-size:1.2rem;">${p.emoji}</span>
+      <div><div style="font-size:0.72rem;font-weight:700;color:var(--oscuro);">${lang==='es'?p.name:p.nameEn}</div><div style="font-size:0.58rem;color:#888;">${p.regionName}</div></div>
+    </div>`).join('');
+}
+
+function renderFavoritos(){
+  const t=T[lang];
+  document.getElementById('sl-fav-num').textContent=favorites.size;
+  const c=document.getElementById('favoritos-content');
+  if(favorites.size===0){c.innerHTML=`<div class="fav-empty">${t.favEmpty}</div>`;return;}
+  const favPlaces=PLACES.filter(p=>favorites.has(p.id));
+  c.innerHTML=`<div class="fav-list">${favPlaces.map(p=>`
+    <div class="fav-item" onclick="openDetail(${p.id})">
+      <div style="font-size:1.6rem;">${p.emoji}</div>
+      <div><div style="font-family:'Playfair Display',serif;font-size:0.88rem;font-weight:700;color:var(--oscuro);">${lang==='es'?p.name:p.nameEn}</div><div style="font-size:0.65rem;color:#888;">${p.regionName}</div></div>
+      <div style="margin-left:auto;color:#ccc;cursor:pointer;" onclick="event.stopPropagation();toggleFav(${p.id});renderFavoritos();">✕</div>
+    </div>`).join('')}</div>`;
+}
+
+function renderLeyendas(){
+  document.getElementById('leyendas-content').innerHTML=PLACES.map(p=>`
+    <div class="leyenda-card" onclick="openDetail(${p.id})">
+      <div class="leyenda-lugar">📍 ${lang==='es'?p.name:p.nameEn} — ${p.regionName}</div>
+      <div class="leyenda-titulo">${p.emoji} ${lang==='es'?'Leyenda local':'Local legend'}</div>
+      <div class="leyenda-texto">"${lang==='es'?p.leyenda:p.leyendaEn}"</div>
+      <div style="color:#CE93D8;font-size:0.65rem;margin-top:8px;font-weight:700;">${lang==='es'?'Ver más →':'See more →'}</div>
+    </div>`).join('');
+}
+
+function toggleFav(id){
+  favorites.has(id)?favorites.delete(id):favorites.add(id);
+  document.querySelectorAll('.place-card').forEach(card=>{
+    if(card.getAttribute('onclick')===`openDetail(${id})`){
+      favorites.has(id)?card.classList.add('favorited'):card.classList.remove('favorited');
+    }
+  });
+  document.querySelectorAll('.fav-icon').forEach(icon=>{
+    if(icon.getAttribute('onclick')===`event.stopPropagation();toggleFav(${id})`){
+      icon.textContent=favorites.has(id)?'❤️':'🤍';
+    }
+  });
+  document.getElementById('sl-fav-num').textContent=favorites.size;
+}
+
+function openDetail(id){
+  const p=PLACES.find(x=>x.id===id);if(!p) return;
+  const t=T[lang];const isFav=favorites.has(id);
+  document.getElementById('detail-emoji').textContent=p.emoji;
+  document.getElementById('detail-hero').style.background=`linear-gradient(135deg,${p.color}ee,${p.color}88)`;
+  document.getElementById('detail-name').textContent=lang==='es'?p.name:p.nameEn;
+  document.getElementById('detail-sub').textContent='📍 '+p.regionName;
+  document.getElementById('detail-body').innerHTML=`
+    <p style="font-size:0.85rem;color:#555;line-height:1.7;margin-bottom:14px;">${lang==='es'?p.desc:p.descEn}</p>
+    <div class="detail-tags">${p.tags.map(tag=>`<span class="detail-tag">${tag}</span>`).join('')}</div>
+    <div class="detail-info-grid">
+      <div class="detail-info-item"><div style="font-size:1.2rem;margin-bottom:3px;">🌡️</div><div style="font-size:0.58rem;color:#888;text-transform:uppercase;">${t.clima}</div><div style="font-size:0.75rem;font-weight:700;color:var(--oscuro);margin-top:2px;">${lang==='es'?p.info.clima:p.info.climaEn}</div></div>
+      <div class="detail-info-item"><div style="font-size:1.2rem;margin-bottom:3px;">📅</div><div style="font-size:0.58rem;color:#888;text-transform:uppercase;">${t.epoca}</div><div style="font-size:0.75rem;font-weight:700;color:var(--oscuro);margin-top:2px;">${lang==='es'?p.info.epoca:p.info.epocaEn}</div></div>
+      <div class="detail-info-item"><div style="font-size:1.2rem;margin-bottom:3px;">📍</div><div style="font-size:0.58rem;color:#888;text-transform:uppercase;">${t.dist}</div><div style="font-size:0.75rem;font-weight:700;color:var(--oscuro);margin-top:2px;">${p.info.dist}</div></div>
+      <div class="detail-info-item"><div style="font-size:1.2rem;margin-bottom:3px;">🏷️</div><div style="font-size:0.58rem;color:#888;text-transform:uppercase;">${t.tipo}</div><div style="font-size:0.75rem;font-weight:700;color:var(--oscuro);margin-top:2px;">${lang==='es'?p.info.tipo:p.info.tipoEn}</div></div>
+    </div>
+    <div class="detail-legend">
+      <div class="detail-legend-title">👻 ${lang==='es'?'LEYENDA LOCAL':'LOCAL LEGEND'}</div>
+      <div class="detail-legend-text">"${lang==='es'?p.leyenda:p.leyendaEn}"</div>
+    </div>
+    <button class="action-btn maps-btn-d" onclick="window.open('https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lon}&travelmode=driving','_blank')">${t.openMaps}</button>
+    <button class="action-btn booking-btn-d" onclick="window.open('https://www.booking.com/search.html?ss=${encodeURIComponent(lang==='es'?p.name:p.nameEn)}&lang=${lang}','_blank')">${t.viewHotels}</button>
+    <button class="action-btn fav-btn-d" id="fav-detail-btn" style="background:${isFav?'#E53935':'var(--verde)'};" onclick="toggleFav(${id});updateFavBtn(${id})">${isFav?t.remFav:t.addFav}</button>`;
+  document.getElementById('detail-overlay').classList.add('open');
+  document.getElementById('detail-panel').scrollTop=0;
+}
+
+function updateFavBtn(id){
+  const t=T[lang];const btn=document.getElementById('fav-detail-btn');
+  if(btn){btn.textContent=favorites.has(id)?t.remFav:t.addFav;btn.style.background=favorites.has(id)?'#E53935':'var(--verde)';}
+}
+function closeDetail(){document.getElementById('detail-overlay').classList.remove('open');}
+function handleOverlayClick(e){if(e.target===document.getElementById('detail-overlay')) closeDetail();}
+
+// INIT
+renderPlaces('todas');
+renderMapPlaces();
+</script>
+</body>
+</html>
