@@ -1,123 +1,113 @@
-const lugares = [
+const PLACES = [
 
-/* RÍO NEGRO */
 {
   id:1,
-  nombre:"Bariloche",
-  provincia:"rio-negro",
+  name:"Bariloche",
+  region:"rio-negro",
   img:"https://picsum.photos/400/300?bariloche1",
-  descripcion:"Destino icónico con lagos y nieve.",
-  llegar:"Vuelo directo o Ruta 40.",
-  hacer:"Esquí, Circuito Chico, trekking.",
-  hoteles:"Llao Llao, Edelweiss, hosterías."
+  desc:"Destino icónico con lagos y nieve.",
+  how:"Vuelo directo o Ruta 40.",
+  do:"Esquí, Circuito Chico, trekking.",
+  stay:"Llao Llao, Edelweiss, hosterías."
 },
+
 {
   id:2,
-  nombre:"El Bolsón",
-  provincia:"rio-negro",
+  name:"El Bolsón",
+  region:"rio-negro",
   img:"https://picsum.photos/400/300?bolson",
-  descripcion:"Pueblo hippie rodeado de montañas.",
-  llegar:"Ruta 40 desde Bariloche.",
-  hacer:"Feria artesanal, cervecerías, trekking.",
-  hoteles:"Cabañas y hostels."
+  desc:"Pueblo rodeado de montañas.",
+  how:"Ruta 40 desde Bariloche.",
+  do:"Feria artesanal, trekking, cervecerías.",
+  stay:"Cabañas y hostels."
 },
+
 {
   id:3,
-  nombre:"Las Grutas",
-  provincia:"rio-negro",
+  name:"Las Grutas",
+  region:"rio-negro",
   img:"https://picsum.photos/400/300?grutas",
-  descripcion:"Playas cálidas únicas.",
-  llegar:"Ruta 3 desde Viedma.",
-  hacer:"Playa, buceo, excursiones.",
-  hoteles:"Hoteles frente al mar."
+  desc:"Playas cálidas únicas.",
+  how:"Ruta 3.",
+  do:"Playa, buceo, excursiones.",
+  stay:"Hoteles frente al mar."
 },
 
-/* NEUQUÉN */
 {
   id:4,
-  nombre:"San Martín de los Andes",
-  provincia:"neuquen",
-  img:"https://picsum.photos/400/300?andes1",
-  descripcion:"Naturaleza y tranquilidad.",
-  llegar:"Ruta de los 7 Lagos.",
-  hacer:"Kayak, trekking, pesca.",
-  hoteles:"Cabañas y hoteles boutique."
+  name:"San Martín de los Andes",
+  region:"neuquen",
+  img:"https://picsum.photos/400/300?andes",
+  desc:"Naturaleza y lagos.",
+  how:"Ruta de los 7 Lagos.",
+  do:"Kayak, pesca, trekking.",
+  stay:"Cabañas y hoteles boutique."
 },
+
 {
   id:5,
-  nombre:"Villa La Angostura",
-  provincia:"neuquen",
+  name:"Villa La Angostura",
+  region:"neuquen",
   img:"https://picsum.photos/400/300?angostura",
-  descripcion:"Bosques y lagos increíbles.",
-  llegar:"Ruta 40 desde Bariloche.",
-  hacer:"Bosque Arrayanes, senderismo.",
-  hoteles:"Hoteles premium y cabañas."
+  desc:"Bosques y lagos increíbles.",
+  how:"Ruta 40.",
+  do:"Bosque Arrayanes, senderismo.",
+  stay:"Hoteles premium y cabañas."
 },
 
-/* CHUBUT */
 {
   id:6,
-  nombre:"Puerto Madryn",
-  provincia:"chubut",
-  img:"https://picsum.photos/400/300?madryn1",
-  descripcion:"Avistaje de ballenas.",
-  llegar:"Ruta 3 o avión.",
-  hacer:"Ballenas, snorkel con lobos.",
-  hoteles:"Hoteles frente al mar."
+  name:"Puerto Madryn",
+  region:"chubut",
+  img:"https://picsum.photos/400/300?madryn",
+  desc:"Avistaje de ballenas.",
+  how:"Ruta 3 o avión.",
+  do:"Ballenas, snorkel con lobos.",
+  stay:"Hoteles frente al mar."
 },
+
 {
   id:7,
-  nombre:"Esquel",
-  provincia:"chubut",
+  name:"Esquel",
+  region:"chubut",
   img:"https://picsum.photos/400/300?esquel",
-  descripcion:"Puerta a la Patagonia profunda.",
-  llegar:"Ruta 40.",
-  hacer:"La Trochita, Parque Los Alerces.",
-  hoteles:"Hosterías y cabañas."
+  desc:"Puerta a la Patagonia profunda.",
+  how:"Ruta 40.",
+  do:"La Trochita, Parque Los Alerces.",
+  stay:"Hosterías y cabañas."
 },
 
-/* SANTA CRUZ */
 {
   id:8,
-  nombre:"El Calafate",
-  provincia:"santa-cruz",
-  img:"https://picsum.photos/400/300?calafate1",
-  descripcion:"Glaciar Perito Moreno.",
-  llegar:"Vuelo o ruta.",
-  hacer:"Glaciares, trekking.",
-  hoteles:"Hoteles turísticos."
-},
-{
-  id:9,
-  nombre:"El Chaltén",
-  provincia:"santa-cruz",
-  img:"https://picsum.photos/400/300?chalten",
-  descripcion:"Capital del trekking.",
-  llegar:"Ruta desde El Calafate.",
-  hacer:"Laguna de los Tres, Fitz Roy.",
-  hoteles:"Hostels y lodges."
+  name:"El Calafate",
+  region:"santa-cruz",
+  img:"https://picsum.photos/400/300?calafate",
+  desc:"Glaciar Perito Moreno.",
+  how:"Vuelo o ruta.",
+  do:"Glaciares, trekking.",
+  stay:"Hoteles turísticos."
 },
 
-/* TIERRA DEL FUEGO */
+{
+  id:9,
+  name:"El Chaltén",
+  region:"santa-cruz",
+  img:"https://picsum.photos/400/300?chalten",
+  desc:"Capital del trekking.",
+  how:"Ruta desde El Calafate.",
+  do:"Laguna de los Tres, Fitz Roy.",
+  stay:"Hostels y lodges."
+},
+
 {
   id:10,
-  nombre:"Ushuaia",
-  provincia:"tierra-del-fuego",
+  name:"Ushuaia",
+  region:"tierra-del-fuego",
   img:"https://picsum.photos/400/300?ushuaia",
-  descripcion:"La ciudad más austral del mundo.",
-  llegar:"Vuelo directo.",
-  hacer:"Canal Beagle, nieve, trekking.",
-  hoteles:"Hoteles turísticos."
-},
-{
-  id:11,
-  nombre:"Tolhuin",
-  provincia:"tierra-del-fuego",
-  img:"https://picsum.photos/400/300?tolhuin",
-  descripcion:"Corazón de la isla.",
-  llegar:"Ruta entre Ushuaia y Río Grande.",
-  hacer:"Lago Fagnano, naturaleza.",
-  hoteles:"Cabañas."
+  desc:"La ciudad más austral del mundo.",
+  how:"Vuelo directo.",
+  do:"Canal Beagle, nieve, trekking.",
+  stay:"Hoteles turísticos."
 }
 
 ];
