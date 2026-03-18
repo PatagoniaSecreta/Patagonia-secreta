@@ -5,28 +5,40 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Patagonia Secreta</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
 <style>
 body{
-  font-family: Arial;
   margin:0;
-  background:#0b1d2a;
+  font-family:Poppins;
+  background:#0f172a;
   color:white;
 }
 
-h1{
-  text-align:center;
-  padding:15px;
+header{
+  padding:20px;
+  background:linear-gradient(135deg,#1e3a8a,#0ea5e9);
+}
+
+h1{margin:0}
+
+.search{
+  margin-top:15px;
+  padding:10px;
+  width:100%;
+  border-radius:10px;
+  border:none;
 }
 
 .grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
   gap:15px;
   padding:15px;
 }
 
 .card{
-  background:#132f44;
+  background:#1e293b;
   border-radius:10px;
   overflow:hidden;
   cursor:pointer;
@@ -34,13 +46,12 @@ h1{
 
 .card img{
   width:100%;
-  height:150px;
+  height:130px;
   object-fit:cover;
 }
 
 .card h3{
-  padding:10px;
-  margin:0;
+  margin:10px;
 }
 
 .detalle{
@@ -48,30 +59,25 @@ h1{
   padding:15px;
 }
 
-.detalle img{
-  width:100%;
-  border-radius:10px;
-  margin-bottom:10px;
-}
-
 .btn{
-  background:#1e88e5;
+  background:#0ea5e9;
   border:none;
   padding:10px;
+  border-radius:8px;
   color:white;
-  margin-bottom:10px;
   cursor:pointer;
-  border-radius:5px;
 }
 </style>
-
 </head>
+
 <body>
 
-<h1>Patagonia Secreta</h1>
+<header>
+  <h1>Patagonia Secreta</h1>
+  <input class="search" placeholder="Buscar destino..." oninput="buscar(this.value)">
+</header>
 
 <div id="lista" class="grid"></div>
-
 <div id="detalle" class="detalle"></div>
 
 <script>
@@ -82,116 +88,118 @@ const PLACES = [
   name:"Bariloche",
   region:"rio-negro",
   img:"https://picsum.photos/400/300?bariloche",
-  desc:"Destino icónico con lagos y nieve.",
-  how:"Vuelo directo o Ruta 40.",
-  do:"Esquí, Circuito Chico, trekking.",
-  stay:"Llao Llao, Edelweiss."
+  rating:4.9,
+  lat:-41.13,
+  lon:-71.3,
+  desc:"Lagos, nieve y montañas.",
+  hoteles:["Llao Llao","Edelweiss"],
+  restos:["Alto el Fuego"],
+  subdestinos:[
+    {nombre:"Circuito Chico",info:"Ruta panorámica"},
+    {nombre:"Cerro Catedral",info:"Centro de ski"}
+  ]
 },
 {
   id:2,
   name:"El Bolsón",
   region:"rio-negro",
   img:"https://picsum.photos/400/300?bolson",
-  desc:"Pueblo rodeado de montañas.",
-  how:"Ruta 40.",
-  do:"Feria, trekking.",
-  stay:"Cabañas."
+  rating:4.8,
+  lat:-41.96,
+  lon:-71.53,
+  desc:"Naturaleza y feria artesanal.",
+  hoteles:["Cabañas"],
+  restos:["Cervecerías"],
+  subdestinos:[
+    {nombre:"Feria",info:"Artesanos locales"}
+  ]
 },
 {
   id:3,
-  name:"Las Grutas",
-  region:"rio-negro",
-  img:"https://picsum.photos/400/300?grutas",
-  desc:"Playas cálidas.",
-  how:"Ruta 3.",
-  do:"Playa.",
-  stay:"Hoteles."
-},
-{
-  id:4,
-  name:"San Martín de los Andes",
-  region:"neuquen",
-  img:"https://picsum.photos/400/300?andes",
-  desc:"Naturaleza y lagos.",
-  how:"Ruta 7 Lagos.",
-  do:"Kayak.",
-  stay:"Cabañas."
-},
-{
-  id:5,
-  name:"Puerto Madryn",
-  region:"chubut",
-  img:"https://picsum.photos/400/300?madryn",
-  desc:"Ballenas.",
-  how:"Ruta 3.",
-  do:"Avistaje.",
-  stay:"Hoteles."
-},
-{
-  id:6,
-  name:"El Calafate",
-  region:"santa-cruz",
-  img:"https://picsum.photos/400/300?calafate",
-  desc:"Glaciares.",
-  how:"Vuelo.",
-  do:"Perito Moreno.",
-  stay:"Hoteles."
-},
-{
-  id:7,
   name:"Ushuaia",
   region:"tierra-del-fuego",
   img:"https://picsum.photos/400/300?ushuaia",
+  rating:4.9,
+  lat:-54.8,
+  lon:-68.3,
   desc:"Fin del mundo.",
-  how:"Vuelo.",
-  do:"Canal Beagle.",
-  stay:"Hoteles."
+  hoteles:["Arakur"],
+  restos:["Volver"],
+  subdestinos:[
+    {nombre:"Canal Beagle",info:"Excursión en barco"}
+  ]
 }
 ];
 
 const lista = document.getElementById("lista");
 const detalle = document.getElementById("detalle");
 
-function renderLista(){
-  lista.innerHTML = "";
-  detalle.style.display = "none";
-  lista.style.display = "grid";
+function render(data){
+  lista.innerHTML="";
+  detalle.style.display="none";
+  lista.style.display="grid";
 
-  PLACES.forEach(lugar=>{
-    const div = document.createElement("div");
+  data.forEach(p=>{
+    const div=document.createElement("div");
     div.className="card";
 
-    div.innerHTML = `
-      <img src="${lugar.img}">
-      <h3>${lugar.name}</h3>
+    div.innerHTML=`
+      <img src="${p.img}">
+      <h3>${p.name}</h3>
+      <p style="margin:10px">⭐ ${p.rating}</p>
     `;
 
-    div.onclick = ()=>mostrarDetalle(lugar);
+    div.onclick=()=>ver(p);
 
     lista.appendChild(div);
   });
 }
 
-function mostrarDetalle(lugar){
+function ver(p){
   lista.style.display="none";
   detalle.style.display="block";
 
-  detalle.innerHTML = `
+  detalle.innerHTML=`
     <button class="btn" onclick="volver()">⬅ Volver</button>
-    <img src="${lugar.img}">
-    <h2>${lugar.name}</h2>
-    <p>${lugar.desc}</p>
-    <p><b>Cómo llegar:</b> ${lugar.how}</p>
-    <p><b>Qué hacer:</b> ${lugar.do}</p>
-    <p><b>Dónde alojarse:</b> ${lugar.stay}</p>
+    <img src="${p.img}" style="width:100%;border-radius:10px;margin-top:10px;">
+    <h2>${p.name}</h2>
+    <p>${p.desc}</p>
+
+    <h3>📍 Subdestinos</h3>
+    ${p.subdestinos.map(s=>`<p><b>${s.nombre}:</b> ${s.info}</p>`).join("")}
+
+    <h3>🏨 Hoteles</h3>
+    ${p.hoteles.map(h=>`<p>${h}</p>`).join("")}
+
+    <h3>🍽 Restaurantes</h3>
+    ${p.restos.map(r=>`<p>${r}</p>`).join("")}
+
+    <h3>🌡 Clima en vivo</h3>
+    <p id="clima">Cargando...</p>
   `;
+
+  cargarClima(p.lat,p.lon);
 }
 
 function volver(){
-  renderLista();
+  render(PLACES);
 }
 
-renderLista();
+function buscar(texto){
+  const res = PLACES.filter(p=>p.name.toLowerCase().includes(texto.toLowerCase()));
+  render(res);
+}
+
+async function cargarClima(lat,lon){
+  const url=`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
+  const res=await fetch(url);
+  const data=await res.json();
+
+  document.getElementById("clima").innerText =
+    data.current_weather.temperature + "°C";
+}
+
+render(PLACES);
 
 </script>
 
