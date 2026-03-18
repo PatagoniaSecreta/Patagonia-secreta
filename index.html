@@ -2,60 +2,64 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Turismo Argentina</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patagonia Secreta</title>
 
 <style>
 body{
-  font-family: Arial;
   margin:0;
-  background:#111;
-  color:#fff;
+  font-family:Arial;
+  background:#0b0b0b;
+  color:white;
 }
 
-/* TABS */
+header{
+  text-align:center;
+  padding:15px;
+  background:black;
+  font-size:22px;
+  font-weight:bold;
+}
+
+/* PROVINCIAS */
 .tabs{
   display:flex;
-  overflow:auto;
-  background:#000;
+  overflow-x:auto;
+  background:#1a1a1a;
 }
 .tab{
-  padding:12px 15px;
+  padding:12px;
   cursor:pointer;
 }
 .tab.active{
-  background:red;
+  background:#00aaff;
 }
 
-/* CONTENEDOR */
-#places-container{
+/* CARDS */
+#lista{
   padding:10px;
 }
 
-/* TARJETAS */
-.place-card{
-  background:#222;
-  margin:10px 0;
+.card{
+  background:#1e1e1e;
+  margin-bottom:12px;
   border-radius:10px;
   overflow:hidden;
   cursor:pointer;
-  transition:0.2s;
-}
-.place-card:hover{
-  transform:scale(1.02);
 }
 
-.place-card img{
+.card img{
   width:100%;
   height:180px;
   object-fit:cover;
 }
 
-.place-info{
+.card-info{
   padding:10px;
 }
 
 /* DETALLE */
-#detail-overlay{
+#detalle{
   position:fixed;
   top:0;
   left:0;
@@ -63,138 +67,180 @@ body{
   height:100%;
   background:#000;
   display:none;
-  z-index:999;
+  overflow:auto;
 }
 
-#detail-overlay.open{
+#detalle.open{
   display:block;
 }
 
-#detail-hero{
+#detalle img{
+  width:100%;
   height:250px;
-  background-size:cover;
-  background-position:center;
+  object-fit:cover;
 }
 
-#detail-content{
+.seccion{
   padding:15px;
+  border-bottom:1px solid #333;
+}
+
+h2{
+  margin:0;
 }
 
 button{
-  padding:10px;
   margin:10px;
-  background:red;
+  padding:10px;
+  background:#00aaff;
   border:none;
   color:white;
-  cursor:pointer;
 }
 </style>
 </head>
 
 <body>
 
-<!-- PROVINCIAS -->
+<header>🌎 Patagonia Secreta</header>
+
 <div class="tabs">
-  <div class="tab active" onclick="filterTab('todas',this)">Todas</div>
-  <div class="tab" onclick="filterTab('rio-negro',this)">Río Negro</div>
-  <div class="tab" onclick="filterTab('neuquen',this)">Neuquén</div>
+  <div class="tab active" onclick="filtrar('todas',this)">Todas</div>
+  <div class="tab" onclick="filtrar('rio-negro',this)">Río Negro</div>
+  <div class="tab" onclick="filtrar('neuquen',this)">Neuquén</div>
+  <div class="tab" onclick="filtrar('chubut',this)">Chubut</div>
+  <div class="tab" onclick="filtrar('santa-cruz',this)">Santa Cruz</div>
 </div>
 
-<!-- CONTENIDO -->
-<div id="places-container"></div>
+<div id="lista"></div>
 
 <!-- DETALLE -->
-<div id="detail-overlay">
-  <button onclick="cerrarDetalle()">Volver</button>
-  <div id="detail-hero"></div>
-  <div id="detail-content">
-    <h2 id="detail-name"></h2>
-    <p id="detail-sub"></p>
-    <div id="detail-body"></div>
+<div id="detalle">
+  <button onclick="cerrar()">⬅ Volver</button>
+  <img id="img">
+  
+  <div class="seccion">
+    <h2 id="titulo"></h2>
+    <p id="desc"></p>
   </div>
+
+  <div class="seccion">
+    <h3>📍 Cómo llegar</h3>
+    <p id="llegar"></p>
+  </div>
+
+  <div class="seccion">
+    <h3>🎯 Qué hacer</h3>
+    <p id="hacer"></p>
+  </div>
+
+  <div class="seccion">
+    <h3>🏨 Dónde alojarse</h3>
+    <p id="hoteles"></p>
+  </div>
+
 </div>
 
 <script>
 
-/* DATOS */
-const PLACES = [
-  {
-    id:1,
-    name:"Bariloche",
-    region:"rio-negro",
-    regionName:"Río Negro",
-    img:"https://picsum.photos/400/300?1",
-    desc:"Ciudad turística con montañas, lagos y nieve."
-  },
-  {
-    id:2,
-    name:"Las Grutas",
-    region:"rio-negro",
-    regionName:"Río Negro",
-    img:"https://picsum.photos/400/300?2",
-    desc:"Playas con aguas cálidas en Argentina."
-  },
-  {
-    id:3,
-    name:"San Martín de los Andes",
-    region:"neuquen",
-    regionName:"Neuquén",
-    img:"https://picsum.photos/400/300?3",
-    desc:"Naturaleza increíble, montañas y lagos."
-  }
+/* DATA REAL BASE */
+const lugares = [
+{
+  id:1,
+  nombre:"Bariloche",
+  provincia:"rio-negro",
+  img:"https://picsum.photos/400/300?bariloche",
+  descripcion:"Montañas, nieve, lagos y chocolate.",
+  llegar:"Podés llegar en avión o por Ruta 40 desde Neuquén.",
+  hacer:"Esquí, trekking, paseos en lago, Circuito Chico.",
+  hoteles:"Llao Llao, NH Edelweiss, hoteles céntricos."
+},
+{
+  id:2,
+  nombre:"Las Grutas",
+  provincia:"rio-negro",
+  img:"https://picsum.photos/400/300?grutas",
+  descripcion:"Playas de agua cálida en Argentina.",
+  llegar:"Ruta 3 desde Viedma o San Antonio Oeste.",
+  hacer:"Playa, buceo, excursiones marinas.",
+  hoteles:"Hoteles frente al mar y departamentos."
+},
+{
+  id:3,
+  nombre:"San Martín de los Andes",
+  provincia:"neuquen",
+  img:"https://picsum.photos/400/300?andes",
+  descripcion:"Naturaleza pura y tranquilidad.",
+  llegar:"Ruta de los 7 Lagos desde Bariloche.",
+  hacer:"Kayak, senderismo, pesca.",
+  hoteles:"Cabañas y hoteles boutique."
+},
+{
+  id:4,
+  nombre:"Puerto Madryn",
+  provincia:"chubut",
+  img:"https://picsum.photos/400/300?madryn",
+  descripcion:"Capital del avistaje de ballenas.",
+  llegar:"Ruta 3 o avión.",
+  hacer:"Ballenas, snorkel con lobos marinos.",
+  hoteles:"Hoteles frente al mar."
+},
+{
+  id:5,
+  nombre:"El Calafate",
+  provincia:"santa-cruz",
+  img:"https://picsum.photos/400/300?calafate",
+  descripcion:"Glaciar Perito Moreno.",
+  llegar:"Vuelo directo o ruta desde Río Gallegos.",
+  hacer:"Glaciares, trekking sobre hielo.",
+  hoteles:"Hoteles turísticos y hosterías."
+}
 ];
 
-/* FILTRAR PROVINCIA */
-function filterTab(region, el){
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active');
+/* RENDER */
+function render(lista){
+  const cont = document.getElementById("lista");
+  cont.innerHTML = "";
 
-  let filtrados = (region === 'todas')
-    ? PLACES
-    : PLACES.filter(p => p.region === region);
-
-  renderPlaces(filtrados);
-}
-
-/* MOSTRAR LUGARES */
-function renderPlaces(lista){
-  const container = document.getElementById("places-container");
-  container.innerHTML = "";
-
-  lista.forEach(p => {
-    container.innerHTML += `
-      <div class="place-card" onclick="abrirLugar(${p.id})">
-        <img src="${p.img}" onerror="this.src='https://picsum.photos/400/300'">
-        <div class="place-info">
-          <h3>${p.name}</h3>
-          <p>${p.regionName}</p>
+  lista.forEach(l=>{
+    cont.innerHTML += `
+      <div class="card" onclick="abrir(${l.id})">
+        <img src="${l.img}">
+        <div class="card-info">
+          <h3>${l.nombre}</h3>
         </div>
       </div>
     `;
   });
 }
 
-/* ABRIR DETALLE */
-function abrirLugar(id){
-  const lugar = PLACES.find(p => p.id === id);
+/* FILTRO */
+function filtrar(p, el){
+  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+  el.classList.add("active");
 
-  document.getElementById("detail-name").innerText = lugar.name;
-  document.getElementById("detail-sub").innerText = lugar.regionName;
-  document.getElementById("detail-hero").style.backgroundImage = `url(${lugar.img})`;
-  document.getElementById("detail-body").innerHTML = `<p>${lugar.desc}</p>`;
-
-  document.getElementById("detail-overlay").classList.add("open");
+  if(p==="todas") render(lugares);
+  else render(lugares.filter(l=>l.provincia===p));
 }
 
-/* CERRAR */
-function cerrarDetalle(){
-  document.getElementById("detail-overlay").classList.remove("open");
+/* DETALLE */
+function abrir(id){
+  const l = lugares.find(x=>x.id===id);
+
+  document.getElementById("img").src = l.img;
+  document.getElementById("titulo").innerText = l.nombre;
+  document.getElementById("desc").innerText = l.descripcion;
+  document.getElementById("llegar").innerText = l.llegar;
+  document.getElementById("hacer").innerText = l.hacer;
+  document.getElementById("hoteles").innerText = l.hoteles;
+
+  document.getElementById("detalle").classList.add("open");
 }
 
-/* INICIO */
-document.addEventListener("DOMContentLoaded", () => {
-  renderPlaces(PLACES);
-});
+function cerrar(){
+  document.getElementById("detalle").classList.remove("open");
+}
+
+render(lugares);
 
 </script>
 
