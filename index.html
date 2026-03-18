@@ -1,248 +1,123 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Patagonia Secreta</title>
-
-<style>
-body{
-  margin:0;
-  font-family:Arial;
-  background:#0b0b0b;
-  color:white;
-}
-
-header{
-  text-align:center;
-  padding:15px;
-  background:black;
-  font-size:22px;
-  font-weight:bold;
-}
-
-/* PROVINCIAS */
-.tabs{
-  display:flex;
-  overflow-x:auto;
-  background:#1a1a1a;
-}
-.tab{
-  padding:12px;
-  cursor:pointer;
-}
-.tab.active{
-  background:#00aaff;
-}
-
-/* CARDS */
-#lista{
-  padding:10px;
-}
-
-.card{
-  background:#1e1e1e;
-  margin-bottom:12px;
-  border-radius:10px;
-  overflow:hidden;
-  cursor:pointer;
-}
-
-.card img{
-  width:100%;
-  height:180px;
-  object-fit:cover;
-}
-
-.card-info{
-  padding:10px;
-}
-
-/* DETALLE */
-#detalle{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:#000;
-  display:none;
-  overflow:auto;
-}
-
-#detalle.open{
-  display:block;
-}
-
-#detalle img{
-  width:100%;
-  height:250px;
-  object-fit:cover;
-}
-
-.seccion{
-  padding:15px;
-  border-bottom:1px solid #333;
-}
-
-h2{
-  margin:0;
-}
-
-button{
-  margin:10px;
-  padding:10px;
-  background:#00aaff;
-  border:none;
-  color:white;
-}
-</style>
-</head>
-
-<body>
-
-<header>🌎 Patagonia Secreta</header>
-
-<div class="tabs">
-  <div class="tab active" onclick="filtrar('todas',this)">Todas</div>
-  <div class="tab" onclick="filtrar('rio-negro',this)">Río Negro</div>
-  <div class="tab" onclick="filtrar('neuquen',this)">Neuquén</div>
-  <div class="tab" onclick="filtrar('chubut',this)">Chubut</div>
-  <div class="tab" onclick="filtrar('santa-cruz',this)">Santa Cruz</div>
-</div>
-
-<div id="lista"></div>
-
-<!-- DETALLE -->
-<div id="detalle">
-  <button onclick="cerrar()">⬅ Volver</button>
-  <img id="img">
-  
-  <div class="seccion">
-    <h2 id="titulo"></h2>
-    <p id="desc"></p>
-  </div>
-
-  <div class="seccion">
-    <h3>📍 Cómo llegar</h3>
-    <p id="llegar"></p>
-  </div>
-
-  <div class="seccion">
-    <h3>🎯 Qué hacer</h3>
-    <p id="hacer"></p>
-  </div>
-
-  <div class="seccion">
-    <h3>🏨 Dónde alojarse</h3>
-    <p id="hoteles"></p>
-  </div>
-
-</div>
-
-<script>
-
-/* DATA REAL BASE */
 const lugares = [
+
+/* RÍO NEGRO */
 {
   id:1,
   nombre:"Bariloche",
   provincia:"rio-negro",
-  img:"https://picsum.photos/400/300?bariloche",
-  descripcion:"Montañas, nieve, lagos y chocolate.",
-  llegar:"Podés llegar en avión o por Ruta 40 desde Neuquén.",
-  hacer:"Esquí, trekking, paseos en lago, Circuito Chico.",
-  hoteles:"Llao Llao, NH Edelweiss, hoteles céntricos."
+  img:"https://picsum.photos/400/300?bariloche1",
+  descripcion:"Destino icónico con lagos y nieve.",
+  llegar:"Vuelo directo o Ruta 40.",
+  hacer:"Esquí, Circuito Chico, trekking.",
+  hoteles:"Llao Llao, Edelweiss, hosterías."
 },
 {
   id:2,
-  nombre:"Las Grutas",
+  nombre:"El Bolsón",
   provincia:"rio-negro",
-  img:"https://picsum.photos/400/300?grutas",
-  descripcion:"Playas de agua cálida en Argentina.",
-  llegar:"Ruta 3 desde Viedma o San Antonio Oeste.",
-  hacer:"Playa, buceo, excursiones marinas.",
-  hoteles:"Hoteles frente al mar y departamentos."
+  img:"https://picsum.photos/400/300?bolson",
+  descripcion:"Pueblo hippie rodeado de montañas.",
+  llegar:"Ruta 40 desde Bariloche.",
+  hacer:"Feria artesanal, cervecerías, trekking.",
+  hoteles:"Cabañas y hostels."
 },
 {
   id:3,
+  nombre:"Las Grutas",
+  provincia:"rio-negro",
+  img:"https://picsum.photos/400/300?grutas",
+  descripcion:"Playas cálidas únicas.",
+  llegar:"Ruta 3 desde Viedma.",
+  hacer:"Playa, buceo, excursiones.",
+  hoteles:"Hoteles frente al mar."
+},
+
+/* NEUQUÉN */
+{
+  id:4,
   nombre:"San Martín de los Andes",
   provincia:"neuquen",
-  img:"https://picsum.photos/400/300?andes",
-  descripcion:"Naturaleza pura y tranquilidad.",
-  llegar:"Ruta de los 7 Lagos desde Bariloche.",
-  hacer:"Kayak, senderismo, pesca.",
+  img:"https://picsum.photos/400/300?andes1",
+  descripcion:"Naturaleza y tranquilidad.",
+  llegar:"Ruta de los 7 Lagos.",
+  hacer:"Kayak, trekking, pesca.",
   hoteles:"Cabañas y hoteles boutique."
 },
 {
-  id:4,
+  id:5,
+  nombre:"Villa La Angostura",
+  provincia:"neuquen",
+  img:"https://picsum.photos/400/300?angostura",
+  descripcion:"Bosques y lagos increíbles.",
+  llegar:"Ruta 40 desde Bariloche.",
+  hacer:"Bosque Arrayanes, senderismo.",
+  hoteles:"Hoteles premium y cabañas."
+},
+
+/* CHUBUT */
+{
+  id:6,
   nombre:"Puerto Madryn",
   provincia:"chubut",
-  img:"https://picsum.photos/400/300?madryn",
-  descripcion:"Capital del avistaje de ballenas.",
+  img:"https://picsum.photos/400/300?madryn1",
+  descripcion:"Avistaje de ballenas.",
   llegar:"Ruta 3 o avión.",
-  hacer:"Ballenas, snorkel con lobos marinos.",
+  hacer:"Ballenas, snorkel con lobos.",
   hoteles:"Hoteles frente al mar."
 },
 {
-  id:5,
+  id:7,
+  nombre:"Esquel",
+  provincia:"chubut",
+  img:"https://picsum.photos/400/300?esquel",
+  descripcion:"Puerta a la Patagonia profunda.",
+  llegar:"Ruta 40.",
+  hacer:"La Trochita, Parque Los Alerces.",
+  hoteles:"Hosterías y cabañas."
+},
+
+/* SANTA CRUZ */
+{
+  id:8,
   nombre:"El Calafate",
   provincia:"santa-cruz",
-  img:"https://picsum.photos/400/300?calafate",
+  img:"https://picsum.photos/400/300?calafate1",
   descripcion:"Glaciar Perito Moreno.",
-  llegar:"Vuelo directo o ruta desde Río Gallegos.",
-  hacer:"Glaciares, trekking sobre hielo.",
-  hoteles:"Hoteles turísticos y hosterías."
+  llegar:"Vuelo o ruta.",
+  hacer:"Glaciares, trekking.",
+  hoteles:"Hoteles turísticos."
+},
+{
+  id:9,
+  nombre:"El Chaltén",
+  provincia:"santa-cruz",
+  img:"https://picsum.photos/400/300?chalten",
+  descripcion:"Capital del trekking.",
+  llegar:"Ruta desde El Calafate.",
+  hacer:"Laguna de los Tres, Fitz Roy.",
+  hoteles:"Hostels y lodges."
+},
+
+/* TIERRA DEL FUEGO */
+{
+  id:10,
+  nombre:"Ushuaia",
+  provincia:"tierra-del-fuego",
+  img:"https://picsum.photos/400/300?ushuaia",
+  descripcion:"La ciudad más austral del mundo.",
+  llegar:"Vuelo directo.",
+  hacer:"Canal Beagle, nieve, trekking.",
+  hoteles:"Hoteles turísticos."
+},
+{
+  id:11,
+  nombre:"Tolhuin",
+  provincia:"tierra-del-fuego",
+  img:"https://picsum.photos/400/300?tolhuin",
+  descripcion:"Corazón de la isla.",
+  llegar:"Ruta entre Ushuaia y Río Grande.",
+  hacer:"Lago Fagnano, naturaleza.",
+  hoteles:"Cabañas."
 }
+
 ];
-
-/* RENDER */
-function render(lista){
-  const cont = document.getElementById("lista");
-  cont.innerHTML = "";
-
-  lista.forEach(l=>{
-    cont.innerHTML += `
-      <div class="card" onclick="abrir(${l.id})">
-        <img src="${l.img}">
-        <div class="card-info">
-          <h3>${l.nombre}</h3>
-        </div>
-      </div>
-    `;
-  });
-}
-
-/* FILTRO */
-function filtrar(p, el){
-  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
-  el.classList.add("active");
-
-  if(p==="todas") render(lugares);
-  else render(lugares.filter(l=>l.provincia===p));
-}
-
-/* DETALLE */
-function abrir(id){
-  const l = lugares.find(x=>x.id===id);
-
-  document.getElementById("img").src = l.img;
-  document.getElementById("titulo").innerText = l.nombre;
-  document.getElementById("desc").innerText = l.descripcion;
-  document.getElementById("llegar").innerText = l.llegar;
-  document.getElementById("hacer").innerText = l.hacer;
-  document.getElementById("hoteles").innerText = l.hoteles;
-
-  document.getElementById("detalle").classList.add("open");
-}
-
-function cerrar(){
-  document.getElementById("detalle").classList.remove("open");
-}
-
-render(lugares);
-
-</script>
-
-</body>
-</html>
