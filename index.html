@@ -5,252 +5,150 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Patagonia Secreta</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
-
 <style>
 body{
   margin:0;
-  font-family:Poppins;
+  font-family: Arial, sans-serif;
   background:#0f172a;
   color:white;
 }
 
 header{
-  padding:20px;
-  background:linear-gradient(135deg,#1e3a8a,#0ea5e9);
-}
-
-h1{margin:0}
-
-.search{
-  margin-top:15px;
-  padding:10px;
-  width:100%;
-  border-radius:10px;
-  border:none;
-}
-
-.filtros{
-  display:flex;
-  gap:10px;
-  padding:10px;
-  overflow:auto;
-}
-
-.filtros button{
-  background:#1e293b;
-  border:none;
-  color:white;
-  padding:8px 12px;
-  border-radius:20px;
-  cursor:pointer;
+  padding:15px;
+  font-size:22px;
+  font-weight:bold;
+  text-align:center;
+  background:linear-gradient(90deg,#0ea5e9,#22c55e);
 }
 
 .grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-  gap:15px;
-  padding:15px;
+  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+  gap:10px;
+  padding:10px;
 }
 
-.card{
+.place-card{
   background:#1e293b;
-  border-radius:10px;
+  border-radius:12px;
   overflow:hidden;
   cursor:pointer;
-  position:relative;
+  transition:0.3s;
+}
+.place-card:hover{
+  transform:scale(1.03);
 }
 
-.card img{
+.place-card img{
   width:100%;
-  height:130px;
+  height:120px;
   object-fit:cover;
 }
 
-.card h3{
+.place-card h3{
   margin:10px;
 }
 
-.card .rating{
-  margin:0 10px 10px;
-  font-size:14px;
-}
-
-.fav{
-  position:absolute;
-  top:10px;
-  right:10px;
-  font-size:18px;
-}
-
-.detalle{
+.detail{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:#020617;
   display:none;
+  overflow:auto;
+}
+
+.detail img{
+  width:100%;
+  height:250px;
+  object-fit:cover;
+}
+
+.detail-content{
   padding:15px;
 }
 
-.btn{
-  background:#0ea5e9;
-  border:none;
-  padding:10px;
+.back{
+  position:absolute;
+  top:10px;
+  left:10px;
+  background:black;
+  padding:8px 12px;
   border-radius:8px;
-  color:white;
   cursor:pointer;
-  margin-bottom:10px;
 }
 </style>
 </head>
 
 <body>
 
-<header>
-  <h1>Patagonia Secreta</h1>
-  <input class="search" placeholder="Buscar destino..." oninput="buscar(this.value)">
-</header>
+<header>🌎 Patagonia Secreta</header>
 
-<div class="filtros">
-  <button onclick="filtrar('todos')">Todos</button>
-  <button onclick="filtrar('rio-negro')">Río Negro</button>
-  <button onclick="filtrar('neuquen')">Neuquén</button>
-  <button onclick="filtrar('chubut')">Chubut</button>
-  <button onclick="filtrar('santa-cruz')">Santa Cruz</button>
-  <button onclick="filtrar('tierra-del-fuego')">Tierra del Fuego</button>
+<div id="list" class="grid"></div>
+
+<div id="detail" class="detail">
+  <div class="back" onclick="closeDetail()">⬅ Volver</div>
+  <img id="detailImg">
+  <div class="detail-content">
+    <h2 id="detailTitle"></h2>
+    <p id="detailDesc"></p>
+    <p><b>Cómo llegar:</b> <span id="detailLlegar"></span></p>
+    <p><b>Qué hacer:</b> <span id="detailHacer"></span></p>
+    <p><b>Hoteles:</b> <span id="detailHoteles"></span></p>
+  </div>
 </div>
 
-<div id="lista" class="grid"></div>
-<div id="detalle" class="detalle"></div>
-
 <script>
-
-// 👉 TUS DATOS (PUEDEN SER COMO LOS TENÍAS)
-let PLACES = [
-{
-  id:1,
-  nombre:"Bariloche",
-  provincia:"rio-negro",
-  img:"https://picsum.photos/400/300?bariloche",
-  rating:4.9,
-  lat:-41.13,
-  lon:-71.3,
-  descripcion:"Destino icónico con lagos y nieve.",
-  hoteles:["Llao Llao","Edelweiss"],
-  restos:["Alto el Fuego"],
-  subdestinos:[
-    {nombre:"Circuito Chico",info:"Ruta panorámica"},
-    {nombre:"Cerro Catedral",info:"Centro de ski"}
-  ]
-},
-{
-  id:2,
-  nombre:"El Bolsón",
-  provincia:"rio-negro",
-  img:"https://picsum.photos/400/300?bolson",
-  rating:4.8,
-  lat:-41.96,
-  lon:-71.53,
-  descripcion:"Naturaleza y feria artesanal.",
-  hoteles:["Cabañas"],
-  restos:["Cervecerías"],
-  subdestinos:[
-    {nombre:"Feria",info:"Artesanos locales"}
-  ]
-},
-{
-  id:3,
-  nombre:"Ushuaia",
-  provincia:"tierra-del-fuego",
-  img:"https://picsum.photos/400/300?ushuaia",
-  rating:4.9,
-  lat:-54.8,
-  lon:-68.3,
-  descripcion:"Fin del mundo.",
-  hoteles:["Arakur"],
-  restos:["Volver"],
-  subdestinos:[
-    {nombre:"Canal Beagle",info:"Excursión en barco"}
-  ]
-}
+const lugares = [
+{ id:1, nombre:"Bariloche", provincia:"rio-negro", img:"https://picsum.photos/400/300?bariloche1", descripcion:"Destino icónico con lagos y nieve.", llegar:"Vuelo directo o Ruta 40.", hacer:"Esquí, Circuito Chico, trekking.", hoteles:"Llao Llao, Edelweiss, hosterías." },
+{ id:2, nombre:"El Bolsón", provincia:"rio-negro", img:"https://picsum.photos/400/300?bolson", descripcion:"Pueblo hippie rodeado de montañas.", llegar:"Ruta 40 desde Bariloche.", hacer:"Feria artesanal, cervecerías, trekking.", hoteles:"Cabañas y hostels." },
+{ id:3, nombre:"Las Grutas", provincia:"rio-negro", img:"https://picsum.photos/400/300?grutas", descripcion:"Playas cálidas únicas.", llegar:"Ruta 3 desde Viedma.", hacer:"Playa, buceo, excursiones.", hoteles:"Hoteles frente al mar." },
+{ id:4, nombre:"San Martín de los Andes", provincia:"neuquen", img:"https://picsum.photos/400/300?andes1", descripcion:"Naturaleza y tranquilidad.", llegar:"Ruta de los 7 Lagos.", hacer:"Kayak, trekking, pesca.", hoteles:"Cabañas y hoteles boutique." },
+{ id:5, nombre:"Villa La Angostura", provincia:"neuquen", img:"https://picsum.photos/400/300?angostura", descripcion:"Bosques y lagos increíbles.", llegar:"Ruta 40 desde Bariloche.", hacer:"Bosque Arrayanes, senderismo.", hoteles:"Hoteles premium y cabañas." },
+{ id:6, nombre:"Puerto Madryn", provincia:"chubut", img:"https://picsum.photos/400/300?madryn1", descripcion:"Avistaje de ballenas.", llegar:"Ruta 3 o avión.", hacer:"Ballenas, snorkel con lobos.", hoteles:"Hoteles frente al mar." },
+{ id:7, nombre:"Esquel", provincia:"chubut", img:"https://picsum.photos/400/300?esquel", descripcion:"Puerta a la Patagonia profunda.", llegar:"Ruta 40.", hacer:"La Trochita, Parque Los Alerces.", hoteles:"Hosterías y cabañas." },
+{ id:8, nombre:"El Calafate", provincia:"santa-cruz", img:"https://picsum.photos/400/300?calafate1", descripcion:"Glaciar Perito Moreno.", llegar:"Vuelo o ruta.", hacer:"Glaciares, trekking.", hoteles:"Hoteles turísticos." },
+{ id:9, nombre:"El Chaltén", provincia:"santa-cruz", img:"https://picsum.photos/400/300?chalten", descripcion:"Capital del trekking.", llegar:"Ruta desde El Calafate.", hacer:"Laguna de los Tres, Fitz Roy.", hoteles:"Hostels y lodges." },
+{ id:10, nombre:"Ushuaia", provincia:"tierra-del-fuego", img:"https://picsum.photos/400/300?ushuaia", descripcion:"La ciudad más austral del mundo.", llegar:"Vuelo directo.", hacer:"Canal Beagle, nieve, trekking.", hoteles:"Hoteles turísticos." },
+{ id:11, nombre:"Tolhuin", provincia:"tierra-del-fuego", img:"https://picsum.photos/400/300?tolhuin", descripcion:"Corazón de la isla.", llegar:"Ruta entre Ushuaia y Río Grande.", hacer:"Lago Fagnano, naturaleza.", hoteles:"Cabañas." }
 ];
 
-// 🔥 PARCHE AUTOMÁTICO (EL BUG SOLUCIONADO)
-PLACES = PLACES.map(p => ({
-  ...p,
-  name: p.name || p.nombre,
-  region: p.region || p.provincia,
-  desc: p.desc || p.descripcion
-}));
-
-const lista = document.getElementById("lista");
-const detalle = document.getElementById("detalle");
-
-function render(data){
-  lista.innerHTML="";
-  detalle.style.display="none";
-  lista.style.display="grid";
-
-  data.forEach(p=>{
-    const div=document.createElement("div");
-    div.className="card";
-
-    div.innerHTML=`
-      <span class="fav">❤️</span>
+function render(){
+  const list = document.getElementById("list");
+  list.innerHTML = lugares.map(p => `
+    <div class="place-card" data-id="${p.id}">
       <img src="${p.img}">
-      <h3>${p.name}</h3>
-      <p class="rating">⭐ ${p.rating}</p>
-    `;
-
-    div.onclick=()=>ver(p);
-
-    lista.appendChild(div);
-  });
+      <h3>${p.nombre}</h3>
+    </div>
+  `).join("");
 }
 
-function ver(p){
-  lista.style.display="none";
-  detalle.style.display="block";
+document.addEventListener("click", function(e){
+  const card = e.target.closest(".place-card");
+  if(card){
+    const id = parseInt(card.dataset.id);
+    openDetail(id);
+  }
+});
 
-  detalle.innerHTML=`
-    <button class="btn" onclick="volver()">⬅ Volver</button>
-    <img src="${p.img}" style="width:100%;border-radius:10px;">
-    <h2>${p.name}</h2>
-    <p>${p.desc}</p>
-
-    <h3>📍 Subdestinos</h3>
-    ${p.subdestinos.map(s=>`<p><b>${s.nombre}:</b> ${s.info}</p>`).join("")}
-
-    <h3>🏨 Hoteles</h3>
-    ${p.hoteles.map(h=>`<p>${h}</p>`).join("")}
-
-    <h3>🍽 Restaurantes</h3>
-    ${p.restos.map(r=>`<p>${r}</p>`).join("")}
-
-    <h3>🌡 Clima</h3>
-    <p id="clima">Cargando...</p>
-  `;
-
-  cargarClima(p.lat,p.lon);
+function openDetail(id){
+  const p = lugares.find(x => x.id === id);
+  document.getElementById("detail").style.display="block";
+  document.getElementById("detailImg").src = p.img;
+  document.getElementById("detailTitle").innerText = p.nombre;
+  document.getElementById("detailDesc").innerText = p.descripcion;
+  document.getElementById("detailLlegar").innerText = p.llegar;
+  document.getElementById("detailHacer").innerText = p.hacer;
+  document.getElementById("detailHoteles").innerText = p.hoteles;
 }
 
-function volver(){
-  render(PLACES);
+function closeDetail(){
+  document.getElementById("detail").style.display="none";
 }
 
-function filtrar(region){
-  if(region==="todos") return render(PLACES);
-  render(PLACES.filter(p=>p.region===region));
-}
-
-function buscar(texto){
-  render(PLACES.filter(p=>p.name.toLowerCase().includes(texto.toLowerCase())));
-}
-
-async function cargarClima(lat,lon){
-  const res=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
-  const data=await res.json();
-  document.getElementById("clima").innerText = data.current_weather.temperature+"°C";
-}
-
-render(PLACES);
-
+render();
 </script>
 
 </body>
