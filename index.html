@@ -377,9 +377,9 @@ body{font-family:'Lato',sans-serif;background:var(--blanco);color:var(--texto);m
       </div>
     </div>
     <div style="padding:14px 16px;">
-      <a class="contact-btn-about" href="mailto:espinozaalejandro327@gmail.com">
+      <a class="contact-btn-about" href="/cdn-cgi/l/email-protection#a9ccdad9c0c7c6d3c8c8c5ccc3c8c7cddbc69a9b9ee9cec4c8c0c587cac6c4">
         <div style="font-size:1.4rem;">📧</div>
-        <div><div style="font-size:0.6rem;color:#aaa;text-transform:uppercase;letter-spacing:1px;">Email</div><div style="font-size:0.78rem;font-weight:700;color:var(--oscuro);">espinozaalejandro327@gmail.com</div></div>
+        <div><div style="font-size:0.6rem;color:#aaa;text-transform:uppercase;letter-spacing:1px;">Email</div><div style="font-size:0.78rem;font-weight:700;color:var(--oscuro);"><span class="__cf_email__" data-cfemail="e28791928b8c8d9883838e8788838c86908dd1d0d5a2858f838b8ecc818d8f">[email&#160;protected]</span></div></div>
       </a>
       <a class="contact-btn-about" href="https://wa.me/5492984307533" target="_blank">
         <div style="font-size:1.4rem;">💬</div>
@@ -426,7 +426,7 @@ body{font-family:'Lato',sans-serif;background:var(--blanco);color:var(--texto);m
   <div class="nav-item" onclick="showScreen('about',this)"><div class="nav-icon">⚙️</div><div class="nav-label" id="nav-about">Acerca de</div></div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ===== DATA =====
 const PLACES=[
   {id:1,name:'Bariloche',nameEn:'Bariloche',region:'rio-negro',regionName:'Río Negro',emoji:'🏔️',color:'#1B4F72',rating:4.9,lat:-41.13,lon:-71.31,
@@ -1038,7 +1038,7 @@ function openCityDetail(id){
                 <div class="step-num" style="background:${stepColor};flex-shrink:0;">${j+1}</div>
                 <div>${paso}</div>
               </div>`).join('')}
-            <div class="transport-options">${s.transporte.map(tr=>`<span class="transport-badge">${tr}</span>`).join('')}</div>
+            <div class="transport-options">${(s.transport||[]).map(tr=>`<span class="transport-badge">${tr}</span>`).join('')}</div>
           </div>
           <div class="tips-box"><strong>${t.tips}</strong> ${s.tips}</div>
           <button class="maps-btn" onclick="window.open('https://www.google.com/maps/dir/?api=1&destination=${s.lat},${s.lon}&travelmode=driving','_blank')">🗺️ ${t.openMaps}</button>
@@ -1147,13 +1147,4 @@ function updateFavBtn(id,color){
   }
 }
 
-function closeDetail(){document.getElementById('detail-overlay').classList.remove('open');}
-function handleOverlayClick(e){if(e.target===document.getElementById('detail-overlay'))closeDetail();}
-
-// ===== INIT =====
-renderPlaces('todas');
-renderMapPlaces();
-</script>
-</body>
-</html>
-
+function closeDetai
