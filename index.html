@@ -19,9 +19,8 @@ body{
   background:#000;
 }
 .tab{
-  padding:10px 15px;
+  padding:12px 15px;
   cursor:pointer;
-  white-space:nowrap;
 }
 .tab.active{
   background:red;
@@ -39,6 +38,10 @@ body{
   border-radius:10px;
   overflow:hidden;
   cursor:pointer;
+  transition:0.2s;
+}
+.place-card:hover{
+  transform:scale(1.02);
 }
 
 .place-card img{
@@ -90,7 +93,7 @@ button{
 
 <body>
 
-<!-- TABS -->
+<!-- PROVINCIAS -->
 <div class="tabs">
   <div class="tab active" onclick="filterTab('todas',this)">Todas</div>
   <div class="tab" onclick="filterTab('rio-negro',this)">Río Negro</div>
@@ -120,7 +123,7 @@ const PLACES = [
     name:"Bariloche",
     region:"rio-negro",
     regionName:"Río Negro",
-    img:"https://upload.wikimedia.org/wikipedia/commons/6/6e/Bariloche.jpg",
+    img:"https://picsum.photos/400/300?1",
     desc:"Ciudad turística con montañas, lagos y nieve."
   },
   {
@@ -128,7 +131,7 @@ const PLACES = [
     name:"Las Grutas",
     region:"rio-negro",
     regionName:"Río Negro",
-    img:"https://upload.wikimedia.org/wikipedia/commons/3/3a/Las_Grutas.jpg",
+    img:"https://picsum.photos/400/300?2",
     desc:"Playas con aguas cálidas en Argentina."
   },
   {
@@ -136,28 +139,24 @@ const PLACES = [
     name:"San Martín de los Andes",
     region:"neuquen",
     regionName:"Neuquén",
-    img:"https://upload.wikimedia.org/wikipedia/commons/e/e4/San_Martin_de_los_Andes.jpg",
-    desc:"Paisajes increíbles y naturaleza pura."
+    img:"https://picsum.photos/400/300?3",
+    desc:"Naturaleza increíble, montañas y lagos."
   }
 ];
 
-/* FILTRAR */
+/* FILTRAR PROVINCIA */
 function filterTab(region, el){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
 
-  let filtrados;
-
-  if(region === 'todas'){
-    filtrados = PLACES;
-  } else {
-    filtrados = PLACES.filter(p => p.region === region);
-  }
+  let filtrados = (region === 'todas')
+    ? PLACES
+    : PLACES.filter(p => p.region === region);
 
   renderPlaces(filtrados);
 }
 
-/* RENDER */
+/* MOSTRAR LUGARES */
 function renderPlaces(lista){
   const container = document.getElementById("places-container");
   container.innerHTML = "";
@@ -165,7 +164,7 @@ function renderPlaces(lista){
   lista.forEach(p => {
     container.innerHTML += `
       <div class="place-card" onclick="abrirLugar(${p.id})">
-        <img src="${p.img}">
+        <img src="${p.img}" onerror="this.src='https://picsum.photos/400/300'">
         <div class="place-info">
           <h3>${p.name}</h3>
           <p>${p.regionName}</p>
@@ -193,7 +192,9 @@ function cerrarDetalle(){
 }
 
 /* INICIO */
-renderPlaces(PLACES);
+document.addEventListener("DOMContentLoaded", () => {
+  renderPlaces(PLACES);
+});
 
 </script>
 
