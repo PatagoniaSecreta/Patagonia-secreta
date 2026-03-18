@@ -2,140 +2,262 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#2D6A4F">
-<meta name="description" content="Patagonia Secreta - App turística de la Patagonia Argentina. Descubrí lugares secretos, clima en vivo y cómo llegar a cada destino.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="description" content="Patagonia Secreta - App turística de la Patagonia Argentina">
 <title>Patagonia Secreta</title>
-<link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
-:root{--verde:#2D6A4F;--verde2:#40916C;--verde3:#74C69D;--azul:#1B4F72;--blanco:#FAFAF8;--oscuro:#1a1a2e;--texto:#2c3e50;--arena:#F4E4C1;}
-body{font-family:'Lato',sans-serif;background:var(--blanco);color:var(--texto);overflow-x:hidden;max-width:480px;margin:0 auto;}
-.page-wrapper{padding-bottom:80px;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+:root{
+  --verde:#2D6A4F;--verde2:#40916C;--verde3:#74C69D;
+  --azul:#1B4F72;--azul2:#2980B9;
+  --oscuro:#1a1a2e;--texto:#2c3e50;
+  --blanco:#FAFAF8;--arena:#F4E4C1;
+  --radio:14px;
+}
+body{font-family:'Lato',sans-serif;background:var(--blanco);color:var(--texto);max-width:480px;margin:0 auto;overflow-x:hidden;}
+.page-wrapper{padding-bottom:80px;min-height:100vh;}
 .screen{display:none;}.screen.active{display:block;}
 
-/* LANG */
-.lang-toggle{position:absolute;top:16px;right:16px;z-index:30;display:flex;gap:6px;}
-.lang-btn{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;padding:4px 10px;border-radius:20px;font-size:0.65rem;font-weight:700;cursor:pointer;font-family:'Lato',sans-serif;}
+/* ===== LANG TOGGLE ===== */
+.lang-toggle{position:absolute;top:14px;right:14px;z-index:30;display:flex;gap:5px;}
+.lang-btn{background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.35);color:white;padding:4px 10px;border-radius:20px;font-size:0.62rem;font-weight:700;cursor:pointer;font-family:'Lato',sans-serif;transition:all 0.2s;}
 .lang-btn.active{background:white;color:var(--verde);}
 
-/* HEADER */
-.app-header{background:linear-gradient(135deg,var(--azul),var(--verde),var(--verde2));padding:30px 20px 70px;position:relative;overflow:hidden;min-height:200px;}
-.app-badge{display:inline-block;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;font-size:0.65rem;padding:3px 12px;border-radius:20px;letter-spacing:2px;margin-bottom:10px;}
-.app-title{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:900;color:white;line-height:1.1;margin-bottom:6px;text-shadow:0 2px 20px rgba(0,0,0,0.3);}
-.app-subtitle{color:rgba(255,255,255,0.8);font-size:0.82rem;margin-bottom:16px;}
-.header-stats{display:flex;gap:16px;}
-.hstat-num{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;color:white;}
-.hstat-label{font-size:0.6rem;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:1px;}
-.mountains-svg{position:absolute;bottom:0;left:0;right:0;}
+/* ===== HOME HEADER ===== */
+.app-header{background:linear-gradient(145deg,#0d2137,var(--azul),var(--verde));padding:28px 20px 72px;position:relative;overflow:hidden;}
+.app-header::after{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='40' cy='40' r='20'/%3E%3Ccircle cx='0' cy='0' r='20'/%3E%3Ccircle cx='80' cy='80' r='20'/%3E%3C/g%3E%3C/svg%3E");pointer-events:none;}
+.app-badge{display:inline-block;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);color:rgba(255,255,255,0.9);font-size:0.58rem;padding:3px 12px;border-radius:20px;letter-spacing:2.5px;margin-bottom:10px;text-transform:uppercase;}
+.app-title{font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:900;color:white;line-height:1.05;margin-bottom:6px;text-shadow:0 2px 24px rgba(0,0,0,0.35);}
+.app-subtitle{color:rgba(255,255,255,0.75);font-size:0.8rem;margin-bottom:18px;letter-spacing:0.3px;}
+.header-stats{display:flex;gap:20px;}
+.hstat-num{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:900;color:white;line-height:1;}
+.hstat-label{font-size:0.58rem;color:rgba(255,255,255,0.65);text-transform:uppercase;letter-spacing:1px;margin-top:2px;}
+.mountains-svg{position:absolute;bottom:0;left:0;right:0;z-index:1;}
 
-/* SEARCH */
-.search-box{background:white;border-radius:50px;padding:12px 20px;display:flex;align-items:center;gap:10px;box-shadow:0 4px 20px rgba(0,0,0,0.15);margin:0 20px;position:relative;z-index:10;margin-top:-24px;}
-.search-box input{border:none;outline:none;font-family:'Lato',sans-serif;font-size:0.9rem;flex:1;color:var(--texto);}
+/* ===== SEARCH ===== */
+.search-wrap{position:relative;z-index:10;margin:-28px 16px 0;}
+.search-box{background:white;border-radius:50px;padding:13px 20px;display:flex;align-items:center;gap:10px;box-shadow:0 6px 24px rgba(0,0,0,0.14);}
+.search-box input{border:none;outline:none;font-family:'Lato',sans-serif;font-size:0.88rem;flex:1;color:var(--texto);background:transparent;}
+.search-icon{color:var(--verde2);font-size:1.1rem;}
 
-/* STATS */
-.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:16px 16px 0;}
-.stat-card{background:white;border-radius:12px;padding:12px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,0.06);border-bottom:3px solid var(--verde3);}
-.stat-num{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--verde);}
-.stat-label{font-size:0.6rem;color:#888;margin-top:3px;text-transform:uppercase;letter-spacing:1px;}
+/* ===== STATS ROW ===== */
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:14px 16px 0;}
+.stat-card{background:white;border-radius:12px;padding:11px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,0.06);border-bottom:3px solid var(--verde3);}
+.stat-num{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--verde);}
+.stat-label{font-size:0.58rem;color:#888;text-transform:uppercase;letter-spacing:0.8px;margin-top:2px;}
 
-/* TABS */
-.tabs{display:flex;gap:6px;padding:16px 16px 0;overflow-x:auto;scrollbar-width:none;}
+/* ===== TABS ===== */
+.tabs{display:flex;gap:6px;padding:14px 16px 0;overflow-x:auto;scrollbar-width:none;}
 .tabs::-webkit-scrollbar{display:none;}
-.tab{background:white;border:2px solid #e0e0e0;border-radius:25px;padding:7px 14px;font-size:0.72rem;font-weight:700;cursor:pointer;white-space:nowrap;color:#666;}
+.tab{background:white;border:2px solid #e8e8e8;border-radius:25px;padding:6px 13px;font-size:0.7rem;font-weight:700;cursor:pointer;white-space:nowrap;color:#777;transition:all 0.2s;flex-shrink:0;}
 .tab.active{background:var(--verde);border-color:var(--verde);color:white;}
 
-/* PLACE CARDS */
-.province-section{padding:16px 16px 0;}
-.province-header{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
-.province-name{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--oscuro);}
-.province-count{font-size:0.68rem;color:#888;margin-left:auto;}
+/* ===== PROVINCE SECTION ===== */
+.province-section{padding:14px 16px 0;}
+.province-header{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.province-emoji{font-size:1.3rem;}
+.province-name{font-family:'Playfair Display',serif;font-size:0.95rem;font-weight:700;color:var(--oscuro);}
+.province-count{font-size:0.62rem;color:#aaa;margin-left:auto;background:#f0f0f0;padding:2px 8px;border-radius:10px;}
 .places-scroll{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px;}
 .places-scroll::-webkit-scrollbar{display:none;}
-.place-card{min-width:150px;background:white;border-radius:14px;overflow:hidden;box-shadow:0 3px 12px rgba(0,0,0,0.08);cursor:pointer;flex-shrink:0;border:2px solid transparent;}
-.place-card.favorited{border-color:gold;}
-.place-photo{height:90px;position:relative;display:flex;align-items:center;justify-content:center;font-size:2.5rem;}
-.place-photo-overlay{position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,0.5) 100%);}
-.fav-icon{position:absolute;top:6px;right:6px;font-size:0.9rem;cursor:pointer;z-index:2;background:rgba(255,255,255,0.85);border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;}
-.place-info{padding:8px 10px;}
-.place-name{font-family:'Playfair Display',serif;font-size:0.82rem;font-weight:700;color:var(--oscuro);}
-.place-region{font-size:0.6rem;color:#888;margin-top:1px;}
-.place-clima{font-size:0.62rem;color:var(--verde);font-weight:700;margin-top:2px;}
-.section-divider{height:1px;background:#eee;margin:12px 16px 0;}
 
-/* MAP */
+/* ===== PLACE CARD ===== */
+.place-card{min-width:148px;max-width:148px;background:white;border-radius:var(--radio);overflow:hidden;box-shadow:0 3px 14px rgba(0,0,0,0.09);cursor:pointer;flex-shrink:0;border:2.5px solid transparent;transition:transform 0.2s,border-color 0.2s;}
+.place-card:active{transform:scale(0.97);}
+.place-card.favorited{border-color:#FFD700;}
+.place-photo{height:88px;position:relative;display:flex;align-items:center;justify-content:center;font-size:2.4rem;}
+.place-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+.place-photo-overlay{position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,0.55) 100%);}
+.fav-icon{position:absolute;top:6px;right:6px;font-size:0.85rem;cursor:pointer;z-index:3;background:rgba(255,255,255,0.88);border-radius:50%;width:23px;height:23px;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,0.15);}
+.rating-badge{position:absolute;bottom:6px;left:6px;background:rgba(0,0,0,0.55);color:#FFD700;font-size:0.58rem;font-weight:700;padding:2px 6px;border-radius:10px;z-index:3;}
+.place-info{padding:8px 9px 9px;}
+.place-name{font-family:'Playfair Display',serif;font-size:0.8rem;font-weight:700;color:var(--oscuro);line-height:1.2;}
+.place-region{font-size:0.58rem;color:#aaa;margin-top:1px;}
+.place-clima{font-size:0.6rem;color:var(--verde);font-weight:700;margin-top:3px;}
+.section-divider{height:1px;background:#f0f0f0;margin:14px 16px 0;}
+
+/* ===== CITY DETAIL SCREEN ===== */
+.city-detail-header{padding:22px 20px 62px;position:relative;overflow:hidden;}
+.city-back-btn{display:inline-flex;align-items:center;gap:5px;color:rgba(255,255,255,0.85);font-size:0.75rem;cursor:pointer;margin-bottom:12px;background:rgba(255,255,255,0.12);padding:5px 12px;border-radius:20px;border:none;font-family:'Lato',sans-serif;}
+.city-detail-emoji{font-size:2.8rem;margin-bottom:6px;display:block;}
+.city-detail-title{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:900;color:white;line-height:1.1;margin-bottom:5px;}
+.city-detail-sub{color:rgba(255,255,255,0.78);font-size:0.78rem;margin-bottom:10px;}
+.city-detail-tags{display:flex;gap:5px;flex-wrap:wrap;}
+.city-detail-tag{background:rgba(255,255,255,0.15);color:white;font-size:0.6rem;padding:3px 9px;border-radius:20px;font-weight:700;}
+
+/* ===== CLIMA CARD ===== */
+.clima-card{background:white;border-radius:16px;margin:0 16px;margin-top:-28px;position:relative;z-index:10;box-shadow:0 4px 20px rgba(0,0,0,0.12);overflow:hidden;}
+.clima-inner{padding:13px 15px;color:white;display:flex;align-items:center;justify-content:space-between;}
+.clima-temp-big{font-family:'Playfair Display',serif;font-size:2.1rem;font-weight:900;line-height:1;}
+.clima-desc-small{font-size:0.68rem;opacity:0.85;margin-top:2px;}
+.clima-mini-grid{display:grid;grid-template-columns:repeat(3,1fr);background:#f8f9fa;}
+.clima-mini-item{padding:7px;text-align:center;border-right:1px solid #eee;}
+.clima-mini-item:last-child{border-right:none;}
+.clima-mini-val{font-size:0.8rem;font-weight:700;color:var(--oscuro);}
+.clima-mini-label{font-size:0.56rem;color:#aaa;text-transform:uppercase;letter-spacing:0.5px;margin-top:1px;}
+.clima-loading{animation:pulse 1.5s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+
+/* ===== PRONO ===== */
+.prono-wrap{padding:12px 16px 0;}
+.prono-label{font-size:0.68rem;color:#aaa;font-weight:700;margin-bottom:7px;text-transform:uppercase;letter-spacing:1px;}
+.prono-mini{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;}
+.prono-mini::-webkit-scrollbar{display:none;}
+.prono-item{background:white;border-radius:8px;padding:7px 5px;text-align:center;min-width:50px;border:1px solid #eee;flex-shrink:0;}
+.prono-dia{font-size:0.55rem;color:#aaa;font-weight:700;text-transform:uppercase;}
+.prono-icon{font-size:1.1rem;margin:2px 0;}
+.prono-max{font-size:0.7rem;font-weight:700;color:var(--oscuro);}
+.prono-min{font-size:0.58rem;color:#bbb;}
+
+/* ===== SECTION TITLES ===== */
+.section-title{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--oscuro);margin-bottom:11px;padding-bottom:6px;border-bottom:2px solid var(--arena);}
+.info-section{padding:14px 16px;}
+.desc-text{font-size:0.83rem;color:#555;line-height:1.75;margin-bottom:14px;}
+
+/* ===== INFO GRID ===== */
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+.info-item{background:#f8fffe;border-radius:10px;padding:11px;text-align:center;border:1px solid #e8f5ee;}
+.info-icon{font-size:1.3rem;margin-bottom:3px;}
+.info-label{font-size:0.57rem;color:#aaa;text-transform:uppercase;letter-spacing:0.8px;}
+.info-value{font-size:0.78rem;font-weight:700;color:var(--oscuro);margin-top:2px;}
+
+/* ===== SUB-DESTINOS ===== */
+.subdest-intro{border-radius:12px;padding:13px;margin-bottom:12px;color:white;}
+.subdest-intro-title{font-size:0.75rem;font-weight:700;margin-bottom:4px;letter-spacing:1px;}
+.subdest-intro-text{font-size:0.72rem;opacity:0.9;line-height:1.5;}
+.subdest-list{display:flex;flex-direction:column;gap:11px;}
+.subdest-card{background:white;border-radius:var(--radio);overflow:hidden;box-shadow:0 3px 12px rgba(0,0,0,0.09);}
+.subdest-img-wrap{height:136px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:3.8rem;}
+.subdest-img-wrap img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 0.3s;}
+.subdest-card:hover .subdest-img-wrap img{transform:scale(1.04);}
+.subdest-img-overlay{position:absolute;inset:0;background:linear-gradient(180deg,transparent 38%,rgba(0,0,0,0.65) 100%);}
+.subdest-img-badges{position:absolute;top:9px;left:9px;display:flex;gap:4px;z-index:2;}
+.sib{font-size:0.58rem;padding:3px 7px;border-radius:20px;font-weight:700;}
+.sib-facil{background:#4CAF50;color:white;}
+.sib-moderado{background:#FF9800;color:white;}
+.sib-dificil{background:#E53935;color:white;}
+.sib-gratis{background:rgba(255,255,255,0.92);color:#1565C0;}
+.sib-pago{background:rgba(255,255,255,0.92);color:#6A1B9A;}
+.subdest-img-dist{position:absolute;bottom:8px;left:9px;background:rgba(0,0,0,0.58);color:white;font-size:0.62rem;padding:2px 7px;border-radius:20px;z-index:2;}
+.subdest-img-dur{position:absolute;bottom:8px;right:9px;background:rgba(0,0,0,0.58);color:white;font-size:0.62rem;padding:2px 7px;border-radius:20px;z-index:2;}
+.subdest-header{padding:11px 13px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;}
+.subdest-name{font-family:'Playfair Display',serif;font-size:0.95rem;font-weight:700;color:var(--oscuro);}
+.subdest-tagline{font-size:0.68rem;color:#aaa;margin-top:2px;}
+.subdest-expand{color:#ccc;font-size:1.1rem;transition:transform 0.25s;flex-shrink:0;margin-left:8px;}
+.subdest-expand.open{transform:rotate(180deg);}
+.subdest-body{display:none;padding:0 13px 13px;border-top:1px solid #f5f5f5;}
+.subdest-body.open{display:block;}
+.subdest-desc{font-size:0.76rem;color:#666;line-height:1.65;margin:9px 0;}
+
+/* ===== COMO LLEGAR ===== */
+.como-llegar-box{background:#f8fffe;border:2px solid #e8f5ee;border-radius:12px;padding:11px;margin:9px 0;}
+.como-llegar-title{font-size:0.68rem;font-weight:700;color:var(--verde);margin-bottom:7px;text-transform:uppercase;letter-spacing:1px;}
+.como-llegar-step{display:flex;gap:7px;margin-bottom:7px;font-size:0.73rem;color:#555;line-height:1.5;}
+.step-num{color:white;width:19px;height:19px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.58rem;font-weight:700;flex-shrink:0;margin-top:1px;}
+.transport-options{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px;}
+.transport-badge{background:#f0f0f0;border-radius:20px;padding:3px 9px;font-size:0.62rem;font-weight:700;color:#666;}
+.tips-box{background:#FFF8E1;border-radius:10px;padding:9px;font-size:0.72rem;color:#795548;margin-bottom:9px;line-height:1.5;}
+
+/* ===== BUTTONS ===== */
+.maps-btn{background:linear-gradient(135deg,#1565C0,#1976D2);color:white;border:none;border-radius:50px;padding:11px 18px;font-family:'Lato',sans-serif;font-size:0.76rem;font-weight:700;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:center;gap:7px;margin-top:7px;box-shadow:0 3px 10px rgba(21,101,192,0.28);}
+.booking-btn{background:linear-gradient(135deg,#003580,#0071c2);color:white;border:none;border-radius:50px;padding:11px 18px;font-family:'Lato',sans-serif;font-size:0.76rem;font-weight:700;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:center;gap:7px;margin-top:8px;box-shadow:0 3px 10px rgba(0,53,128,0.25);}
+.fav-btn{color:white;border:none;border-radius:50px;padding:11px 18px;font-family:'Lato',sans-serif;font-size:0.82rem;font-weight:700;cursor:pointer;width:100%;margin-top:10px;}
+
+/* ===== HOTELES ===== */
+.hotel-list{display:flex;flex-direction:column;gap:9px;margin-bottom:12px;}
+.hotel-card{background:#f8fffe;border-radius:12px;padding:11px 13px;border:1px solid #e8f5ee;display:flex;justify-content:space-between;align-items:center;gap:10px;}
+.hotel-name{font-size:0.8rem;font-weight:700;color:var(--oscuro);}
+.hotel-stars{color:#F39C12;font-size:0.62rem;margin-top:2px;}
+.hotel-cat{font-size:0.62rem;color:#aaa;margin-top:1px;}
+.hotel-booking-btn{background:linear-gradient(135deg,#003580,#0071c2);color:white;border:none;border-radius:8px;padding:7px 11px;font-family:'Lato',sans-serif;font-size:0.65rem;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;}
+
+/* ===== RESTO ===== */
+.resto-list{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
+.resto-item{background:#f8fffe;border-radius:10px;padding:9px 13px;border:1px solid #e8f5ee;}
+.resto-name{font-size:0.78rem;font-weight:700;color:var(--oscuro);}
+.resto-desc{font-size:0.65rem;color:#aaa;margin-top:1px;}
+
+/* ===== LEYENDA ===== */
+.legend-box{background:linear-gradient(135deg,#1a1a2e,#2d1b4e);border-radius:12px;padding:15px;margin:12px 0;}
+.legend-title{color:#CE93D8;font-size:0.72rem;font-weight:700;margin-bottom:7px;letter-spacing:1px;}
+.legend-text{color:#ddd;font-size:0.76rem;line-height:1.7;font-style:italic;}
+
+/* ===== MAP ===== */
 .map-container{margin:16px;background:white;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.1);}
-.map-header{background:linear-gradient(135deg,var(--azul),var(--verde));padding:12px 16px;display:flex;align-items:center;justify-content:space-between;}
-.map-title-text{color:white;font-size:0.82rem;font-weight:700;letter-spacing:1px;}
+.map-header{background:linear-gradient(135deg,var(--azul),var(--verde));padding:11px 15px;display:flex;align-items:center;justify-content:space-between;}
+.map-title-txt{color:white;font-size:0.8rem;font-weight:700;letter-spacing:1px;}
 #map-svg{width:100%;background:#e8f4f0;}
-.map-dot{cursor:pointer;}
-.map-places-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 16px 16px;}
-.map-place-item{background:white;border-radius:10px;padding:8px 10px;display:flex;align-items:center;gap:8px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
+.map-dot{cursor:pointer;transition:transform 0.15s;}
+.map-dot:hover circle{opacity:1!important;}
+.map-places-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;padding:12px;}
+.map-place-item{background:#f8fffe;border-radius:9px;padding:8px 10px;display:flex;align-items:center;gap:7px;cursor:pointer;border:1px solid #eee;}
 
-/* FAVORITOS */
-.fav-header{background:linear-gradient(135deg,var(--verde),var(--verde2));padding:20px;color:white;}
+/* ===== FAVORITOS ===== */
+.fav-header-sec{background:linear-gradient(135deg,var(--verde),var(--verde2));padding:20px;color:white;}
 .fav-list{display:flex;flex-direction:column;gap:8px;padding:16px;}
-.fav-item{background:white;border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:10px;box-shadow:0 2px 8px rgba(0,0,0,0.06);cursor:pointer;}
-.fav-empty{text-align:center;padding:30px;color:#aaa;font-size:0.82rem;line-height:1.7;}
+.fav-item{background:white;border-radius:10px;padding:10px 13px;display:flex;align-items:center;gap:10px;box-shadow:0 2px 8px rgba(0,0,0,0.06);cursor:pointer;}
+.fav-empty{text-align:center;padding:30px 20px;color:#bbb;font-size:0.82rem;line-height:1.8;}
 
-/* LEYENDAS */
-.ley-header{background:linear-gradient(135deg,var(--oscuro),#2d1b4e);padding:20px;color:white;}
-.leyenda-card{background:linear-gradient(135deg,var(--oscuro),#2d1b4e);border-radius:14px;padding:16px;margin-bottom:12px;cursor:pointer;}
-.leyenda-lugar{font-size:0.65rem;color:#CE93D8;font-weight:700;letter-spacing:2px;margin-bottom:6px;}
-.leyenda-titulo{font-family:'Playfair Display',serif;font-size:0.95rem;font-weight:700;color:white;margin-bottom:8px;}
-.leyenda-texto{font-size:0.75rem;color:#bbb;line-height:1.6;font-style:italic;}
+/* ===== LEYENDAS SCREEN ===== */
+.ley-header-sec{background:linear-gradient(135deg,var(--oscuro),#2d1b4e);padding:20px;color:white;}
+.leyenda-card-full{background:linear-gradient(135deg,var(--oscuro),#2d1b4e);border-radius:var(--radio);padding:16px;margin-bottom:11px;cursor:pointer;transition:transform 0.2s;}
+.leyenda-card-full:active{transform:scale(0.98);}
+.leyenda-lugar{font-size:0.62rem;color:#CE93D8;font-weight:700;letter-spacing:2px;margin-bottom:5px;}
+.leyenda-titulo{font-family:'Playfair Display',serif;font-size:0.92rem;font-weight:700;color:white;margin-bottom:7px;}
+.leyenda-texto{font-size:0.73rem;color:#bbb;line-height:1.65;font-style:italic;}
 
-/* ABOUT */
-.about-header-sec{background:linear-gradient(135deg,var(--oscuro),var(--azul),var(--verde));padding:30px 20px 50px;position:relative;overflow:hidden;text-align:center;}
+/* ===== ABOUT ===== */
+.about-header-sec{background:linear-gradient(145deg,var(--oscuro),var(--azul),var(--verde));padding:28px 20px 52px;position:relative;overflow:hidden;text-align:center;}
 .creator-card{background:white;border-radius:16px;margin:0 16px;margin-top:-24px;position:relative;z-index:10;box-shadow:0 4px 20px rgba(0,0,0,0.12);overflow:hidden;}
-.creator-header-inner{background:linear-gradient(135deg,var(--verde),var(--verde2));padding:16px 20px;display:flex;align-items:center;gap:14px;}
-.creator-avatar{width:56px;height:56px;background:rgba(255,255,255,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.8rem;border:3px solid rgba(255,255,255,0.4);}
-.contact-btn{display:flex;align-items:center;gap:12px;background:#f8fffe;border-radius:12px;padding:12px 14px;margin-bottom:10px;cursor:pointer;border:1px solid #e8f5ee;text-decoration:none;}
-.collab-card{background:linear-gradient(135deg,var(--azul),var(--verde));border-radius:14px;padding:18px;margin-bottom:12px;color:white;}
-.collab-btn{background:white;color:var(--verde);border:none;border-radius:50px;padding:12px 20px;font-family:'Lato',sans-serif;font-size:0.82rem;font-weight:700;cursor:pointer;width:100%;}
-.rights-box{background:#f8f9fa;border-radius:12px;padding:14px;margin-bottom:12px;text-align:center;font-size:0.7rem;color:#999;line-height:1.6;}
+.creator-header-inner{background:linear-gradient(135deg,var(--verde),var(--verde2));padding:15px 18px;display:flex;align-items:center;gap:13px;}
+.creator-avatar{width:54px;height:54px;background:rgba(255,255,255,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.7rem;border:3px solid rgba(255,255,255,0.38);}
+.contact-btn-about{display:flex;align-items:center;gap:11px;background:#f8fffe;border-radius:11px;padding:11px 13px;margin-bottom:9px;cursor:pointer;border:1px solid #e8f5ee;text-decoration:none;transition:border-color 0.2s;}
+.contact-btn-about:hover{border-color:var(--verde2);}
+.collab-card-about{background:linear-gradient(135deg,var(--azul),var(--verde));border-radius:13px;padding:16px;margin-bottom:11px;color:white;}
+.collab-item-about{display:flex;align-items:flex-start;gap:9px;background:rgba(255,255,255,0.11);border-radius:9px;padding:9px 11px;margin-bottom:7px;}
+.collab-btn-about{background:white;color:var(--verde);border:none;border-radius:50px;padding:11px 18px;font-family:'Lato',sans-serif;font-size:0.8rem;font-weight:700;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:center;gap:7px;margin-top:4px;}
+.rights-box-about{background:#f5f5f5;border-radius:11px;padding:13px;text-align:center;font-size:0.68rem;color:#999;line-height:1.7;margin-bottom:12px;}
 
-/* DETAIL */
-#detail-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:100;overflow-y:auto;}
-#detail-overlay.open{display:block;}
-#detail-panel{background:white;border-radius:20px 20px 0 0;margin-top:60px;min-height:calc(100vh - 60px);padding-bottom:40px;}
-.detail-hero{height:200px;position:relative;display:flex;align-items:center;justify-content:center;font-size:6rem;border-radius:20px 20px 0 0;}
-.detail-hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,0.7) 100%);border-radius:20px 20px 0 0;}
-.detail-hero-text{position:absolute;bottom:16px;left:20px;right:60px;}
-.detail-title{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:900;color:white;}
-.detail-sub{color:rgba(255,255,255,0.8);font-size:0.72rem;margin-top:4px;}
-.close-btn{position:absolute;top:14px;right:14px;background:rgba(255,255,255,0.9);border:none;border-radius:50%;width:36px;height:36px;font-size:1.1rem;cursor:pointer;font-weight:bold;z-index:10;}
-.detail-body{padding:20px;}
-.detail-info-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;}
-.detail-info-item{background:#f8fffe;border-radius:8px;padding:10px;text-align:center;border:1px solid #e8f5ee;}
-.detail-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
-.detail-tag{background:#f0f7f4;color:var(--verde);font-size:0.65rem;padding:4px 10px;border-radius:20px;font-weight:700;}
-.detail-legend{background:linear-gradient(135deg,var(--oscuro),#2d1b4e);border-radius:12px;padding:14px;margin:16px 0;}
-.detail-legend-title{color:#CE93D8;font-size:0.72rem;font-weight:700;margin-bottom:6px;letter-spacing:1px;}
-.detail-legend-text{color:#ddd;font-size:0.75rem;line-height:1.7;font-style:italic;}
-.action-btn{border:none;border-radius:50px;padding:12px 20px;font-family:'Lato',sans-serif;font-size:0.82rem;font-weight:700;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px;}
-.maps-btn-d{background:linear-gradient(135deg,#1565C0,#1976D2);color:white;}
-.booking-btn-d{background:linear-gradient(135deg,#003580,#0071c2);color:white;}
-.fav-btn-d{color:white;}
-
-/* BOTTOM NAV */
-#bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:white;border-top:1px solid #eee;display:flex;justify-content:space-around;padding:10px 0 14px;z-index:50;box-shadow:0 -4px 20px rgba(0,0,0,0.08);}
-.nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:0 12px;}
-.nav-icon{font-size:1.3rem;}
-.nav-label{font-size:0.58rem;color:#aaa;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;}
+/* ===== BOTTOM NAV ===== */
+#bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:white;border-top:1px solid #ebebeb;display:flex;justify-content:space-around;padding:9px 0 13px;z-index:50;box-shadow:0 -4px 20px rgba(0,0,0,0.07);}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:0 10px;min-width:48px;}
+.nav-icon{font-size:1.25rem;}
+.nav-label{font-size:0.55rem;color:#bbb;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;}
 .nav-item.active .nav-label{color:var(--verde);}
+.nav-item.active .nav-icon{filter:drop-shadow(0 0 3px rgba(45,106,79,0.4));}
+
+/* ===== DETAIL OVERLAY ===== */
+#detail-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.62);z-index:100;overflow-y:auto;}
+#detail-overlay.open{display:block;}
+#detail-panel{background:white;border-radius:20px 20px 0 0;margin-top:55px;min-height:calc(100vh - 55px);padding-bottom:40px;}
+.detail-hero{height:195px;position:relative;display:flex;align-items:center;justify-content:center;font-size:5.5rem;border-radius:20px 20px 0 0;overflow:hidden;}
+.detail-hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+.detail-hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,transparent 38%,rgba(0,0,0,0.72) 100%);border-radius:20px 20px 0 0;}
+.detail-hero-text{position:absolute;bottom:15px;left:18px;right:55px;z-index:2;}
+.detail-title{font-family:'Playfair Display',serif;font-size:1.55rem;font-weight:900;color:white;}
+.detail-sub{color:rgba(255,255,255,0.78);font-size:0.7rem;margin-top:3px;}
+.close-btn{position:absolute;top:13px;right:13px;background:rgba(255,255,255,0.92);border:none;border-radius:50%;width:34px;height:34px;font-size:1rem;cursor:pointer;font-weight:bold;z-index:10;}
+.detail-body{padding:18px;}
+.detail-info-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:14px;}
+.detail-info-item{background:#f8fffe;border-radius:8px;padding:9px;text-align:center;border:1px solid #e8f5ee;}
+.detail-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:13px;}
+.detail-tag{background:#f0f7f4;color:var(--verde);font-size:0.62rem;padding:3px 9px;border-radius:20px;font-weight:700;}
+.detail-legend{background:linear-gradient(135deg,var(--oscuro),#2d1b4e);border-radius:11px;padding:13px;margin:13px 0;}
+.detail-legend-title{color:#CE93D8;font-size:0.68rem;font-weight:700;margin-bottom:5px;letter-spacing:1px;}
+.detail-legend-text{color:#ddd;font-size:0.73rem;line-height:1.7;font-style:italic;}
 </style>
 </head>
 <body>
 <div class="page-wrapper">
 
-<!-- DETAIL -->
+<!-- DETAIL OVERLAY -->
 <div id="detail-overlay" onclick="handleOverlayClick(event)">
   <div id="detail-panel">
     <div class="detail-hero" id="detail-hero">
-      <div id="detail-emoji" style="position:relative;z-index:1;">🏔️</div>
       <div class="detail-hero-overlay"></div>
       <button class="close-btn" onclick="closeDetail()">✕</button>
       <div class="detail-hero-text">
@@ -147,7 +269,7 @@ body{font-family:'Lato',sans-serif;background:var(--blanco);color:var(--texto);o
   </div>
 </div>
 
-<!-- HOME -->
+<!-- ============ HOME ============ -->
 <div id="screen-home" class="screen active">
   <div class="app-header">
     <div class="lang-toggle">
@@ -158,127 +280,136 @@ body{font-family:'Lato',sans-serif;background:var(--blanco);color:var(--texto);o
     <div class="app-title" id="app-title">Patagonia<br>Secreta</div>
     <div class="app-subtitle" id="app-subtitle">Descubrí la magia del sur argentino</div>
     <div class="header-stats">
-      <div class="hstat"><div class="hstat-num">12</div><div class="hstat-label" id="stat-dest">Destinos</div></div>
-      <div class="hstat"><div class="hstat-num">5</div><div class="hstat-label" id="stat-prov">Provincias</div></div>
-      <div class="hstat"><div class="hstat-num">3M+</div><div class="hstat-label" id="stat-t">Turistas/año</div></div>
+      <div class="hstat"><div class="hstat-num">12</div><div class="hstat-label" id="hs-dest">Destinos</div></div>
+      <div class="hstat"><div class="hstat-num">80+</div><div class="hstat-label" id="hs-lug">Lugarcitos</div></div>
+      <div class="hstat"><div class="hstat-num">5</div><div class="hstat-label" id="hs-prov">Provincias</div></div>
     </div>
     <svg class="mountains-svg" viewBox="0 0 480 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-      <path d="M0,60 L0,40 L40,15 L80,35 L120,10 L160,30 L200,5 L240,25 L280,8 L320,28 L360,12 L400,32 L440,18 L480,38 L480,60 Z" fill="rgba(255,255,255,0.08)"/>
-      <path d="M0,60 L0,55 L80,40 L140,52 L200,38 L260,50 L320,36 L380,50 L440,42 L480,54 L480,60 Z" fill="white"/>
+      <path d="M0,60 L0,40 L40,15 L80,35 L120,10 L160,30 L200,5 L240,25 L280,8 L320,28 L360,12 L400,32 L440,18 L480,38 L480,60 Z" fill="rgba(255,255,255,0.07)"/>
+      <path d="M0,60 L0,52 L60,36 L100,48 L140,32 L180,46 L220,28 L260,44 L300,30 L340,46 L380,34 L420,48 L460,36 L480,50 L480,60 Z" fill="rgba(255,255,255,0.06)"/>
+      <path d="M0,60 L0,57 L80,44 L140,54 L200,42 L260,52 L320,40 L380,52 L440,44 L480,56 L480,60 Z" fill="white"/>
     </svg>
   </div>
-  <div class="search-box">
-    <span style="color:var(--verde2);font-size:1.1rem;">🔍</span>
-    <input type="text" id="search-input" placeholder="Buscá tu próximo destino..." oninput="handleSearch(this.value)"/>
+  <div class="search-wrap">
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="search-input" placeholder="Buscá tu próximo destino..." oninput="handleSearch(this.value)"/>
+    </div>
   </div>
   <div class="stats-row">
     <div class="stat-card"><div class="stat-num">12</div><div class="stat-label" id="sl-dest">Destinos</div></div>
     <div class="stat-card"><div class="stat-num" id="sl-fav-num">0</div><div class="stat-label" id="sl-fav">Favoritos</div></div>
-    <div class="stat-card"><div class="stat-num">🌡️</div><div class="stat-label" id="sl-clima">Clima en vivo</div></div>
+    <div class="stat-card"><div class="stat-num">🌡️</div><div class="stat-label" id="sl-clima">Clima vivo</div></div>
   </div>
   <div class="tabs" id="tabs-container">
-    <div class="tab active" onclick="filterTab('todas',this)">🗺️ Todas</div>
+    <div class="tab active" onclick="filterTab('todas',this)">🗺️ <span class="t-todas">Todas</span></div>
     <div class="tab" onclick="filterTab('rio-negro',this)">🏔️ Río Negro</div>
     <div class="tab" onclick="filterTab('neuquen',this)">🌋 Neuquén</div>
     <div class="tab" onclick="filterTab('chubut',this)">🐋 Chubut</div>
     <div class="tab" onclick="filterTab('santa-cruz',this)">🧊 Santa Cruz</div>
-    <div class="tab" onclick="filterTab('tierra-del-fuego',this)">🌎 T. del Fuego</div>
+    <div class="tab" onclick="filterTab('tierra-del-fuego',this)">🌎 T.Fuego</div>
   </div>
   <div id="places-container"></div>
 </div>
 
-<!-- MAP -->
+<!-- ============ MAP ============ -->
 <div id="screen-map" class="screen">
   <div style="padding:16px;">
-    <div style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--oscuro);margin-bottom:12px;" id="map-title-text">🗺️ Mapa de la Patagonia</div>
+    <div style="font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--oscuro);margin-bottom:11px;" id="map-title-text">🗺️ Mapa de la Patagonia</div>
     <div class="map-container">
       <div class="map-header">
-        <span class="map-title-text" id="map-header-text">📍 TODOS LOS DESTINOS</span>
-        <span style="color:rgba(255,255,255,0.7);font-size:0.65rem;" id="map-tip-text">Tocá un punto</span>
+        <span class="map-title-txt" id="map-header-text">📍 TODOS LOS DESTINOS</span>
+        <span style="color:rgba(255,255,255,0.65);font-size:0.62rem;" id="map-tip-text">Tocá un punto</span>
       </div>
       <svg id="map-svg" viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg">
-        <rect width="400" height="500" fill="#e8f4f0"/>
-        <rect x="280" y="0" width="120" height="500" fill="#B3E0F2" opacity="0.4"/>
-        <rect x="0" y="420" width="400" height="80" fill="#B3E0F2" opacity="0.3"/>
-        <path d="M60,0 L80,50 L60,100 L90,150 L70,200 L100,250 L80,300 L110,350 L90,400 L120,450 L100,500" stroke="#c8d8c0" stroke-width="30" fill="none" opacity="0.4"/>
-        <text x="150" y="75" font-family="Lato" font-size="11" fill="#888" font-weight="bold">Neuquén</text>
-        <text x="140" y="138" font-family="Lato" font-size="11" fill="#888" font-weight="bold">Río Negro</text>
-        <text x="160" y="228" font-family="Lato" font-size="10" fill="#888" font-weight="bold">Chubut</text>
-        <text x="155" y="338" font-family="Lato" font-size="10" fill="#888" font-weight="bold">Santa Cruz</text>
-        <text x="125" y="455" font-family="Lato" font-size="9" fill="#888" font-weight="bold">Tierra del Fuego</text>
-        <path d="M120,60 L110,100 L115,140 L120,180 L130,230 L140,290 L150,340 L155,400 L160,460" stroke="#40916C" stroke-width="2" stroke-dasharray="6,4" fill="none" opacity="0.5"/>
+        <rect width="400" height="500" fill="#dff0e8"/>
+        <rect x="275" y="0" width="125" height="500" fill="#B3D9F0" opacity="0.5"/>
+        <rect x="0" y="415" width="400" height="85" fill="#B3D9F0" opacity="0.4"/>
+        <path d="M55,0 Q75,80 65,160 Q85,240 75,320 Q105,380 95,500" stroke="#c5dcc0" stroke-width="28" fill="none" opacity="0.5"/>
+        <text x="148" y="72" font-family="Lato" font-size="10" fill="#999" font-weight="700">Neuquén</text>
+        <text x="138" y="135" font-family="Lato" font-size="10" fill="#999" font-weight="700">Río Negro</text>
+        <text x="155" y="225" font-family="Lato" font-size="9" fill="#999" font-weight="700">Chubut</text>
+        <text x="148" y="335" font-family="Lato" font-size="9" fill="#999" font-weight="700">Santa Cruz</text>
+        <text x="118" y="452" font-family="Lato" font-size="8" fill="#999" font-weight="700">Tierra del Fuego</text>
+        <path d="M118,58 L110,98 L114,138 L119,178 L128,228 L138,288 L148,338 L153,398 L158,458" stroke="#40916C" stroke-width="1.5" stroke-dasharray="5,4" fill="none" opacity="0.45"/>
       </svg>
     </div>
     <div class="map-places-grid" id="map-places-grid"></div>
   </div>
 </div>
 
-<!-- FAVORITOS -->
+<!-- ============ FAVORITOS ============ -->
 <div id="screen-favoritos" class="screen">
-  <div class="fav-header">
+  <div class="fav-header-sec">
     <div style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;" id="fav-title">❤️ Mis Favoritos</div>
-    <div style="font-size:0.75rem;opacity:0.8;margin-top:4px;" id="fav-subtitle">Tus destinos guardados</div>
+    <div style="font-size:0.73rem;opacity:0.8;margin-top:4px;" id="fav-subtitle">Tus destinos guardados</div>
   </div>
   <div id="favoritos-content"></div>
 </div>
 
-<!-- LEYENDAS -->
+<!-- ============ LEYENDAS ============ -->
 <div id="screen-leyendas" class="screen">
-  <div class="ley-header">
+  <div class="ley-header-sec">
     <div style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;" id="ley-title">👻 Leyendas Patagónicas</div>
-    <div style="font-size:0.75rem;opacity:0.8;margin-top:4px;" id="ley-subtitle">Misterios del sur del mundo</div>
+    <div style="font-size:0.73rem;opacity:0.8;margin-top:4px;" id="ley-subtitle">Misterios del sur del mundo</div>
   </div>
   <div style="padding:16px;" id="leyendas-content"></div>
 </div>
 
-<!-- ABOUT -->
+<!-- ============ ABOUT ============ -->
 <div id="screen-about" class="screen">
   <div class="about-header-sec">
-    <div style="font-size:4rem;margin-bottom:10px;">🏔️</div>
-    <div style="font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;color:white;">Patagonia Secreta</div>
-    <div style="display:inline-block;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;font-size:0.65rem;padding:3px 12px;border-radius:20px;letter-spacing:2px;margin-top:8px;">VERSIÓN 1.0 · 2025</div>
-    <svg style="position:absolute;bottom:0;left:0;right:0;" viewBox="0 0 480 40" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-      <path d="M0,40 L0,20 L60,5 L120,20 L180,2 L240,18 L300,4 L360,20 L420,6 L480,18 L480,40 Z" fill="rgba(255,255,255,0.08)"/>
-      <path d="M0,40 L0,30 L80,18 L140,28 L200,14 L260,26 L320,16 L380,28 L440,18 L480,26 L480,40 Z" fill="white"/>
+    <div style="font-size:3.8rem;margin-bottom:10px;">🏔️</div>
+    <div style="font-family:'Playfair Display',serif;font-size:1.75rem;font-weight:900;color:white;">Patagonia Secreta</div>
+    <div style="display:inline-block;background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.28);color:white;font-size:0.6rem;padding:3px 12px;border-radius:20px;letter-spacing:2px;margin-top:8px;">VERSIÓN 1.0 · 2025</div>
+    <svg style="position:absolute;bottom:0;left:0;right:0;" viewBox="0 0 480 38" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,38 L0,18 L60,4 L120,18 L180,1 L240,17 L300,3 L360,19 L420,5 L480,17 L480,38 Z" fill="rgba(255,255,255,0.07)"/>
+      <path d="M0,38 L0,28 L80,16 L140,26 L200,12 L260,24 L320,14 L380,26 L440,16 L480,24 L480,38 Z" fill="white"/>
     </svg>
   </div>
   <div class="creator-card">
     <div class="creator-header-inner">
       <div class="creator-avatar">👨‍💻</div>
       <div>
-        <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:white;">Ignacio Alejandro Espinoza</div>
-        <div style="font-size:0.68rem;color:rgba(255,255,255,0.8);margin-top:2px;">🎯 Creador & Desarrollador</div>
-        <div style="font-size:0.65rem;color:rgba(255,255,255,0.7);margin-top:3px;">📍 Isla Choele Choel, Río Negro, Argentina</div>
+        <div style="font-family:'Playfair Display',serif;font-size:0.95rem;font-weight:700;color:white;">Ignacio Alejandro Espinoza</div>
+        <div style="font-size:0.65rem;color:rgba(255,255,255,0.8);margin-top:2px;">🎯 Creador & Desarrollador</div>
+        <div style="font-size:0.62rem;color:rgba(255,255,255,0.68);margin-top:2px;">📍 Isla Choele Choel, Río Negro, Argentina</div>
       </div>
     </div>
-    <div style="padding:16px;">
-      <a class="contact-btn" href="mailto:espinozaalejandro327@gmail.com">
-        <div style="font-size:1.5rem;">📧</div>
-        <div><div style="font-size:0.65rem;color:#888;text-transform:uppercase;letter-spacing:1px;">Email</div><div style="font-size:0.8rem;font-weight:700;color:var(--oscuro);">espinozaalejandro327@gmail.com</div></div>
+    <div style="padding:14px 16px;">
+      <a class="contact-btn-about" href="mailto:espinozaalejandro327@gmail.com">
+        <div style="font-size:1.4rem;">📧</div>
+        <div><div style="font-size:0.6rem;color:#aaa;text-transform:uppercase;letter-spacing:1px;">Email</div><div style="font-size:0.78rem;font-weight:700;color:var(--oscuro);">espinozaalejandro327@gmail.com</div></div>
       </a>
-      <a class="contact-btn" href="https://wa.me/5492984307533" target="_blank">
-        <div style="font-size:1.5rem;">💬</div>
-        <div><div style="font-size:0.65rem;color:#888;text-transform:uppercase;letter-spacing:1px;">WhatsApp</div><div style="font-size:0.8rem;font-weight:700;color:var(--oscuro);">+54 9 2984 307533</div></div>
+      <a class="contact-btn-about" href="https://wa.me/5492984307533" target="_blank">
+        <div style="font-size:1.4rem;">💬</div>
+        <div><div style="font-size:0.6rem;color:#aaa;text-transform:uppercase;letter-spacing:1px;">WhatsApp</div><div style="font-size:0.78rem;font-weight:700;color:var(--oscuro);">+54 9 2984 307533</div></div>
       </a>
     </div>
   </div>
   <div style="padding:16px;">
-    <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--oscuro);margin-bottom:12px;padding-bottom:6px;border-bottom:2px solid var(--arena);">📱 Sobre la App</div>
-    <div style="font-size:0.82rem;color:#555;line-height:1.7;margin-bottom:16px;"><strong>Patagonia Secreta</strong> nació de un sueño simple: mostrarle al mundo los lugares increíbles de la Patagonia Argentina que pocas apps muestran en detalle.<br><br>Creada desde la <strong>Isla Choele Choel</strong> — ciudad única rodeada por el Río Negro — esta app reúne información real, lugares secretos, leyendas locales y todo lo que necesitás para explorar la Patagonia de punta a punta.</div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;">
-      <div style="background:white;border-radius:12px;padding:12px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.06);border-bottom:3px solid var(--verde2);"><div style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--verde);">12</div><div style="font-size:0.6rem;color:#888;text-transform:uppercase;letter-spacing:1px;margin-top:3px;">Ciudades</div></div>
-      <div style="background:white;border-radius:12px;padding:12px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.06);border-bottom:3px solid var(--verde2);"><div style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--verde);">80+</div><div style="font-size:0.6rem;color:#888;text-transform:uppercase;letter-spacing:1px;margin-top:3px;">Lugarcitos</div></div>
-      <div style="background:white;border-radius:12px;padding:12px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.06);border-bottom:3px solid var(--verde2);"><div style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--verde);">5</div><div style="font-size:0.6rem;color:#888;text-transform:uppercase;letter-spacing:1px;margin-top:3px;">Provincias</div></div>
+    <div class="section-title" style="margin-top:4px;">📱 Sobre la App</div>
+    <div style="font-size:0.82rem;color:#555;line-height:1.75;margin-bottom:14px;"><strong>Patagonia Secreta</strong> nació de un sueño simple: mostrarle al mundo los lugares increíbles de la Patagonia Argentina que pocas apps muestran en detalle.<br><br>Creada desde la <strong>Isla Choele Choel</strong> — ciudad única rodeada por el Río Negro — esta app reúne información real, lugares secretos, leyendas locales y todo lo que necesitás para explorar la Patagonia de punta a punta.<br><br>Desde los bosques de araucarias de Villa Pehuenia hasta el fin del mundo en Ushuaia. Desde las ballenas de Las Grutas hasta los glaciares de El Calafate. <strong>Todo en un solo lugar.</strong></div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;">
+      <div style="background:white;border-radius:11px;padding:11px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.06);border-bottom:3px solid var(--verde3);"><div style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--verde);">12</div><div style="font-size:0.58rem;color:#aaa;text-transform:uppercase;letter-spacing:0.8px;margin-top:2px;">Ciudades</div></div>
+      <div style="background:white;border-radius:11px;padding:11px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.06);border-bottom:3px solid var(--verde3);"><div style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--verde);">80+</div><div style="font-size:0.58rem;color:#aaa;text-transform:uppercase;letter-spacing:0.8px;margin-top:2px;">Lugarcitos</div></div>
+      <div style="background:white;border-radius:11px;padding:11px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.06);border-bottom:3px solid var(--verde3);"><div style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--verde);">5</div><div style="font-size:0.58rem;color:#aaa;text-transform:uppercase;letter-spacing:0.8px;margin-top:2px;">Provincias</div></div>
     </div>
-    <div class="collab-card">
-      <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;margin-bottom:8px;">🤝 ¿Querés colaborar?</div>
-      <div style="font-size:0.78rem;line-height:1.6;opacity:0.9;margin-bottom:14px;">Hoteles, restaurantes, agencias de turismo o guías locales pueden aparecer destacados en la app y llegar a miles de turistas.</div>
-      <button class="collab-btn" onclick="window.open('https://wa.me/5492984307533?text=Hola%20Ignacio!%20Me%20interesa%20colaborar%20con%20Patagonia%20Secreta','_blank')">💬 Contactar por WhatsApp</button>
+    <div class="collab-card-about">
+      <div style="font-family:'Playfair Display',serif;font-size:0.95rem;font-weight:700;margin-bottom:7px;">🤝 ¿Querés colaborar?</div>
+      <div style="font-size:0.76rem;line-height:1.6;opacity:0.92;margin-bottom:12px;">Hoteles, restaurantes, agencias de turismo o guías locales pueden aparecer destacados en la app y llegar a miles de turistas.</div>
+      <div class="collab-item-about"><div style="font-size:1.2rem;">🏨</div><div><div style="font-size:0.73rem;font-weight:700;">Hoteles y alojamientos</div><div style="font-size:0.65rem;opacity:0.85;margin-top:1px;">Aparecé destacado con foto, descripción y link directo.</div></div></div>
+      <div class="collab-item-about"><div style="font-size:1.2rem;">🍽️</div><div><div style="font-size:0.73rem;font-weight:700;">Restaurantes y bares</div><div style="font-size:0.65rem;opacity:0.85;margin-top:1px;">Llegá a turistas que buscan dónde comer en tu zona.</div></div></div>
+      <div class="collab-item-about"><div style="font-size:1.2rem;">🥾</div><div><div style="font-size:0.73rem;font-weight:700;">Agencias y guías de turismo</div><div style="font-size:0.65rem;opacity:0.85;margin-top:1px;">Ofrecé tus excursiones directamente desde la app.</div></div></div>
+      <div class="collab-item-about"><div style="font-size:1.2rem;">📍</div><div><div style="font-size:0.73rem;font-weight:700;">Sugerí un lugar nuevo</div><div style="font-size:0.65rem;opacity:0.85;margin-top:1px;">¿Conocés un lugarcito secreto? ¡Escribinos!</div></div></div>
+      <button class="collab-btn-about" onclick="window.open('https://wa.me/5492984307533?text=Hola%20Ignacio!%20Me%20interesa%20colaborar%20con%20Patagonia%20Secreta','_blank')">💬 Contactar por WhatsApp</button>
     </div>
-    <div class="rights-box">
-      <div style="font-size:2rem;margin-bottom:8px;">🏔️</div>
+    <div class="rights-box-about">
+      <div style="font-size:1.8rem;margin-bottom:7px;">🏔️</div>
+      <strong>Patagonia Secreta v1.0</strong><br>
       © 2025 Ignacio Alejandro Espinoza<br>
       Isla Choele Choel, Río Negro, Argentina<br><br>
+      Información de carácter orientativo. Precios y horarios pueden variar.<br>
       <strong>Hecho con ❤️ desde la Patagonia Argentina 🇦🇷</strong>
     </div>
   </div>
@@ -296,44 +427,369 @@ body{font-family:'Lato',sans-serif;background:var(--blanco);color:var(--texto);o
 </div>
 
 <script>
+// ===== DATA =====
 const PLACES=[
-  {id:1,name:'Bariloche',nameEn:'Bariloche',region:'rio-negro',regionName:'Río Negro',emoji:'🏔️',color:'#1B4F72',rating:4.9,lat:-41.13,lon:-71.31,tags:['Nieve','Lagos','Chocolate'],desc:'La joya de la Patagonia. Lago Nahuel Huapi, chocolate artesanal y Cerro Catedral.',descEn:'The jewel of Patagonia. Nahuel Huapi Lake, artisanal chocolate and Cerro Catedral.',info:{clima:'8°C',climaEn:'46°F',epoca:'Todo el año',epocaEn:'Year-round',dist:'1.600 km Bs.As.',tipo:'Ciudad turística',tipoEn:'Tourist city'},leyenda:'El Nahuelito — una criatura misteriosa habita las profundidades del Lago Nahuel Huapi...',leyendaEn:'The Nahuelito — a mysterious creature inhabits the depths of Nahuel Huapi Lake...'},
-  {id:2,name:'El Bolsón',nameEn:'El Bolsón',region:'rio-negro',regionName:'Río Negro',emoji:'🌿',color:'#2D6A4F',rating:4.8,lat:-41.97,lon:-71.53,tags:['Cerveza','Artesanal','Trekking'],desc:'Municipio ecológico con la mayor red de refugios de montaña de Sudamérica.',descEn:'Ecological municipality with the largest mountain refuge network in South America.',info:{clima:'14°C',climaEn:'57°F',epoca:'Todo el año',epocaEn:'Year-round',dist:'130 km Bariloche',tipo:'Pueblo ecológico',tipoEn:'Eco village'},leyenda:'El Espíritu del Piltriquitrón habita las cumbres del cerro sagrado mapuche...',leyendaEn:'The Spirit of Piltriquitrón inhabits the peaks of the Mapuche sacred mountain...'},
-  {id:3,name:'Isla Choele Choel',nameEn:'Choele Choel Island',region:'rio-negro',regionName:'Río Negro',emoji:'🏝️',color:'#40916C',rating:4.6,lat:-39.28,lon:-65.65,tags:['Secreta','Isla','Río'],desc:'⭐ LUGAR SECRETO ⭐ Ciudad única rodeada por el Río Negro. Tranquila y mágica.',descEn:'⭐ SECRET PLACE ⭐ Unique city surrounded by the Río Negro. Peaceful and magical.',info:{clima:'16°C',climaEn:'61°F',epoca:'Primavera-Verano',epocaEn:'Spring-Summer',dist:'300 km Bariloche',tipo:'Ciudad isla única',tipoEn:'Unique island city'},leyenda:'El Chimango, ave guardiana de la isla, trae buena suerte a quien lo mira a los ojos...',leyendaEn:'The Chimango bird brings good luck to those who meet its gaze...'},
-  {id:4,name:'Las Grutas',nameEn:'Las Grutas',region:'rio-negro',regionName:'Río Negro',emoji:'🏖️',color:'#E67E22',rating:4.7,lat:-40.82,lon:-65.1,tags:['Playa','Ballenas','Mar'],desc:'Aguas más cálidas de la Patagonia. Ballenas francas de agosto a octubre.',descEn:'Warmest waters in Patagonia. Southern right whales from August to October.',info:{clima:'24°C verano',climaEn:'75°F summer',epoca:'Nov-Mar / Ago-Oct ballenas',epocaEn:'Nov-Mar / Aug-Oct whales',dist:'430 km Bariloche',tipo:'Resort playero',tipoEn:'Beach resort'},leyenda:'La Luz Mala aparece sobre el mar en las noches de tormenta del Golfo San Matías...',leyendaEn:'The Evil Light appears over the sea on stormy nights in the San Matías Gulf...'},
-  {id:5,name:'San Martín de los Andes',nameEn:'San Martín de los Andes',region:'neuquen',regionName:'Neuquén',emoji:'⛷️',color:'#2C3E50',rating:4.9,lat:-40.16,lon:-71.36,tags:['Esquí','Lagos','7 Lagos'],desc:'La ciudad más elegante de la Patagonia. Lago Lácar y Ruta de los 7 Lagos.',descEn:'The most elegant city in Patagonia. Lácar Lake and Route of 7 Lakes.',info:{clima:'9°C',climaEn:'48°F',epoca:'Todo el año',epocaEn:'Year-round',dist:'160 km Bariloche',tipo:'Ciudad premium',tipoEn:'Premium city'},leyenda:'Los tambores del Lago Lácar suenan en las noches de viento sur...',leyendaEn:'The drums of Lácar Lake sound on south wind nights...'},
-  {id:6,name:'Villa Pehuenia',nameEn:'Villa Pehuenia',region:'neuquen',regionName:'Neuquén',emoji:'🌳',color:'#1B5E20',rating:4.7,lat:-38.93,lon:-71.18,tags:['Araucarias','Lagos','Mapuche'],desc:'Aldea secreta con araucarias milenarias y Volcán Batea Mahuida.',descEn:'Secret village with ancient araucaria trees and Batea Mahuida Volcano.',info:{clima:'20°C lago',climaEn:'68°F lake',epoca:'Oct-Abr',epocaEn:'Oct-Apr',dist:'310 km Neuquén',tipo:'Aldea mapuche',tipoEn:'Mapuche village'},leyenda:'El Pombero ronda los bosques de pehuén. No respondas si escuchás un silbido...',leyendaEn:'The Pombero roams the forests. Don\'t answer if you hear a whistle...'},
-  {id:7,name:'Península Valdés',nameEn:'Valdés Peninsula',region:'chubut',regionName:'Chubut',emoji:'🐋',color:'#0D47A1',rating:5.0,lat:-42.5,lon:-64.0,tags:['Ballenas','UNESCO','Orcas'],desc:'Patrimonio UNESCO. El único lugar donde las orcas cazan en tierra.',descEn:'UNESCO Heritage. The only place where orcas hunt on land.',info:{clima:'Frío ventoso',climaEn:'Cold windy',epoca:'Jul-Dic',epocaEn:'Jul-Dec',dist:'65 km Madryn',tipo:'Reserva UNESCO',tipoEn:'UNESCO Reserve'},leyenda:'Las almas de los naufragios nadan con los lobos marinos de Punta Norte...',leyendaEn:'The souls of shipwrecks swim with the sea lions of Punta Norte...'},
-  {id:8,name:'Puerto Madryn',nameEn:'Puerto Madryn',region:'chubut',regionName:'Chubut',emoji:'🌊',color:'#1565C0',rating:4.6,lat:-42.77,lon:-65.04,tags:['Buceo','Lobos','Playa'],desc:'Capital Nacional del Buceo. 10 parques submarinos con naufragios.',descEn:'National Diving Capital. 10 underwater parks with shipwrecks.',info:{clima:'13°C',climaEn:'55°F',epoca:'Todo el año',epocaEn:'Year-round',dist:'1.400 km Bs.As.',tipo:'Ciudad costera',tipoEn:'Coastal city'},leyenda:'La sirena del Golfo Nuevo canta y enamora del mar para siempre...',leyendaEn:'The siren of Nuevo Gulf sings and makes you fall in love with the sea forever...'},
-  {id:9,name:'Esquel',nameEn:'Esquel',region:'chubut',regionName:'Chubut',emoji:'🚂',color:'#4E342E',rating:4.5,lat:-42.91,lon:-71.33,tags:['La Trochita','Alerces','Esquí'],desc:'La Trochita, Parque Nacional Los Alerces UNESCO y el pueblo galés Trevelin.',descEn:'La Trochita, Los Alerces National Park UNESCO and Welsh village Trevelin.',info:{clima:'8°C',climaEn:'46°F',epoca:'Todo el año',epocaEn:'Year-round',dist:'280 km Bariloche',tipo:'Ciudad andina',tipoEn:'Andean city'},leyenda:'El maquinista fantasma recorre las vías buscando completar su último viaje...',leyendaEn:'The phantom engineer travels the tracks seeking to complete his last journey...'},
-  {id:10,name:'El Calafate',nameEn:'El Calafate',region:'santa-cruz',regionName:'Santa Cruz',emoji:'🧊',color:'#1B4F72',rating:5.0,lat:-50.34,lon:-72.26,tags:['Glaciar','UNESCO','Hielo'],desc:'Puerta al Glaciar Perito Moreno — el único que sigue creciendo en el mundo.',descEn:'Gateway to Perito Moreno Glacier — the only one still growing in the world.',info:{clima:'5°C',climaEn:'41°F',epoca:'Oct-Abr',epocaEn:'Oct-Apr',dist:'2.800 km Bs.As.',tipo:'Turismo glaciar',tipoEn:'Glacier tourism'},leyenda:'Quien come las bayas de calafate siempre regresa a la Patagonia...',leyendaEn:'Whoever eats calafate berries will always return to Patagonia...'},
-  {id:11,name:'El Chaltén',nameEn:'El Chaltén',region:'santa-cruz',regionName:'Santa Cruz',emoji:'🏔️',color:'#B71C1C',rating:4.9,lat:-49.33,lon:-72.89,tags:['Fitz Roy','Trekking','Montaña'],desc:'Capital Nacional del Trekking. Cerro Fitz Roy y Laguna de los Tres.',descEn:'National Trekking Capital. Fitz Roy Peak and Laguna de los Tres.',info:{clima:'Muy frío',climaEn:'Very cold',epoca:'Nov-Mar',epocaEn:'Nov-Mar',dist:'220 km Calafate',tipo:'Pueblo mochilero',tipoEn:'Backpacker village'},leyenda:'El Chaltén — montaña humeante. Cuando se despeja algo importante sucede...',leyendaEn:'El Chaltén — smoking mountain. When it clears, something important happens...'},
-  {id:12,name:'Ushuaia',nameEn:'Ushuaia',region:'tierra-del-fuego',regionName:'Tierra del Fuego',emoji:'🌎',color:'#2C3E50',rating:4.9,lat:-54.80,lon:-68.30,tags:['Fin del Mundo','Canal Beagle','Pingüinos'],desc:'La ciudad más austral del mundo. Canal Beagle y Tren del Fin del Mundo.',descEn:'The southernmost city in the world. Beagle Channel and End of the World Train.',info:{clima:'4°C',climaEn:'39°F',epoca:'Nov-Mar',epocaEn:'Nov-Mar',dist:'3.300 km Bs.As.',tipo:'Ciudad austral',tipoEn:'Southernmost city'},leyenda:'Las voces de los Yaganes suenan en el Canal Beagle en noches de niebla...',leyendaEn:'The Yaghan voices sound in the Beagle Channel on foggy nights...'},
+  {id:1,name:'Bariloche',nameEn:'Bariloche',region:'rio-negro',regionName:'Río Negro',emoji:'🏔️',color:'#1B4F72',rating:4.9,lat:-41.13,lon:-71.31,
+   img:'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=75',
+   tags:['Nieve','Lagos','Chocolate','Esquí'],
+   desc:'La joya de la Patagonia. Rodeada del Lago Nahuel Huapi y la Cordillera de los Andes, Bariloche combina arquitectura alpina, chocolate artesanal mundialmente famoso y el centro de esquí más grande del hemisferio sur.',
+   descEn:'The jewel of Patagonia. Surrounded by Nahuel Huapi Lake and the Andes, Bariloche combines Alpine architecture, world-famous artisanal chocolate and the largest ski center in the Southern Hemisphere.',
+   info:{clima:'8°C promedio',climaEn:'46°F avg',epoca:'Todo el año',epocaEn:'Year-round',dist:'1.600 km Bs.As.',tipo:'Ciudad turística',tipoEn:'Tourist city'},
+   leyenda:'El Nahuelito — una criatura misteriosa parecida a un dinosaurio habita las profundidades del Lago Nahuel Huapi. Los pescadores juran haberlo visto emerger en noches de luna llena...',
+   leyendaEn:'The Nahuelito — a mysterious dinosaur-like creature inhabits Nahuel Huapi Lake\'s depths. Fishermen swear they\'ve seen it emerge on full moon nights...',
+   hoteles:[
+     {name:'Hotel Llao Llao',stars:'⭐⭐⭐⭐⭐',cat:'El más icónico de la Patagonia',booking:'Llao+Llao+Bariloche'},
+     {name:'Cacique Inacayal Lake',stars:'⭐⭐⭐⭐',cat:'Frente al lago',booking:'Cacique+Inacayal+Bariloche'},
+     {name:'Hotel Tres Reyes',stars:'⭐⭐⭐⭐',cat:'Clásico del centro',booking:'Hotel+Tres+Reyes+Bariloche'},
+     {name:'Hostería Tirol',stars:'⭐⭐⭐',cat:'Estilo alpino',booking:'Hosteria+Tirol+Bariloche'},
+     {name:'Camping Petunia',stars:'🏕️',cat:'Orillas del lago',booking:'Camping+Bariloche'},
+   ],
+   restos:['La Marmite — Fondue y raclette','El Boliche de Alberto — Asado patagónico','Casita Suiza — Chocolate artesanal','Cervecería Blest — Vista al lago','Colonia Suiza — Curanto miércoles y domingos'],
+   subdestinos:[
+     {name:'Cerro Campanario',emoji:'🏔️',img:'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400&q=75',dif:'Fácil',entrada:'Paga',dist:'17 km',dur:'2-3 hs',tagline:'National Geographic: una de las mejores vistas del mundo',desc:'Desde su cima se ven el Nahuel Huapi, Lago Moreno, Cerro Catedral y la ciudad. Subís en aerosilla (7 min) o caminando (30 min). Hay confitería en la cima.',pasos:['Tomá la Av. Bustillo hacia el OESTE unos 17 km bordeando el lago','A la derecha verás el cartel "Cerro Campanario" — entrá al estacionamiento','Podés subir en aerosilla ($3.500 aprox) o a pie por sendero de 30 min','Colectivo: línea 20 desde el centro — bajarse en el km 17 de Av. Bustillo'],transport:['🚗 Auto','🚌 Colectivo línea 20','🚲 Bicicleta'],lat:-41.10,lon:-71.43,tips:'Subí al amanecer o al atardecer para las fotos más espectaculares.'},
+     {name:'Circuito Chico',emoji:'🔄',img:'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=400&q=75',dif:'Fácil',entrada:'Gratis',dist:'65 km recorrido',dur:'Día completo',tagline:'El paseo clásico de Bariloche — 65 km de belleza',desc:'Recorrido icónico que bordea el Lago Nahuel Huapi pasando por Cerro Campanario, Hotel Llao Llao, Puerto Pañuelo y Colonia Suiza.',pasos:['Arrancá desde el Centro Cívico por la Av. Bustillo hacia el OESTE','Seguí 25 km hasta el Hotel Llao Llao pasando por Puerto Pañuelo','Continuá por la ruta 77 rodeando el Lago Moreno hasta el Punto Panorámico','Volvés por Av. Bustillo al centro completando el circuito'],transport:['🚗 Auto','🚌 Colectivo línea 20','🚲 Bicicleta'],lat:-41.06,lon:-71.55,tips:'Ideal hacerlo en un día completo. Llevá efectivo para entradas.'},
+     {name:'Isla Victoria y Bosque Arrayanes',emoji:'🌊',img:'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&q=75',dif:'Fácil',entrada:'Paga',dist:'Sale desde Puerto Pañuelo km25',dur:'Día completo',tagline:'Bosque único en el mundo con árboles color canela',desc:'El Bosque de Arrayanes es único en el mundo — árboles de corteza color canela de hasta 15 metros. Se llega en catamarán desde Puerto Pañuelo.',pasos:['Llegá a Puerto Pañuelo tomando la Av. Bustillo hasta el km 25','En colectivo: línea 20 desde el centro hasta Puerto Pañuelo','Comprás el ticket del catamarán en el puerto','El catamarán zarpa y en 30 min llegás a Isla Victoria'],transport:['🚌 Línea 20 + ⛵ Catamarán','🚗 Auto + ⛵ Catamarán'],lat:-40.98,lon:-71.42,tips:'Llegá temprano a Puerto Pañuelo para asegurar lugar. En temporada alta se llena.'},
+     {name:'Cerro Catedral',emoji:'❄️',img:'https://images.unsplash.com/photo-1491555103944-7c647fd857e6?w=400&q=75',dif:'Moderado',entrada:'Paga',dist:'19 km del centro',dur:'Día completo',tagline:'El centro de esquí más grande del hemisferio sur',desc:'Más de 70 pistas para todos los niveles. En verano ofrece trekking, telecabina y vistas increíbles desde 1.800 metros.',pasos:['Tomá la Av. Bustillo hacia el OESTE','En el km 8 doblá a la IZQUIERDA hacia Cerro Catedral','Seguí la ruta 82 unos 11 km hasta la base','Colectivo: línea 55 desde el centro hasta la base'],transport:['🚗 Auto','🚌 Colectivo línea 55'],lat:-41.17,lon:-71.45,tips:'En invierno reservá el pase con anticipación. En verano la telecabina es más económica.'},
+     {name:'Cerro Tronador',emoji:'🌋',img:'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400&q=75',dif:'Moderado',entrada:'Paga',dist:'80 km del centro',dur:'Día completo',tagline:'Volcán nevado a 3.478 mts — límite con Chile',desc:'El pico más alto de la zona. En el camino se pasa por el Lago Mascardi y la Cascada Los Alerces. El nombre viene del ruido del hielo al caer.',pasos:['Tomá la Av. Bustillo OESTE hasta Villa Mascardi (35 km)','En Villa Mascardi tomá el desvío al SUR hacia el Lago Mascardi','Seguí hasta Pampa Linda (45 km más)','IMPORTANTE: camino de MANO ÚNICA — subida 9-14hs, bajada 14-18hs'],transport:['🚗 Auto','🚌 Excursión desde Bariloche'],lat:-41.16,lon:-71.88,tips:'Atención al horario de mano única. Salí temprano para no quedar fuera del horario de subida.'},
+     {name:'Puerto Blest y Cascada Cántaros',emoji:'💧',img:'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=400&q=75',dif:'Fácil',entrada:'Paga',dist:'Sale desde Puerto Pañuelo',dur:'Día completo',tagline:'Aguas verdes de glaciar y cascadas escondidas',desc:'Navegación hasta Puerto Blest pasando por la Isla Centinela. La Cascada de los Cántaros cae desde el río. El Lago Frías tiene aguas verdes de glaciar.',pasos:['Llegá a Puerto Pañuelo por Av. Bustillo km 25','Comprás el ticket de la excursión en el puerto','El barco navega 1 hora hasta Puerto Blest','Caminata a la Cascada de los Cántaros (sendero con escalones)'],transport:['🚌 Línea 20 + ⛵ Barco','🚗 Auto + ⛵ Barco'],lat:-41.02,lon:-71.83,tips:'La caminata tiene muchos escalones. Llevá calzado cómodo.'},
+   ]},
+
+  {id:2,name:'El Bolsón',nameEn:'El Bolsón',region:'rio-negro',regionName:'Río Negro',emoji:'🌿',color:'#2D6A4F',rating:4.8,lat:-41.97,lon:-71.53,
+   img:'https://images.unsplash.com/photo-1448375240586-882707db888b?w=400&q=75',
+   tags:['Cerveza','Artesanal','Trekking','Ecológico'],
+   desc:'Municipio Ecológico declarado en 1984. Tiene un microclima especial y la mayor red de refugios de montaña de Sudamérica. Gastronomía de cordero, trucha y helados artesanales.',
+   descEn:'Ecological municipality declared in 1984. Has a special microclimate and the largest mountain refuge network in South America.',
+   info:{clima:'14°C promedio',climaEn:'57°F avg',epoca:'Todo el año',epocaEn:'Year-round',dist:'130 km de Bariloche',tipo:'Pueblo ecológico',tipoEn:'Eco village'},
+   leyenda:'El Espíritu del Piltriquitrón habita las cumbres del cerro sagrado de los mapuches. Cuando el cielo truena sobre el cerro, el Pillán está hablando...',
+   leyendaEn:'The Spirit of Piltriquitrón inhabits the peaks of the Mapuche sacred mountain. When thunder sounds over the peak, the Pillán is speaking...',
+   hoteles:[
+     {name:'Hostería La Choza',stars:'⭐⭐⭐',cat:'Cálida y familiar',booking:'Hosteria+La+Choza+El+Bolson'},
+     {name:'Apart Hotel Arrayán',stars:'⭐⭐⭐',cat:'Con cocina propia',booking:'Apart+Arrayan+El+Bolson'},
+     {name:'Hostel Los Cipreses',stars:'⭐⭐',cat:'Mochilero y social',booking:'Hostel+Cipreses+El+Bolson'},
+     {name:'Camping Río Azul',stars:'🏕️',cat:'Orillas del río turquesa',booking:'Camping+Rio+Azul+El+Bolson'},
+   ],
+   restos:['Cervecería Chelco — Cervezas artesanales únicas','Helados del Bolsón — Sabores únicos artesanales','Feria Artesanal Plaza Pagano — Gastronomía regional'],
+   subdestinos:[
+     {name:'Cabeza del Indio',emoji:'🏔️',img:'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400&q=75',dif:'Fácil',entrada:'Gratis',dist:'5 km del centro',dur:'2 hs',tagline:'Formación rocosa con vistas panorámicas increíbles',desc:'Formación rocosa erosionada que simula el perfil de una cabeza humana. Desde la cima hay vistas del Valle del Río Azul, El Bolsón y el Lago Puelo.',pasos:['Desde Plaza Pagano tomá la calle Azcuénaga hacia el oeste','Cruzá el puente sobre el Río Quemquemtreu','Seguí el camino de ripio sin desviarte','En la bifurcación: DERECHA para Cabeza del Indio','Llegás al estacionamiento — dos senderos de 20 min cada uno'],transport:['🚗 Auto','🚲 Bicicleta','🚶 Caminando'],lat:-41.98,lon:-71.59,tips:'Llevá agua y calzado cómodo. El primer sendero es más fácil.'},
+     {name:'Río Azul',emoji:'🌊',img:'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=75',dif:'Fácil',entrada:'Gratis',dist:'8 km del centro',dur:'Día completo',tagline:'Aguas turquesas para rafting, pesca y natación',desc:'Río de aguas cristalinas color turquesa que nace en la Cordillera. Ideal para rafting, canyoning, camping, pesca y trekking.',pasos:['Desde el centro tomá la calle Azcuénaga hacia el oeste','Cruzá el puente sobre el Río Quemquemtreu','En la bifurcación tomá a la IZQUIERDA (señal Camping Río Azul)','Seguí 8 km hasta el camping y acceso al río','También podés tomar "La Golondrina" desde Plaza Pagano'],transport:['🚗 Auto','🚌 La Golondrina','🚲 Bicicleta'],lat:-41.85,lon:-71.62,tips:'En verano ideal para bañarse. En otoño los colores del bosque son espectaculares.'},
+     {name:'Cascada Escondida',emoji:'💧',img:'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=400&q=75',dif:'Fácil',entrada:'Gratis',dist:'10 km del centro',dur:'1-2 hs',tagline:'Cascada de 20 metros con pozos para bañarse',desc:'Cascada de 20 metros escondida entre cipreses con pozos naturales. Rodeada del jardín botánico del INTA. Escalinatas de tronco y barandas de madera.',pasos:['Por el camino al Cerro Perito Moreno desde el centro','Rodeando la Loma del Medio tomá a la IZQUIERDA','Pasás por el Jardín Botánico del INTA (vale parar)','Estacionamiento gratuito en la entrada'],transport:['🚗 Auto','🚲 Bicicleta'],lat:-41.96,lon:-71.57,tips:'Perfecta para niños. En verano llevá malla para los pozos naturales.'},
+     {name:'Bosque Tallado',emoji:'🌲',img:'https://images.unsplash.com/photo-1448375240586-882707db888b?w=400&q=75',dif:'Moderado',entrada:'Paga',dist:'9 km del centro',dur:'Medio día',tagline:'Esculturas únicas en el mundo en el Cerro Piltriquitrón',desc:'Esculturas talladas en árboles quemados por el incendio de 1982 a 1.400 mts. El cerro ofrece cuatriciclos, parapente y trekking. Vista al Tronador a 100 km.',pasos:['Tomá la Ruta 40 hacia el este','Seguí los carteles Cerro Piltriquitrón / Bosque Tallado','Camino de ripio apto para cualquier vehículo','Estacionamiento en la base — subís caminando 30 min'],transport:['🚗 Auto','🚕 Remis desde el centro'],lat:-41.98,lon:-71.48,tips:'Llevá ropa de abrigo — arriba hace más frío. Las esculturas son únicas en el mundo.'},
+     {name:'Lago Puelo',emoji:'💧',img:'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=400&q=75',dif:'Fácil',entrada:'Paga (P.N.)',dist:'15 km del centro',dur:'Día completo',tagline:'Aguas turquesas en Parque Nacional — se puede ir a Chile',desc:'Aguas cristalinas en Chubut a solo 15 km. Kayak, trekking, pesca y natación. Se puede hacer trekking hasta Chile.',pasos:['Tomá la Ruta Nacional 40 hacia el SUR en dirección a El Hoyo','A los 12 km verás el cartel "Lago Puelo"','Tomá el desvío a la derecha y seguí 3 km hasta el Parque Nacional','Hay colectivos desde El Bolsón — consultá en la terminal'],transport:['🚗 Auto','🚌 Colectivo desde El Bolsón'],lat:-42.08,lon:-71.62,tips:'Llegá temprano en verano — el parque tiene cupo limitado.'},
+     {name:'Cajón del Azul',emoji:'🏔️',img:'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400&q=75',dif:'Moderado',entrada:'Gratis',dist:'12 km + 3 hs trek',dur:'Día completo',tagline:'Cañón secreto — solo a pie, vale cada paso',desc:'Cañón con aguas turquesas entre montañas. 3 horas de trekking desde Wharton. El refugio al final ofrece comida y pernocte.',pasos:['Tomá la Ruta 40 al NORTE (dirección Bariloche)','Pasando el puesto policial doblá a la IZQUIERDA hacia Mallín Ahogado','A los 8 km doblá a la izquierda en el cartel "Wharton"','Dejá el auto en el cruce de la familia Wharton','3 horas de trekking por sendero marcado','Sin auto: La Golondrina desde Plaza Pagano'],transport:['🚗 Auto + 🥾 Trekking','🚌 La Golondrina + 🥾 Trekking'],lat:-41.85,lon:-71.62,tips:'Registrate en la Oficina de Montaña de Plaza Pagano antes de salir.'},
+   ]},
+
+  {id:3,name:'Isla Choele Choel',nameEn:'Choele Choel Island',region:'rio-negro',regionName:'Río Negro',emoji:'🏝️',color:'#40916C',rating:4.6,lat:-39.28,lon:-65.65,
+   img:'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&q=75',
+   tags:['Secreta','Isla','Río Negro','Tranquila'],
+   desc:'⭐ LUGAR SECRETO ⭐ Ciudad única rodeada completamente por el Río Negro. Tranquila, mágica y poco conocida por el turismo masivo. La isla de Ignacio, el creador de esta app.',
+   descEn:'⭐ SECRET PLACE ⭐ Unique city completely surrounded by the Río Negro. Peaceful, magical and little known by mass tourism.',
+   info:{clima:'16°C promedio',climaEn:'61°F avg',epoca:'Primavera-Verano',epocaEn:'Spring-Summer',dist:'300 km de Bariloche',tipo:'Ciudad isla única',tipoEn:'Unique island city'},
+   leyenda:'El Chimango, ave guardiana de la isla, trae buena suerte a quien lo mira a los ojos. Y según los pobladores más viejos, quien visita la isla queda conectado al río para siempre...',
+   leyendaEn:'The Chimango, the island\'s guardian bird, brings good luck to those who meet its gaze. And according to the oldest residents, whoever visits the island remains connected to the river forever...',
+   hoteles:[
+     {name:'Hotel Niyeu',stars:'⭐⭐⭐',cat:'El más conocido de la isla',booking:'Hotel+Niyeu+Choele+Choel'},
+     {name:'Camping Balneario Municipal',stars:'🏕️',cat:'Orillas del Río Negro — Isla 92',booking:'Camping+Choele+Choel'},
+   ],
+   restos:['Parrilla local sobre el río — Choele Choel','Heladería del centro — Artesanal','Confitería La Isla — Desayunos'],
+   subdestinos:[
+     {name:'Balneario Municipal Isla 92',emoji:'🏖️',img:'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&q=75',dif:'Fácil',entrada:'Gratis',dist:'En la isla',dur:'Día completo',tagline:'Playa de río sobre el Río Negro — agua dulce y tranquila',desc:'El balneario municipal de la isla sobre el Río Negro. Agua dulce, tranquila y sin olas. Ideal para familias. Cuenta con parrillas, sanitarios, estacionamiento y guardavidas en temporada.',pasos:['Entrás a la isla por el puente principal desde la Ruta Nacional 22','Seguís la calle principal de la ciudad hacia el río','El acceso al balneario está señalizado','Estacionamiento gratuito en la entrada'],transport:['🚗 Auto','🚶 Caminando desde el centro'],lat:-39.26,lon:-65.66,tips:'El mejor horario es por la mañana antes de que se llene en verano. El agua del río es fresca pero agradable.'},
+     {name:'Puente sobre el Río Negro',emoji:'🌉',img:'https://images.unsplash.com/photo-1531761535209-83234b894f77?w=400&q=75',dif:'Fácil',entrada:'Gratis',dist:'Acceso a la isla',dur:'30 min',tagline:'El ingreso único a la isla — foto obligatoria',desc:'El puente que conecta la isla con la Ruta Nacional 22 ofrece una vista única de cómo el Río Negro rodea completamente la ciudad. Foto obligatoria al atardecer.',pasos:['Desde la RN 22 el puente es el único acceso a la isla','Parás a la orilla del puente para la foto','Al atardecer los colores sobre el río son espectaculares'],transport:['🚗 Auto','🚶 Caminando'],lat:-39.28,lon:-65.64,tips:'El atardecer desde el puente con el río de fondo es una de las mejores fotos de la zona.'},
+   ]},
+
+  {id:4,name:'Las Grutas',nameEn:'Las Grutas',region:'rio-negro',regionName:'Río Negro',emoji:'🏖️',color:'#E67E22',rating:4.7,lat:-40.82,lon:-65.1,
+   img:'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&q=75',
+   tags:['Playa','Ballenas','Mar','Aguas cálidas'],
+   desc:'El balneario más famoso de la Patagonia. Aguas que alcanzan los 25°C en verano — las más cálidas de la costa argentina. Ballenas francas de agosto a octubre. 9 bajadas numeradas.',
+   descEn:'The most famous beach resort in Patagonia. Waters reaching 25°C in summer — the warmest on the Argentine coast. Southern right whales from August to October.',
+   info:{clima:'24°C verano',climaEn:'75°F summer',epoca:'Nov-Mar / Ago-Oct ballenas',epocaEn:'Nov-Mar / Aug-Oct whales',dist:'430 km de Bariloche',tipo:'Resort playero',tipoEn:'Beach resort'},
+   leyenda:'Los pescadores más viejos hablan de La Luz Mala que aparece sobre el mar en noches de tormenta. Una luz azulada que se mueve sola sobre las olas... el alma de un marinero perdido en el Golfo San Matías.',
+   leyendaEn:'The oldest fishermen speak of the Evil Light that appears over the sea on stormy nights. A bluish light that moves alone over the waves... the soul of a sailor lost in the San Matías Gulf.',
+   hoteles:[
+     {name:'Casino y Hotel del Río',stars:'⭐⭐⭐⭐',cat:'El más completo de Las Grutas',booking:'Casino+Hotel+Rio+Las+Grutas'},
+     {name:'Hotel Mirador del Golfo',stars:'⭐⭐⭐',cat:'Vista panorámica al mar',booking:'Mirador+Golfo+Las+Grutas'},
+     {name:'Complejo Brisas Místicas',stars:'⭐⭐⭐',cat:'Cabañas frente al mar',booking:'Brisas+Misticas+Las+Grutas'},
+     {name:'Hotel Pilmayquen',stars:'⭐⭐⭐',cat:'Céntrico y familiar',booking:'Pilmayquen+Las+Grutas'},
+   ],
+   restos:['Marisquería El Puerto — Mariscos frescos','Parador Bajada 3 — Con vista al mar y ballenas','Parrilla El Faro — Asado y mariscos','Peatonal — Artesanos, heladerías y bares'],
+   subdestinos:[
+     {name:'Las 9 Bajadas',emoji:'🌊',img:'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&q=75',dif:'Fácil',entrada:'Gratis',dist:'En la ciudad',dur:'Libre',tagline:'Cada bajada con su estilo — la 3 y 4 son las más animadas',desc:'Las Grutas tiene 9 bajadas numeradas al mar. La 1 tiene piletones naturales. La 3 es donde salen las excursiones de ballenas. La 4 es la más animada. La 7 tiene vóley y toboganes.',pasos:['Todas las bajadas están señalizadas sobre la calle principal','Bajada 1: piletones naturales — ideal para snorkel','Bajada 3: salida de excursiones de ballenas (Ago-Oct)','Bajada 4: la más animada con paradores y música','Bajada 7: canchas de vóley y toboganes al mar'],transport:['🚶 Caminando'],lat:-40.82,lon:-65.1,tips:'La Bajada 3 es el lugar donde salen las excursiones para ver ballenas francas.'},
+     {name:'Piedras Coloradas',emoji:'🟤',img:'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&q=75',dif:'Fácil',entrada:'Gratis',dist:'5 km del centro',dur:'Medio día',tagline:'Playa tranquila con rocas rojizas de 500 millones de años',desc:'Playa con formaciones rocosas rojizas del período Precámbrico. Se pueden encontrar fósiles. Las formaciones crean piletas naturales en la bajamar. Sin paradores — llevá todo.',pasos:['Desde el centro tomá la Av. San Antonio hacia el sur','Pasás por el barrio Los Pulperos (podés comprar pulpo fresco)','El camino de acceso final es de ripio — apto para cualquier auto','También podés llegar caminando por la orilla desde la Bajada 9 (30-40 min)'],transport:['🚗 Auto','🚶 Caminando por la orilla'],lat:-40.83,lon:-65.08,tips:'En época de ballenas (Ago-Oct) se pueden ver pasar desde la playa. Llevá agua.'},
+     {name:'Salinas del Gualicho',emoji:'🧂',img:'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=75',dif:'Fácil',entrada:'Paga (excursión)',dist:'60 km del centro',dur:'Día completo con atardecer',tagline:'Caminar sobre sal pura — como caminar en la luna',desc:'Salina enorme formada por evaporación. La sal es tan blanca y reflectante que parece nieve. Solo en excursión organizada. La excursión nocturna incluye cena con vino y telescopio.',pasos:['No se puede ir por cuenta propia — solo en excursión organizada','Consultá en la Oficina de Turismo de Las Grutas','El recorrido es por la Ruta Provincial 2 unos 60 km, luego 17 km de ripio','La excursión dura 6 horas incluyendo el atardecer y cena'],transport:['🚌 Solo en excursión organizada'],lat:-40.52,lon:-65.43,tips:'La excursión nocturna con telescopio es increíble. Llevá ropa abrigada aunque sea verano.'},
+     {name:'Parque Subacuático Don Félix',emoji:'🤿',img:'https://images.unsplash.com/photo-1519046904884-53103b34b206?w=400&q=75',dif:'Moderado',entrada:'Paga',dist:'Frente a las playas',dur:'2-3 hs',tagline:'4 barcos hundidos forman arrecifes artificiales',desc:'Creado en 2007 con 4 embarcaciones hundidas a 22-24 metros. Aguas transparentes hacen de Las Grutas uno de los mejores lugares para bucear. Hay bautismo para principiantes.',pasos:['Contactá una escuela de buceo en el centro de Las Grutas','Las salidas parten desde la Bajada 3','Para principiantes: bautismo submarino sin certificación','Para avanzados: presentá tu certificación PADI'],transport:['🤿 Escuelas de buceo en el centro'],lat:-40.82,lon:-65.1,tips:'Las aguas pueden llegar a 20°C en verano. El traje lo alquilan en las escuelas.'},
+     {name:'Punta Perdices',emoji:'🦅',img:'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&q=75',dif:'Fácil',entrada:'Gratis',dist:'73 km del centro',dur:'Día completo',tagline:'Playa solitaria — única en Argentina donde el sol se pone en el mar',desc:'Una de las playas más vírgenes del Golfo San Matías. La única playa argentina donde se puede ver la puesta de sol sobre el mar. Solo dos paradores. Ideal para pesca y aves.',pasos:['Tomá la Ruta Provincial 2 hacia el SUR','Seguí unos 70 km bordeando el golfo','En el cartel "Punta Perdices" tomá el desvío hacia el mar','El último tramo es camino de tierra — apto con buen tiempo'],transport:['🚗 Auto (imprescindible)'],lat:-41.05,lon:-64.92,tips:'Salí temprano. Llevá todo lo necesario ya que casi no hay servicios. Impresionante para fotografía.'},
+   ]},
+
+  {id:5,name:'San Martín de los Andes',nameEn:'San Martín de los Andes',region:'neuquen',regionName:'Neuquén',emoji:'⛷️',color:'#2C3E50',rating:4.9,lat:-40.16,lon:-71.36,
+   img:'https://images.unsplash.com/photo-1551632811-561732d1e306?w=400&q=75',
+   tags:['Esquí','Lagos','7 Lagos','Lujo'],
+   desc:'Considerada la ciudad más elegante de la Patagonia. Ubicada a orillas del Lago Lácar dentro del Parque Nacional Lanín. En invierno gira en torno al Cerro Chapelco. En verano paraíso del trekking y la pesca.',
+   descEn:'Considered the most elegant city in Patagonia. Located on the shores of Lake Lácar in Lanín National Park.',
+   info:{clima:'9°C promedio',climaEn:'48°F avg',epoca:'Todo el año',epocaEn:'Year-round',dist:'160 km de Bariloche',tipo:'Ciudad premium',tipoEn:'Premium city'},
+   leyenda:'Los Pehuenches decían que en noches de viento sur, cuando el Lago Lácar está en calma absoluta, se escuchan tambores desde las profundidades. Son los guerreros ancestrales que duermen en el fondo del lago...',
+   leyendaEn:'The Pehuenches said that on south wind nights, when Lake Lácar is absolutely calm, drums can be heard from the depths. They are the ancestral warriors sleeping at the bottom of the lake...',
+   hoteles:[
+     {name:'Hotel Chapelco Ski Resort',stars:'⭐⭐⭐⭐⭐',cat:'En la montaña — el más exclusivo',booking:'Chapelco+Ski+Resort+San+Martin'},
+     {name:'Hotel Bahía de San Martín',stars:'⭐⭐⭐⭐',cat:'Frente al Lago Lácar',booking:'Hotel+Bahia+San+Martin+Andes'},
+     {name:'Hostería Anay',stars:'⭐⭐⭐',cat:'Cálida y familiar',booking:'Hosteria+Anay+San+Martin+Andes'},
+     {name:'Hostería La Cheminée',stars:'⭐⭐⭐',cat:'Estilo europeo',booking:'Hosteria+Cheminee+San+Martin'},
+     {name:'Camping Catritre',stars:'🏕️',cat:'Orillas del lago',booking:'Camping+Catritre+San+Martin'},
+   ],
+   restos:['La Reserva — Alta gastronomía patagónica','El Regional — Trucha y cordero','Casa de Té Arrayán — Vista al lago','Chocolatería Del Turista — Artesanal'],
+   subdestinos:[
+     {name:'Cerro Chapelco',emoji:'❄️',img:'https://images.unsplash.com/photo-1491555103944-7c647fd857e6?w=400&q=75',dif:'Moderado',entrada:'Paga',dist:'20 km del centro',dur:'Día completo',tagline:'29 pistas de esquí de nivel internacional',desc:'Centro de esquí creado en 1970. 29 pistas para todos los niveles. En verano telecabina, trekking y vistas panorámicas desde la cima.',pasos:['Tomá la Ruta 40 al sur bordeando el Lago Lácar','En la primera rotonda seguí por la Cuesta Juez Quiroga (RP 19) a la IZQUIERDA','Seguí 15 km hasta la base del Chapelco','Taxi o transfer desde el centro disponible'],transport:['🚗 Auto','🚕 Taxi/Transfer'],lat:-40.27,lon:-71.28,tips:'Consultá la fecha de apertura — generalmente fines de junio. En verano la telecabina es más económica.'},
+     {name:'Mirador Arrayanes',emoji:'🌄',img:'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=75',dif:'Fácil',entrada:'Gratis',dist:'5 km del centro',dur:'1-2 hs',tagline:'Vista panorámica de la ciudad, el lago y la cordillera',desc:'Uno de los miradores más espectaculares. Vista completa de la ciudad, el Lago Lácar y la Cordillera. Hay una Casa de Té histórica a metros.',pasos:['Tomá la Ruta 40 hacia el SUR','A los 3 km tomá el desvío a la IZQUIERDA (RP 19)','Al comenzar la subida tomá a la IZQUIERDA hacia el Mirador','A pie: subís por el sendero paralelo a la Ruta 40 (45 min)'],transport:['🚗 Auto','🚶 Caminando (45 min)'],lat:-40.18,lon:-71.37,tips:'Ideal al atardecer para ver encenderse las luces de la ciudad.'},
+     {name:'Villa Quila Quina',emoji:'🌊',img:'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=400&q=75',dif:'Fácil',entrada:'Paga (P.N.)',dist:'18 km del centro',dur:'Día completo',tagline:'Villa serena a orillas del Lago Lácar — en barco o en auto',desc:'Pintoresca villa en la margen sur del Lago Lácar. Comunidad mapuche Churruhuinca, playa de arena, senderos y Cascada del Arroyo Grande.',pasos:['OPCIÓN 1 EN BARCO: embarcate en el muelle del Lago Lácar en el centro. Sale cada 30 min','OPCIÓN 2 EN AUTO: tomá la Ruta 40 sur y a los 6 km doblá a la DERECHA','Seguí 12 km de camino angosto y sinuoso hasta Quila Quina','Se paga entrada al Parque Nacional Lanín'],transport:['⛵ Catamarán desde el centro','🚗 Auto (12 km ripio)'],lat:-40.22,lon:-71.43,tips:'La opción del barco es mucho más linda. Comprá tickets en el muelle con anticipación.'},
+     {name:'Ruta de los 7 Lagos',emoji:'🗺️',img:'https://images.unsplash.com/photo-1551632811-561732d1e306?w=400&q=75',dif:'Fácil',entrada:'Gratis',dist:'160 km hasta Bariloche',dur:'Día completo',tagline:'El recorrido más icónico de la Patagonia — 7 lagos distintos',desc:'El recorrido más famoso de la Patagonia. De San Martín a Bariloche (o viceversa) pasando por 7 lagos de colores diferentes. También pasa por Villa La Angostura.',pasos:['Tomá la Ruta 40 al NORTE desde el centro','El recorrido sigue la RN 40 y luego la RN 231 hasta Bariloche','Parás en cada lago: Machónico, Falkner, Villarino, Escondido, Correntoso, Espejo y Nahuel Huapi','En micro: sale desde la terminal — podés comprar solo de ida'],transport:['🚗 Auto (recomendado)','🚌 Micro desde terminal','🚌 Excursión organizada'],lat:-40.70,lon:-71.50,tips:'Salí temprano para no apurarte. Con auto podés parar en cada mirador.'},
+     {name:'Cascada Chachín y Paso Hua Hum',emoji:'💧',img:'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=400&q=75',dif:'Fácil',entrada:'Paga (P.N.)',dist:'48 km del centro',dur:'Medio día',tagline:'Cascada de 30 metros — límite con Chile',desc:'Cascada de 30 metros en el límite con Chile. Se puede llegar por el Circuito Hua Hum (caminata 6 km) o en barco navegando el Lago Lácar.',pasos:['OPCIÓN BARCO: desde el muelle del Lago Lácar — navegás hasta Nonthué y caminás a la Cascada','OPCIÓN AUTO: tomá la RP 48 al OESTE desde el centro','Seguí 42 km hasta la intersección RP 48 y RN 234','Inicio del sendero Hua Hum (6 km de caminata señalizado)'],transport:['⛵ Barco desde el muelle','🚗 Auto + 🥾 Trekking 6 km'],lat:-40.16,lon:-71.79,tips:'La excursión en barco con almuerzo es una de las mejores de la Patagonia.'},
+     {name:'Volcán Lanín',emoji:'🌋',img:'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400&q=75',dif:'Moderado',entrada:'Paga (P.N.)',dist:'80 km del centro',dur:'Día completo',tagline:'Volcán nevado a 3.776 mts — el más bello de la Patagonia',desc:'El Volcán Lanín con 3.776 metros es uno de los volcanes más simétricos del mundo. Para la cima se necesita permiso especial. Para la base hay trekking accesible.',pasos:['Tomá la RN 234 al NORTE','A los 35 km llegás a la entrada al Parque Nacional Lanín','Continuá 45 km hasta la base del Volcán','En el camino parás en el Lago Huechulafquen (vale mucho)','Para el ascenso: registrate en la Seccional Tromen del P.N.'],transport:['🚗 Auto','🚌 Excursión desde San Martín'],lat:-39.63,lon:-71.50,tips:'Para ver el volcán sin trekking alcanza llegar a la base. Las vistas son impresionantes.'},
+   ]},
+
+  {id:6,name:'Villa Pehuenia',nameEn:'Villa Pehuenia',region:'neuquen',regionName:'Neuquén',emoji:'🌳',color:'#1B5E20',rating:4.7,lat:-38.93,lon:-71.18,
+   img:'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=400&q=75',
+   tags:['Araucarias','Lagos','Mapuche','Secreta'],
+   desc:'Aldea de montaña secreta con araucarias milenarias de hasta 1.000 años. 28 playas de lago y Volcán Batea Mahuida administrado por la Comunidad Mapuche Puel. Lago Aluminé hasta 20°C en verano.',
+   descEn:'Secret mountain village with thousand-year-old araucaria trees. 28 lake beaches and Batea Mahuida Volcano managed by the Mapuche Puel Community.',
+   info:{clima:'Hasta 20°C lago',climaEn:'Up to 68°F lake',epoca:'Oct-Abr verano / Jun-Sep nieve',epocaEn:'Oct-Apr summer / Jun-Sep snow',dist:'310 km de Neuquén capital',tipo:'Aldea mapuche',tipoEn:'Mapuche village'},
+   leyenda:'El Pombero ronda los bosques de pehuén de noche — duende guardián del bosque. Si escuchás un silbido entre los pehuenes en la oscuridad... no respondas. Quien le responde queda atrapado en el bosque para siempre.',
+   leyendaEn:'The Pombero roams the pehuén forests at night — a dwarf guardian of the forest. If you hear a whistle in the darkness... don\'t answer. Whoever responds becomes trapped in the forest forever.',
+   hoteles:[
+     {name:'Cabañas Lolen',stars:'⭐⭐⭐⭐',cat:'Cabañas premium con vista al lago',booking:'Cabanas+Lolen+Villa+Pehuenia'},
+     {name:'Hostería Pehuenia',stars:'⭐⭐⭐',cat:'Hostería boutique en el bosque',booking:'Hosteria+Pehuenia+Villa+Pehuenia'},
+     {name:'Domos Villa Pehuenia',stars:'⭐⭐⭐',cat:'Domos con vista al volcán',booking:'Domos+Villa+Pehuenia'},
+     {name:'Camping La Angostura',stars:'🏕️',cat:'Orillas del lago entre los dos lagos',booking:'Camping+Villa+Pehuenia'},
+   ],
+   restos:['Gastronomía Mapuche Comunidad Puel — Platos con piñón únicos','Parador Playa La Angostura — Vista al volcán','Paseo de los Artesanos — Productos regionales mapuches'],
+   subdestinos:[
+     {name:'Volcán Batea Mahuida',emoji:'🌋',img:'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400&q=75',dif:'Moderado',entrada:'Paga (Comunidad Mapuche)',dist:'10 km del centro',dur:'Medio día',tagline:'Volcán con laguna en el cráter — GPS: -38.891, -71.185',desc:'El Batea Mahuida significa "cuenco de agua" en mapuche. Tiene una laguna en el cráter. En invierno es el centro de esquí mapuche. En verano podés subir al cráter caminando.',pasos:['Tomá la RP 13 hacia el ESTE desde el centro','A los 10 km verás el portal de ingreso de la Comunidad Mapuche Puel','Abonás el ingreso — recibís un mapa del circuito','Con el auto llegás hasta el borde del cráter por ripio','Desde el cráter caminás a la laguna interior (30 min)'],transport:['🚗 Auto','🚕 Remis desde el centro'],lat:-38.89,lon:-71.19,tips:'En invierno es el parque de nieve mapuche. En verano llegás al cráter en auto. Vistas a volcanes de Chile.'},
+     {name:'Cinco Lagunas',emoji:'💧',img:'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=400&q=75',dif:'Fácil',entrada:'Gratis',dist:'3 km del centro',dur:'2-3 hs',tagline:'5 lagunas únicas a pie desde el centro',desc:'Recorrido mágico por cinco lagunas conectadas. La cuarta es un ojo de agua en un desierto volcánico y la quinta nace de una pared de ceniza pómez.',pasos:['Desde el centro caminá 3 km hacia el OESTE','Llegás a La Angostura — donde los dos lagos se unen','Cruzás el puente sobre el río que une los lagos','Del otro lado arranca el sendero de Cinco Lagunas (señalizado)','Recorrido circular — regresás al mismo punto (2 hs aprox)'],transport:['🚶 Caminando','🚲 Bicicleta','🚗 Auto'],lat:-38.95,lon:-71.17,tips:'Llevá calzado cómodo. Excelente para fotografía.'},
+     {name:'Lago Moquehue',emoji:'🌊',img:'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=75',dif:'Fácil',entrada:'Gratis',dist:'20 km del centro',dur:'Día completo',tagline:'Lago virgen entre bosques de araucarias y coihues',desc:'Más tranquilo y virgen que el Lago Aluminé. Aguas cristalinas y bosque prácticamente sin intervención. Ideal para pesca, kayak y camping. Playas solitarias.',pasos:['Tomá la RP 13 hacia el OESTE desde el centro','Pasás La Angostura y cruzás el puente entre los dos lagos','Seguí 17 km bordeando el Lago Moquehue','Hay accesos a playas solitarias a lo largo del camino'],transport:['🚗 Auto','🚲 Bicicleta'],lat:-38.98,lon:-71.32,tips:'Pará en cada playa que encuentres — algunas están completamente solas.'},
+     {name:'Mirador de los Lagos',emoji:'🌄',img:'https://images.unsplash.com/photo-1448375240586-882707db888b?w=400&q=75',dif:'Fácil',entrada:'Gratis',dist:'3 km de la RP 13',dur:'1-2 hs',tagline:'Vista panorámica de ambos lagos y volcanes de Chile',desc:'El punto panorámico más famoso de Villa Pehuenia. Se ven los dos lagos, la villa, La Angostura, la Cordillera y los volcanes chilenos Villarrica y Llaima.',pasos:['Tomá la RP 13 hacia el ESTE','A los 3 km (antes del Batea Mahuida) verás el desvío al mirador','Camino de ripio corto apto para cualquier auto','También accesible a pie o en bicicleta desde el centro (30 min)'],transport:['🚗 Auto','🚲 Bicicleta','🚶 Caminando'],lat:-38.92,lon:-71.20,tips:'Mejor al amanecer o al atardecer. Con día claro se ven los volcanes de Chile.'},
+     {name:'Paso Icalma a Chile',emoji:'🇨🇱',img:'https://images.unsplash.com/photo-1531761535209-83234b894f77?w=400&q=75',dif:'Fácil',entrada:'Gratis',dist:'50 km del centro',dur:'Excursión de día',tagline:'Paso fronterizo entre volcanes — entorno prehistórico',desc:'Conecta Argentina con Chile a 1.303 metros. Bosques abiertos de araucarias en terreno volcánico. Del lado chileno 36 km a Melipeuco. Horario de cruce 8 a 21 hs en verano.',pasos:['Tomá la RP 13 hacia el OESTE','Pasás La Angostura y el Batea Mahuida','Seguís por la RP 13 asfaltada hasta la frontera (50 km)','En Gendarmería trámite migratorio','Del lado chileno: RP D-095 de ripio'],transport:['🚗 Auto'],lat:-38.72,lon:-71.38,tips:'Llevá documentación en regla. En invierno consultá el estado de la ruta.'},
+   ]},
+
+  {id:7,name:'Península Valdés',nameEn:'Valdés Peninsula',region:'chubut',regionName:'Chubut',emoji:'🐋',color:'#0D47A1',rating:5.0,lat:-42.5,lon:-64.0,
+   img:'https://images.unsplash.com/photo-1559827291-72ee739d0d9a?w=400&q=75',
+   tags:['Ballenas','UNESCO','Orcas','Elefantes marinos'],
+   desc:'Declarada Patrimonio de la Humanidad UNESCO en 1999. El único lugar donde las orcas cazan por varamiento intencional. Más de 2.000 ballenas francas cada año. Una sola población: Puerto Pirámides.',
+   descEn:'UNESCO World Heritage since 1999. The only place where orcas hunt by intentional beaching. Over 2,000 southern right whales each year.',
+   info:{clima:'Frío y ventoso',climaEn:'Cold and windy',epoca:'Jul-Dic ballenas / Todo el año fauna',epocaEn:'Jul-Dec whales / Year-round wildlife',dist:'65 km de Puerto Madryn',tipo:'Reserva UNESCO',tipoEn:'UNESCO Reserve'},
+   leyenda:'Los lobos marinos de Punta Norte aúllan todos juntos al amanecer. Los pescadores dicen que no se comunican — están recordando a los marineros perdidos en los naufragios del Golfo San José...',
+   leyendaEn:'The sea lions of Punta Norte howl together at dawn. Fishermen say they\'re not communicating — they\'re remembering the sailors lost in the shipwrecks of San José Gulf...',
+   hoteles:[
+     {name:'Hotel Paradise',stars:'⭐⭐⭐⭐',cat:'Boutique sostenible — ballenas desde la ventana',booking:'Hotel+Paradise+Puerto+Piramides'},
+     {name:'Estancia Rincón Chico',stars:'⭐⭐⭐⭐',cat:'Lodge privado con biólogos',booking:'Estancia+Rincon+Chico+Peninsula+Valdes'},
+     {name:'Hostería ACA',stars:'⭐⭐⭐',cat:'La más conocida de Pirámides',booking:'Hosteria+ACA+Puerto+Piramides'},
+     {name:'Camping Municipal',stars:'🏕️',cat:'Único permitido en la Península',booking:'Camping+Puerto+Piramides'},
+   ],
+   restos:['La Covacha — Tabla de mariscos, la más pedida','Restaurant ACA — Vista al mar','Panadería de Puerto Pirámides — Las facturas más famosas de la Patagonia atlántica','Estancia Rincón Chico — Gastronomía con biólogos'],
+   subdestinos:[
+     {name:'Avistaje de Ballenas en barco',emoji:'🐋',img:'https://images.unsplash.com/photo-1568430462989-44163eb1752f?w=400&q=75',dif:'Fácil',entrada:'Paga (excursión)',dist:'Sale desde Puerto Pirámides',dur:'1.5-2 hs',tagline:'La experiencia más buscada de la Patagonia — Jun a Dic',desc:'Únicas embarcaciones autorizadas para ballenas en Argentina. Semirrígidas de hasta 12 personas o catamaranes. Las ballenas se acercan a metros del barco. Pico Sep-Nov con más de 2.000 ejemplares.',pasos:['Las excursiones salen desde la playa de Puerto Pirámides','Empresas: Hydrosport, Whales Argentina, Peke Sosa','Salen varias veces por día según clima y mareas','Hay empresa con acceso para personas con movilidad reducida','Desde Madryn: llegar a Pirámides por RN 3 y luego RP 2 (95 km total)'],transport:['⛵ Embarcación desde Pirámides'],lat:-42.57,lon:-64.29,tips:'Octubre-noviembre son los mejores meses con madres y ballenatos. Llevá ropa de abrigo.'},
+     {name:'Punta Norte — Orcas cazando',emoji:'🐋',img:'https://images.unsplash.com/photo-1559827291-72ee739d0d9a?w=400&q=75',dif:'Fácil',entrada:'Incluida en entrada P.',dist:'80 km de Puerto Pirámides',dur:'Medio día',tagline:'El único lugar del mundo donde las orcas cazan en tierra',desc:'ÚNICO lugar del mundo donde las orcas cazan lobos marinos por varamiento intencional. Entre marzo y mayo mejor época. Centro interpretativo y miradores.',pasos:['Desde Puerto Pirámides tomá el camino de ripio hacia el NORTE','Seguí 80 km por el camino interno de la Península','Llegás a la seccional de guardaparques de Punta Norte','Para las orcas: ubicáte en el mirador 3 hs ANTES de la marea alta','Consultá el horario de marea alta en Guardafaunas antes de salir'],transport:['🚗 Auto (imprescindible)','🚌 Excursión desde Madryn'],lat:-42.07,lon:-63.73,tips:'La marea alta ES CLAVE para las orcas. Sin marea alta no se acercan. Armáte de paciencia.'},
+     {name:'Caleta Valdés — Elefantes y Pingüinos',emoji:'🦭',img:'https://images.unsplash.com/photo-1568430462989-44163eb1752f?w=400&q=75',dif:'Fácil',entrada:'Incluida en entrada P.',dist:'75 km de Pirámides',dur:'Medio día',tagline:'Elefantes marinos de 4.000 kg y colonia de pingüinos',desc:'Lengua de tierra de 30 km con apostadero de elefantes marinos y pinguinera (sep-abr). En oct-nov se pueden ver orcas patrullando.',pasos:['Desde Pirámides tomá el camino de ripio hacia el SUR-ESTE','Seguí 75 km por el camino interno','En el camino pasás por Estancia San Lorenzo (pinguinera gigante)','Llegás a Caleta Valdés con restaurant y sanitarios','Hay sendero paralelo a la costa para ver los elefantes de cerca'],transport:['🚗 Auto','🚌 Excursión desde Madryn o Pirámides'],lat:-42.38,lon:-63.62,tips:'Combiná Caleta Valdés con Punta Norte en el mismo día — están en la misma dirección.'},
+     {name:'Playa El Doradillo — Gratis',emoji:'🏖️',img:'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&q=75',dif:'Fácil',entrada:'Gratis',dist:'16 km de Puerto Madryn',dur:'1-3 hs',tagline:'Ver ballenas GRATIS desde la orilla — a metros de la playa',desc:'Fuera de la Península pero uno de los mejores lugares del mundo para ver ballenas desde la costa gratis. Las ballenas se acercan a metros de la orilla en temporada.',pasos:['Desde el centro de Puerto Madryn tomá la costanera hacia el NORTE','Seguí por la Ruta Costera bordeando la bahía unos 16 km','Llegás a Playa El Doradillo — estacionamiento y miradores gratuitos','En bicicleta: hay ciclovía desde el centro'],transport:['🚗 Auto','🚲 Bicicleta (ciclovía)','🚕 Remis'],lat:-42.68,lon:-64.95,tips:'Llegá 1 hora antes de la pleamar. Es GRATIS — perfecta para complementar la excursión en barco.'},
+     {name:'Punta Tombo — 600.000 Pingüinos',emoji:'🐧',img:'https://images.unsplash.com/photo-1559827291-72ee739d0d9a?w=400&q=75',dif:'Fácil',entrada:'Paga',dist:'170 km de Puerto Madryn',dur:'Medio día',tagline:'La mayor colonia continental de pingüinos del mundo',desc:'Más de 600.000 pingüinos de Magallanes. Los senderos permiten caminar entre ellos. Los pichones nacen en noviembre. Fuera de la Península pero imprescindible.',pasos:['Tomá la RN 3 hacia el SUR desde Puerto Madryn','A los 100 km llegás a Trelew','Tomá la RP 1 hacia el SUR-ESTE','Seguí 70 km (los últimos 20 km de ripio)','Llegás a Punta Tombo — hay estacionamiento y entrada'],transport:['🚗 Auto','🚌 Excursión desde Madryn o Trelew'],lat:-44.03,lon:-65.18,tips:'Llegá antes de las 9 hs para evitar los buses. En oct-nov la experiencia es increíble.'},
+   ]},
+
+  {id:8,name:'Puerto Madryn',nameEn:'Puerto Madryn',region:'chubut',regionName:'Chubut',emoji:'🌊',color:'#1565C0',rating:4.6,lat:-42.77,lon:-65.04,
+   img:'https://images.unsplash.com/photo-1519046904884-53103b34b206?w=400&q=75',
+   tags:['Buceo','Lobos marinos','Playa','Capital del Buceo'],
+   desc:'Capital Nacional del Buceo. 10 parques submarinos con naufragios. Snorkel con lobos marinos a metros. El Doradillo gratis para ver ballenas. Gaiman — pueblo galés que visitó la Princesa Diana.',
+   descEn:'National Diving Capital. 10 underwater parks with shipwrecks. Snorkel with sea lions up close. Free El Doradillo for whale watching.',
+   info:{clima:'13°C promedio',climaEn:'55°F avg',epoca:'Todo el año',epocaEn:'Year-round',dist:'1.400 km de Bs.As.',tipo:'Ciudad costera',tipoEn:'Coastal city'},
+   leyenda:'Los buzos veteranos cuentan que a cierta profundidad en el Golfo Nuevo se escucha una melodía inexplicable. Los colonos galeses de 1865 ya hablaban de la canción de la sirena del golfo...',
+   leyendaEn:'Veteran divers report that at certain depths in Nuevo Gulf an inexplicable melody can be heard. The Welsh colonists of 1865 already spoke of the song of the gulf\'s siren...',
+   hoteles:[
+     {name:'Hotel Territorio',stars:'⭐⭐⭐⭐⭐',cat:'El más moderno — diseño de autor',booking:'Hotel+Territorio+Puerto+Madryn'},
+     {name:'Hotel Bahía Nueva',stars:'⭐⭐⭐⭐',cat:'Frente al mar',booking:'Hotel+Bahia+Nueva+Puerto+Madryn'},
+     {name:'Hotel Muelle Viejo',stars:'⭐⭐⭐⭐',cat:'Boutique en la costanera histórica',booking:'Hotel+Muelle+Viejo+Puerto+Madryn'},
+     {name:'Hostería Las Restingas',stars:'⭐⭐⭐',cat:'Cerca de la playa',booking:'Hosteria+Restingas+Puerto+Madryn'},
+     {name:'Camping ACA',stars:'🏕️',cat:'Orillas del mar',booking:'Camping+ACA+Puerto+Madryn'},
+   ],
+   restos:['La Cantina del Náutico — Mariscos y pescados, la más famosa','Mr. Fish — Cocina de mar con vista al Golfo','Placido — Alta cocina patagónica','Bodegón del Náutico — Parrilla sobre la costanera'],
+   subdestinos:[
+     {name:'Snorkel con Lobos Marinos',emoji:'🦭',img:'https://images.unsplash.com/photo-1559827291-72ee739d0d9a?w=400&q=75',dif:'Fácil',entrada:'Paga (excursión)',dist:'Sale desde la costanera',dur:'3 hs',tagline:'Nadar con lobos marinos curiosos — sin experiencia previa',desc:'Una de las experiencias más increíbles de la Patagonia. Los lobos son curiosos y se acercan solos. Grupos de máximo 8 personas. No hace falta saber bucear.',pasos:['Las operadoras están sobre la Av. Roca en la costanera','Empresas: Madryn Buceo, Aquatours, Turismo Puma, Abramar','El horario depende de la pleamar del día','Navegás 25 min hasta Punta Loma'],transport:['⛵ Embarcación desde la costanera'],lat:-42.78,lon:-65.03,tips:'Elegí snorkel sobre buceo para los lobos — misma experiencia, mucho más fácil.'},
+     {name:'Buceo en Naufragios',emoji:'🤿',img:'https://images.unsplash.com/photo-1519046904884-53103b34b206?w=400&q=75',dif:'Moderado',entrada:'Paga',dist:'Golfo Nuevo',dur:'3-4 hs',tagline:'10 parques submarinos con naufragios y arrecifes',desc:'Puerto Madryn tiene 10 parques submarinos. El naufragio del Buque Antonio Mirages a 27 metros es el más famoso. Punta Cuevas ideal para principiantes a 200 metros de la playa.',pasos:['Las operadoras de buceo están sobre la costanera Av. Roca','Para principiantes: pedí el bautismo submarino','Para buceadores: presentá tu certificación PADI','Empresas: Madryn Buceo (Bv. Brown 1900), Aquatours'],transport:['⛵ Embarcación desde la costanera'],lat:-42.77,lon:-65.03,tips:'El Antonio Mirages es la experiencia más buscada. Reservá con anticipación.'},
+     {name:'Punta Loma — Reserva de Lobos',emoji:'🦭',img:'https://images.unsplash.com/photo-1568430462989-44163eb1752f?w=400&q=75',dif:'Fácil',entrada:'Paga',dist:'15 km del centro',dur:'1-2 hs',tagline:'Primera reserva de Chubut — lobos desde miradores',desc:'Primera reserva natural de Chubut creada en 1967. Apostadero permanente de lobos marinos. Senderos y miradores que permiten acercarse a metros.',pasos:['Tomá la Av. Gales hacia el SUR desde el centro','Seguí 13 km bordeando el Golfo Nuevo','Llegás a la entrada de la Reserva Punta Loma','Abonás la entrada y recorrés los senderos'],transport:['🚗 Auto','🚕 Remis'],lat:-42.80,lon:-65.07,tips:'Mejor ir a la mañana cuando los lobos están más activos.'},
+     {name:'Playa El Doradillo — Ballenas gratis',emoji:'🐋',img:'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&q=75',dif:'Fácil',entrada:'Gratis',dist:'16 km del centro',dur:'1-3 hs',tagline:'Ver ballenas GRATIS desde la orilla',desc:'Uno de los mejores lugares del mundo para ver ballenas desde la costa gratis. También se pueden ver toninas overas (delfines únicos de la Patagonia).',pasos:['Tomá la costanera hacia el NORTE','Seguí 16 km bordeando el Golfo','Llegás a Playa El Doradillo — miradores gratuitos','En bicicleta: hay ciclovía desde el centro'],transport:['🚗 Auto','🚲 Bicicleta','🚕 Remis'],lat:-42.68,lon:-64.95,tips:'Llegá 1 hora antes de la pleamar. Llevá binoculares.'},
+     {name:'Gaiman — Pueblo Galés',emoji:'🫖',img:'https://images.unsplash.com/photo-1448375240586-882707db888b?w=400&q=75',dif:'Fácil',entrada:'Paga (casas de té)',dist:'70 km del centro',dur:'Medio día',tagline:'La Princesa Diana tomó el té aquí en 1995',desc:'El corazón de la colonia galesa en la Patagonia. Las casas de té sirven tortas negras, scones y empanadas galesas. La Princesa Diana visitó en 1995.',pasos:['Tomá la RN 3 hacia el SUR','A los 20 km tomá a la DERECHA por la RN 25 hacia el OESTE','Seguí 50 km hasta Gaiman','El centro histórico es compacto — todo a pie'],transport:['🚗 Auto','🚌 Micro desde Madryn o Trelew'],lat:-43.28,lon:-65.48,tips:'Reservá en las casas de té con anticipación. La más famosa es "Ty Nain" — más de 100 años de historia.'},
+     {name:'Ecocentro Museo del Mar',emoji:'🔬',img:'https://images.unsplash.com/photo-1559827291-72ee739d0d9a?w=400&q=75',dif:'Fácil',entrada:'Paga',dist:'Sur de la costanera',dur:'2-3 hs',tagline:'El mejor museo de fauna marina de Argentina',desc:'Uno de los mejores museos sobre ballenas y fauna marina del país. Muy recomendado antes de salir a ver los animales para entender lo que vas a ver.',pasos:['Ubicado en Julio Verne 3784 — sur de la costanera de Madryn','A pie desde el centro: 20-30 min caminando por la costanera','También en remis o bicicleta'],transport:['🚶 Caminando por la costanera','🚲 Bicicleta'],lat:-42.78,lon:-65.03,tips:'Visitalo ANTES de las excursiones para disfrutarlas mucho más.'},
+   ]},
+
+  {id:9,name:'Esquel',nameEn:'Esquel',region:'chubut',regionName:'Chubut',emoji:'🚂',color:'#4E342E',rating:4.5,lat:-42.91,lon:-71.33,
+   img:'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400&q=75',
+   tags:['La Trochita','Alerces','Esquí','Galeses'],
+   desc:'La Trochita — Monumento Histórico Nacional. Parque Nacional Los Alerces UNESCO con alerces de 3.000 años. Centro de Esquí La Hoya. Pueblo galés Trevelin a 25 km.',
+   descEn:'La Trochita — National Historic Monument. Los Alerces National Park UNESCO with 3,000-year-old alerce trees. La Hoya ski center. Welsh village Trevelin 25km away.',
+   info:{clima:'8°C promedio',climaEn:'46°F avg',epoca:'Todo el año',epocaEn:'Year-round',dist:'280 km de Bariloche',tipo:'Ciudad andina galesa',tipoEn:'Andean Welsh city'},
+   leyenda:'Los trabajadores más viejos del ferrocarril cuentan que en noches de niebla espesa se escucha el vapor de una locomotora que nadie ve. El espíritu del maquinista que murió en 1947 recorre eternamente las vías buscando completar su último viaje...',
+   leyendaEn:'The oldest railway workers report that on thick foggy nights, steam from an invisible locomotive can be heard. The spirit of the engineer who died in 1947 eternally travels the tracks seeking to complete his last journey...',
+   hoteles:[
+     {name:'Hotel Tehuelche',stars:'⭐⭐⭐⭐',cat:'El más tradicional de Esquel',booking:'Hotel+Tehuelche+Esquel'},
+     {name:'Hotel Argentino',stars:'⭐⭐⭐',cat:'Céntrico con todas las comodidades',booking:'Hotel+Argentino+Esquel'},
+     {name:'Hostería La Chacra',stars:'⭐⭐⭐',cat:'Estancia — agroturismo',booking:'Hosteria+La+Chacra+Esquel'},
+     {name:'Cabañas Don Ernesto',stars:'⭐⭐⭐',cat:'Vista al cerro — familias',booking:'Cabanas+Esquel'},
+     {name:'Camping Municipal',stars:'🏕️',cat:'Orillas del arroyo',booking:'Camping+Esquel'},
+   ],
+   restos:['La Tour D\'Argent — El más premiado, cordero y trucha','Panadería Gales al Sur — Tortas galesas auténticas','Don Chiquino — Parrilla con cordero patagónico','Helados Jauja — La heladería más famosa de la Patagonia andina'],
+   subdestinos:[
+     {name:'La Trochita — Viejo Expreso',emoji:'🚂',img:'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400&q=75',dif:'Fácil',entrada:'Paga',dist:'Estación en el centro',dur:'3 hs ida y vuelta',tagline:'Uno de los pocos trenes a vapor del mundo — desde 1922',desc:'Declarado Monumento Histórico Nacional. Locomotoras Baldwin y Henschel originales de 1922. Recorre 18 km hasta Nahuel Pan donde vive la Comunidad Mapuche-Tehuelche. En invierno con salamandras a leña.',pasos:['Estación en Av. Alvear esquina Sarmiento — centro de Esquel','Llegá UNA HORA ANTES para el Museo Ferroviario','Salida: 10:00 hs — Regreso: 13:00 hs','Reservas: +54 9 2945 335060 o latrochitaesquel@hotmail.com','También en agencias: Patagonia Verde, Diucón Viajes'],transport:['🚂 Tren desde la Estación'],lat:-42.91,lon:-71.33,tips:'Llegá temprano para el Museo. En invierno con nieve la experiencia es única.'},
+     {name:'Parque Nacional Los Alerces',emoji:'🌲',img:'https://images.unsplash.com/photo-1448375240586-882707db888b?w=400&q=75',dif:'Fácil',entrada:'Paga (P.N.)',dist:'28 km del centro',dur:'Día completo',tagline:'UNESCO — alerces de 3.000 años y 13 lagos',desc:'Patrimonio UNESCO 2017. 13 lagos y alerces de más de 3.000 años. La excursión en barco hasta "El Abuelo" — alerce de 2.600 años — es la más buscada.',pasos:['Tomá la RN 259 hacia el SUR','En el km 11 tomá a la DERECHA la RP 71 hacia Villa Futalaufquen','Seguí 17 km hasta la entrada del Parque Nacional','En Villa Futalaufquen comprás el ticket para el barco al Alerzal'],transport:['🚗 Auto','🚌 Excursión desde Esquel'],lat:-42.88,lon:-71.63,tips:'La excursión en barco al Alerzal Milenario es imprescindible. Reservá con anticipación.'},
+     {name:'Centro de Esquí La Hoya',emoji:'❄️',img:'https://images.unsplash.com/photo-1491555103944-7c647fd857e6?w=400&q=75',dif:'Moderado',entrada:'Paga',dist:'15 km del centro',dur:'Día completo',tagline:'La mejor nieve de Argentina',desc:'Pistas para todos los niveles. En verano senderismo y mountain bike. Camino completamente pavimentado.',pasos:['Tomá la Av. Fontana hacia el OESTE','Seguí por la RP 14 unos 15 km cuesta arriba','Camino totalmente asfaltado hasta la base','Transfer desde el centro disponible en temporada'],transport:['🚗 Auto','🚌 Transfer desde el centro'],lat:-42.97,lon:-71.45,tips:'Temporada de nieve generalmente desde junio. Consultá lahoya.com.ar.'},
+     {name:'Trevelin — Pueblo del Molino',emoji:'🏘️',img:'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=400&q=75',dif:'Fácil',entrada:'Gratis',dist:'25 km del centro',dur:'Medio día',tagline:'El pueblo galés más pintoresco de la Patagonia',desc:'Trevelin significa "pueblo del molino" en galés. Fundado en 1888. Molino harinero original, casas de té históricas, capillas centenarias y la tumba de Malacara (el caballo que salvó la vida a John Evans).',pasos:['Tomá la RN 259 hacia el SUR','Seguí 25 km — camino completamente asfaltado','En 30 min llegás al centro de Trevelin','También hay colectivos desde la Terminal de Esquel'],transport:['🚗 Auto','🚌 Colectivo desde terminal'],lat:-43.08,lon:-71.47,tips:'No te vayas sin tomar el té en "Nain Maggie" — más de 100 años de historia.'},
+     {name:'Laguna La Zeta',emoji:'💧',img:'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=75',dif:'Fácil',entrada:'Gratis',dist:'5 km del centro',dur:'1-2 hs',tagline:'La laguna más cercana — tranquila para relajarse',desc:'El rincón natural más cercano. Ideal para un momento de relax con vistas al cerro. Se puede pescar, caminar por la orilla y hacer picnic.',pasos:['Tomá la Av. Ameghino hacia el OESTE','Seguí 5 km por la senda vehicular señalizada','Llegás a la Laguna — estacionamiento y acceso libre','También en bicicleta desde el centro (20-25 min)'],transport:['🚗 Auto','🚲 Bicicleta','🚶 Caminando'],lat:-42.88,lon:-71.38,tips:'Perfecta para una tarde tranquila antes o después de La Trochita.'},
+   ]},
+
+  {id:10,name:'El Calafate',nameEn:'El Calafate',region:'santa-cruz',regionName:'Santa Cruz',emoji:'🧊',color:'#1B4F72',rating:5.0,lat:-50.34,lon:-72.26,
+   img:'https://images.unsplash.com/photo-1531761535209-83234b894f77?w=400&q=75',
+   tags:['Glaciar Perito Moreno','UNESCO','Trekking en hielo'],
+   desc:'Puerta al Glaciar Perito Moreno — el único glaciar del mundo que sigue creciendo mientras otros retroceden. Las bayas del calafate hacen que quien las come siempre regresa a la Patagonia.',
+   descEn:'Gateway to Perito Moreno Glacier — the only glacier in the world still growing while others retreat. Calafate berries make whoever eats them always return to Patagonia.',
+   info:{clima:'5°C promedio',climaEn:'41°F avg',epoca:'Oct-Abr verano',epocaEn:'Oct-Apr summer',dist:'2.800 km de Bs.As.',tipo:'Turismo glaciar',tipoEn:'Glacier tourism'},
+   leyenda:'Quien come las bayas azules del arbusto calafate siempre regresa a la Patagonia. Los tehuelches lo sabían. Por eso cada turista come al menos una baya antes de irse...',
+   leyendaEn:'Whoever eats the blue calafate berries always returns to Patagonia. The Tehuelches knew this. That\'s why every tourist eats at least one berry before leaving...',
+   hoteles:[
+     {name:'Los Notros Lodge',stars:'⭐⭐⭐⭐⭐',cat:'El más exclusivo — frente al glaciar',booking:'Los+Notros+El+Calafate'},
+     {name:'Hotel Posada Los Alamos',stars:'⭐⭐⭐⭐',cat:'El más tradicional de El Calafate',booking:'Posada+Los+Alamos+El+Calafate'},
+     {name:'Hotel Kau Yatun',stars:'⭐⭐⭐⭐',cat:'Estancia histórica reconvertida',booking:'Kau+Yatun+El+Calafate'},
+     {name:'Hostería Schilling',stars:'⭐⭐⭐',cat:'Céntrica y cómoda',booking:'Hosteria+Schilling+El+Calafate'},
+     {name:'Camping Municipal',stars:'🏕️',cat:'Orillas del Lago Argentino',booking:'Camping+El+Calafate'},
+   ],
+   restos:['Pura Vida — La mejor cocina patagónica','La Tablita — Asado y cordero, el más clásico','Casimiro Biguá — Mariscos y trucha','Helados Aquarela — Helado de calafate obligatorio'],
+   subdestinos:[
+     {name:'Glaciar Perito Moreno — Pasarelas',emoji:'🧊',img:'https://images.unsplash.com/photo-1531761535209-83234b894f77?w=400&q=75',dif:'Fácil',entrada:'Paga (P.N.)',dist:'80 km del centro',dur:'4-7 hs',tagline:'5.5 km de pasarelas frente al glaciar más famoso del mundo',desc:'5 km de ancho y 60 metros de altura. Las pasarelas tienen 5.5 km en distintos niveles con balcones. Podés escuchar y ver los desprendimientos de hielo. Horario verano: 8 a 18 hs.',pasos:['Tomá la RN 11 hacia el OESTE — 80 km totalmente pavimentados','En el km 50 entrás al Parque Nacional Los Glaciares','Seguí los carteles hacia el Glaciar Perito Moreno','Colectivo desde la Terminal de El Calafate — duración 1h 20min','En excursión: salida 9:00 hs desde el hotel — regreso 17:00 hs'],transport:['🚗 Auto','🚌 Colectivo desde terminal','🚌 Excursión organizada'],lat:-50.50,lon:-73.14,tips:'Llegá entre las 9 y 10 hs para disfrutar sin multitudes.'},
+     {name:'Minitrekking sobre el Glaciar',emoji:'🥾',img:'https://images.unsplash.com/photo-1502481851512-e9e2529bfbf9?w=400&q=75',dif:'Moderado',entrada:'Paga',dist:'80 km + navegación',dur:'10 hs totales',tagline:'Caminá sobre el hielo con crampones — túneles azules',desc:'La experiencia más buscada de El Calafate. Incluye navegación por el Canal de Témpanos y caminata de 2 horas sobre el glaciar. Al final whisky con hielo del glaciar. Para mayores de 8 años.',pasos:['Las excursiones salen desde El Calafate con traslado incluido','Operadora oficial: Hielo y Aventura','No podés hacer Minitrekking por cuenta propia','Reservá con 2-3 días de anticipación'],transport:['🚌 Solo con operadora Hielo y Aventura'],lat:-50.50,lon:-73.14,tips:'Hielo y Aventura es la única operadora oficial. El whisky con hielo del glaciar al final es único.'},
+     {name:'Navegación Glaciares Upsala y Spegazzini',emoji:'🚢',img:'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=75',dif:'Fácil',entrada:'Paga',dist:'Sale desde Puerto Bandera (47 km)',dur:'Día completo',tagline:'Upsala tiene 50 km de largo — uno de los más grandes de Sudamérica',desc:'El Glaciar Upsala es uno de los más grandes de Sudamérica con 50 km de largo. El Spegazzini tiene la pared más alta accesible (135 metros). Navegación entre témpanos gigantes.',pasos:['Las excursiones salen desde Puerto Bandera a 47 km de El Calafate','Tomá la RN 11 hacia el OESTE y a los 47 km está Puerto Bandera','Las operadoras incluyen el traslado desde El Calafate','Operadora principal: Fernández Campbell'],transport:['🚌 Excursión con traslado','🚗 Auto hasta Puerto Bandera + ⛵ barco'],lat:-50.33,lon:-72.92,tips:'Esta excursión dura todo el día. Llevá vianda o comprá en el barco.'},
+     {name:'Estancia Cristina',emoji:'🏡',img:'https://images.unsplash.com/photo-1448375240586-882707db888b?w=400&q=75',dif:'Moderado',entrada:'Paga',dist:'Sale desde Puerto Bandera',dur:'Día completo o pernocte',tagline:'Estancia centenaria 1914 — solo accesible en barco',desc:'La más remota y espectacular del Parque. Fundada en 1914 por la familia Masters. Solo accesible en barco. Trekking con vistas al Upsala, museo histórico y gastronomía de estancia.',pasos:['Solo en barco desde Puerto Bandera (47 km de El Calafate)','El barco sale temprano — traslado incluido desde el hotel','Reservá con bastante anticipación — cupos muy limitados','Web: estanciacristina.com'],transport:['⛵ Solo en barco — excursión organizada'],lat:-50.17,lon:-73.08,tips:'La experiencia de dormir en la estancia dentro del Parque es única en el mundo.'},
+   ]},
+
+  {id:11,name:'El Chaltén',nameEn:'El Chaltén',region:'santa-cruz',regionName:'Santa Cruz',emoji:'🏔️',color:'#B71C1C',rating:4.9,lat:-49.33,lon:-72.89,
+   img:'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400&q=75',
+   tags:['Fitz Roy','Trekking','Cerro Torre','Capital del Trekking'],
+   desc:'Capital Nacional del Trekking — 1.500 habitantes a los pies del Fitz Roy. Todos los senderos parten desde el pueblo sin excursión ni guía. El viento es el enemigo número uno — consultá Windguru antes de salir.',
+   descEn:'National Trekking Capital — 1,500 inhabitants at the foot of Fitz Roy. All trails start from the village without tours or guides. Wind is enemy number one — check Windguru before heading out.',
+   info:{clima:'Muy frío y ventoso',climaEn:'Very cold and windy',epoca:'Nov-Mar verano',epocaEn:'Nov-Mar summer',dist:'220 km de El Calafate',tipo:'Pueblo mochilero',tipoEn:'Backpacker village'},
+   leyenda:'Los Aonikenk llamaban al Cerro Fitz Roy Chaltén — montaña humeante. Cuando el Chaltén se despeja completamente algo importante va a suceder en el mundo. Es tan raro verlo despejado que los turistas se agolpan cuando el pronóstico anuncia cielo claro...',
+   leyendaEn:'The Aonikenk called Fitz Roy Chaltén — smoking mountain. When it fully clears, something important will happen in the world. It\'s so rare to see it clear that tourists rush to the trails when forecasts announce clear skies...',
+   hoteles:[
+     {name:'Hostería El Puma',stars:'⭐⭐⭐⭐',cat:'La más premiada del pueblo',booking:'Hosteria+El+Puma+El+Chalten'},
+     {name:'Aguas Arriba Lodge',stars:'⭐⭐⭐⭐',cat:'Lodge exclusivo en el río',booking:'Aguas+Arriba+Lodge+El+Chalten'},
+     {name:'Hostería Nothofagus',stars:'⭐⭐⭐',cat:'Vista al Fitz Roy',booking:'Hosteria+Nothofagus+El+Chalten'},
+     {name:'Condor de los Andes',stars:'⭐⭐',cat:'Céntrico y económico',booking:'Condor+Andes+El+Chalten'},
+     {name:'Camping Madsen',stars:'🏕️ Gratis',cat:'A 500m del centro — gratuito',booking:'Camping+El+Chalten'},
+   ],
+   restos:['Patagonicus — Pizza y regional, el más famoso','La Tapera — Cocina de montaña, caldos y guisos','Cervecería El Chaltén — La mejor cerveza post-trekking','Domo Blanco — Helados con vista al Fitz Roy'],
+   subdestinos:[
+     {name:'Laguna de los Tres — Fitz Roy',emoji:'🏔️',img:'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=75',dif:'Difícil',entrada:'Paga (P.N.)',dist:'11 km desde el centro',dur:'8-9 hs ida y vuelta',tagline:'El sendero más épico de Argentina — laguna turquesa al pie del Fitz Roy',desc:'22 km ida y vuelta. El tramo final: 90 min de subida empinada (+400 metros de desnivel). La recompensa es una laguna turquesa con el Fitz Roy de fondo. Al amanecer el Fitz Roy se tiñe de rojo.',pasos:['El sendero arranca al final de la Av. San Martín — norte del pueblo','Primeros 4 km: ascenso suave con vistas del Valle de Las Vueltas','En el km 7: Laguna Capri — primer mirador del Fitz Roy (descanso ideal)','En el km 8: Camping Poincenot — reponete antes de la subida final','El último km: 400 metros de desnivel empinado sobre rocas hasta la laguna'],transport:['🥾 Solo caminando desde el pueblo'],lat:-49.28,lon:-72.96,tips:'Salí ANTES de las 7 hs para ver el amanecer. Llevá bastones — ayudan en la bajada. Consultá el clima en Windguru.'},
+     {name:'Laguna Torre — Cerro Torre',emoji:'🗻',img:'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400&q=75',dif:'Moderado',entrada:'Paga (P.N.)',dist:'10 km desde el centro',dur:'6-7 hs ida y vuelta',tagline:'Más fácil que el Fitz Roy — igual de espectacular',desc:'20 km ida y vuelta. Llegás a la laguna con icebergs al pie del Cerro Torre. El Mirador Maestri permite ver el Glaciar Torre de cerca.',pasos:['Hay DOS cabeceras en el pueblo — ambas se unen a 5 min','Opción 1: desde el Centro de Visitantes del P.N. (norte del pueblo)','Opción 2: desde la Av. del Libertador (sur del pueblo)','Anotáte en el Centro de Visitantes antes de salir — obligatorio'],transport:['🥾 Solo caminando desde el pueblo'],lat:-49.32,lon:-72.98,tips:'Es el sendero ideal para el primer día. Mucho más accesible que el Fitz Roy.'},
+     {name:'Chorrillo del Salto',emoji:'💧',img:'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=400&q=75',dif:'Fácil',entrada:'Paga (P.N.)',dist:'4 km del centro',dur:'1.5 hs',tagline:'Cascada de 20 metros — perfecta para el primer día',desc:'La cascada más accesible. A solo 4 km del centro por sendero llano entre bosques. Ideal para el primer día — te familiarizás con el Parque.',pasos:['Seguí la RN 23 hacia el NORTE desde el centro','A los 4 km verás el cartel del sendero a la DERECHA','Sendero completamente llano — 30 minutos hasta la cascada','También en bicicleta por la banquina de la RN 23'],transport:['🥾 Caminando','🚲 Bicicleta','🚗 Auto'],lat:-49.30,lon:-72.88,tips:'Perfecta para la tarde de llegada. Guardá energías para el Fitz Roy al día siguiente.'},
+     {name:'Mirador de los Cóndores',emoji:'🦅',img:'https://images.unsplash.com/photo-1551632811-561732d1e306?w=400&q=75',dif:'Fácil',entrada:'Gratis',dist:'1 km del centro',dur:'1 hs',tagline:'Vista panorámica del pueblo y el Fitz Roy — a 10 minutos',desc:'El mirador más cercano. Vista de todo el pueblo, el valle y el Fitz Roy de fondo. En 20 minutos de caminata desde el centro. Suelen verse cóndores andinos.',pasos:['Subís por la calle Lago del Desierto hacia el ESTE','En 10 min llegás al inicio del sendero señalizado','20 min más de subida moderada hasta el mirador','Acceso completamente gratuito y sin registro'],transport:['🥾 Caminando desde el centro'],lat:-49.33,lon:-72.89,tips:'Ideal al atardecer cuando el Fitz Roy se ilumina con tonos rojizos.'},
+     {name:'Lago del Desierto',emoji:'🌊',img:'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=400&q=75',dif:'Fácil',entrada:'Paga',dist:'37 km del centro',dur:'Día completo',tagline:'Lago virgen — portal a los Campos de Hielo y Chile',desc:'Aguas verdes esmeralda alimentadas por deshielos. Punto de partida para los Campos de Hielo Sur y la conexión con Chile por Villa O\'Higgins. Hay catamarán.',pasos:['Seguí la RP 23 hacia el NORTE desde El Chaltén','Son 37 km de ripio apto para cualquier vehículo en buen tiempo','También hay remis y excursiones desde el pueblo','En el lago: catamarán para cruzar hasta la orilla norte','Desde la orilla norte: trekking de 4 hs hasta la frontera con Chile'],transport:['🚗 Auto (ripio)','🚕 Remis desde El Chaltén'],lat:-49.05,lon:-72.82,tips:'El cruce a Chile por Villa O\'Higgins es una de las aventuras más épicas de la Patagonia.'},
+   ]},
+
+  {id:12,name:'Ushuaia',nameEn:'Ushuaia',region:'tierra-del-fuego',regionName:'Tierra del Fuego',emoji:'🌎',color:'#2C3E50',rating:4.9,lat:-54.80,lon:-68.30,
+   img:'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=400&q=75',
+   tags:['Fin del Mundo','Canal Beagle','Pingüinos','Tren del Fin del Mundo'],
+   desc:'La ciudad más austral del mundo a 54° de latitud sur. Rodeada de montañas nevadas y el Canal Beagle. Fue un presidio infame hasta 1947. El cartel de la RN 3 marca 17.848 km hasta Alaska.',
+   descEn:'The world\'s southernmost city at 54° south latitude. Surrounded by snowy mountains and the Beagle Channel. RN 3 sign marks 17,848 km to Alaska.',
+   info:{clima:'4°C promedio',climaEn:'39°F avg',epoca:'Nov-Mar verano austral',epocaEn:'Nov-Mar austral summer',dist:'3.300 km de Bs.As.',tipo:'Ciudad más austral del mundo',tipoEn:'World\'s southernmost city'},
+   leyenda:'Los Yaganes creían que las almas de sus ancestros vivían en las profundidades del Canal Beagle. Cuando la niebla cae sobre el agua, se escuchan voces en yagán — la lengua más austral del mundo, casi extinta. El último hablante nativo, Cristina Calderón, nació en 1928...',
+   leyendaEn:'The Yaghan people believed their ancestors\' souls lived in the depths of the Beagle Channel. When fog falls over the water, voices in Yaghan can be heard — the world\'s southernmost language, nearly extinct. The last native speaker, Cristina Calderón, was born in 1928...',
+   hoteles:[
+     {name:'Las Hayas Ushuaia Resort',stars:'⭐⭐⭐⭐⭐',cat:'El más icónico — vista panorámica al Canal',booking:'Las+Hayas+Resort+Ushuaia'},
+     {name:'Los Cauquenes Resort',stars:'⭐⭐⭐⭐⭐',cat:'Boutique sobre el Canal Beagle',booking:'Los+Cauquenes+Resort+Ushuaia'},
+     {name:'Hotel Albatros',stars:'⭐⭐⭐⭐',cat:'Frente al mar — excelente ubicación',booking:'Hotel+Albatros+Ushuaia'},
+     {name:'Hotel Tierra del Fuego',stars:'⭐⭐⭐',cat:'Clásico del centro',booking:'Hotel+Tierra+del+Fuego+Ushuaia'},
+     {name:'Hostería Aonikenk',stars:'⭐⭐⭐',cat:'Recomendada — relación precio/calidad',booking:'Hosteria+Aonikenk+Ushuaia'},
+   ],
+   restos:['Chez Manu — El mejor de Ushuaia, cocina francesa patagónica con vista al Canal','Volver — Centolla y mariscos, el más tradicional','Kaupé — Cocina fueguina de autor','La Rueda — Parrilla con cordero al asador','Ramos Generales — Café histórico con tortas caseras'],
+   subdestinos:[
+     {name:'Cartel RN 3 Fin del Mundo',emoji:'🪧',img:'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=400&q=75',dif:'Fácil',entrada:'Paga (P.N.)',dist:'22 km del centro por RN 3',dur:'Foto + paseo 1 hs',tagline:'17.848 km hasta Alaska — la foto más icónica de Argentina',desc:'El cartel del Fin de la Ruta Nacional 3 en Bahía Lapataia dentro del Parque Nacional Tierra del Fuego. Marca 17.848 km a Alaska, 3.079 km a Buenos Aires y unos 1.000 km a la Antártida.',pasos:['Tomá la RN 3 hacia el OESTE desde el centro de Ushuaia','A los 12 km entrás al Parque Nacional Tierra del Fuego','Seguís la RN 3 dentro del Parque otros 10 km','Llegás a Bahía Lapataia donde está el cartel del Fin del Mundo','En colectivo: desde el centro salen servicios regulares al Parque'],transport:['🚗 Auto','🚌 Colectivo desde el centro'],lat:-54.87,lon:-68.55,tips:'La foto con el cartel es obligatoria. Llegá temprano para hacerla sin gente.'},
+     {name:'Navegación Canal Beagle',emoji:'🚢',img:'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=400&q=75',dif:'Fácil',entrada:'Paga',dist:'Puerto Turístico — centro',dur:'3 hs',tagline:'Faro Les Éclaireurs, lobos marinos y cormoranes',desc:'La excursión más popular. El catamarán navega hasta el Faro Les Éclaireurs. Se pasa por la Isla de los Lobos, Isla de los Pájaros y el Archipiélago Bridges.',pasos:['El Puerto Turístico está en la Av. Maipú — centro de Ushuaia','Comprás ticket en agencias de la Av. San Martín o en el puerto','Salidas varias veces por día — consultá horarios','Empresas: Piratour, Rumbo Sur, Tres Marías','La tasa de puerto se paga aparte en la boletería'],transport:['⛵ Catamarán desde el Puerto Turístico'],lat:-54.81,lon:-68.30,tips:'Reservá con anticipación en temporada alta. La excursión de tarde tiene mejor luz.'},
+     {name:'Tren del Fin del Mundo',emoji:'🚂',img:'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=400&q=75',dif:'Fácil',entrada:'Paga',dist:'8 km del centro por RN 3',dur:'Día completo con Parque',tagline:'El tren que usaban los presos — audio en 9 idiomas',desc:'El Ferrocarril Austral Fueguino recorre el valle del Río Pipo hasta el Parque Nacional. Audio en 9 idiomas cuenta la historia del presidio. Salidas: 9:30 y 15:00 hs todos los días.',pasos:['La Estación está en la RN 3 km 3042 — a 8 km OESTE del centro','Tomá la RN 3 hacia el OESTE 8 km','Remis o taxi desde el centro: 15-20 min','Comprá tickets en la web trendelfindelmundo.com.ar (evitá hacer cola)'],transport:['🚕 Remis/Taxi desde el centro','🚌 Excursión con traslado'],lat:-54.83,lon:-68.42,tips:'Comprá el ticket anticipado en la web. El servicio VIP tiene vagón privado para 8 personas.'},
+     {name:'Glaciar Martial y Aerosilla',emoji:'🧊',img:'https://images.unsplash.com/photo-1531761535209-83234b894f77?w=400&q=75',dif:'Moderado',entrada:'Paga',dist:'7 km del centro',dur:'3-4 hs',tagline:'Vistas increíbles de la ciudad y el Canal Beagle',desc:'A solo 7 km del centro. La aerosilla sube 1.100 metros con vistas de Ushuaia, el Canal Beagle y las islas chilenas. Desde la cima podés caminar hasta el glaciar.',pasos:['Tomá la Av. Luis Martial hacia el NORTE — cuesta arriba','Seguí 7 km hasta la base de la aerosilla','También en remis desde el centro — 15 min','La aerosilla opera según condiciones climáticas — consultá'],transport:['🚗 Auto','🚕 Remis desde el centro','🚶 Caminando (cuesta arriba 7 km)'],lat:-54.78,lon:-68.35,tips:'Llegá antes de las 10 hs. Si la aerosilla está cerrada podés caminar el sendero igual.'},
+     {name:'Laguna Esmeralda — Trekking gratis',emoji:'💎',img:'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=75',dif:'Moderado',entrada:'Gratis',dist:'18 km del centro por RN 3',dur:'4-5 hs',tagline:'Laguna de color esmeralda — la más fotografiada',desc:'Aguas verdes esmeralda del deshielo glaciar. Trekking de 4-5 horas por bosque de lengas y turberas. El color varía según la hora del día. Entrada completamente gratuita.',pasos:['Tomá la RN 3 hacia el NORTE en dirección a Tolhuin','A los 18 km antes del cruce del Río Olivia buscá el cartel "Laguna Esmeralda"','Hay estacionamiento en el inicio del sendero (lado derecho)','El sendero está bien marcado — 2 horas de caminata hasta la laguna','En remis: pedile que te deje en el inicio del sendero km 18'],transport:['🚗 Auto','🚕 Remis hasta el inicio del sendero'],lat:-54.72,lon:-68.18,tips:'Llevá calzado impermeable — hay turberas húmedas. Salí temprano para la laguna sola.'},
+     {name:'Pingüinera Isla Martillo',emoji:'🐧',img:'https://images.unsplash.com/photo-1568430462989-44163eb1752f?w=400&q=75',dif:'Fácil',entrada:'Paga',dist:'Sale desde el Puerto + navegación',dur:'6-7 hs',tagline:'Pingüinos de Magallanes y Papúa — solo Nov a Mar',desc:'La única colonia de pingüinos de Papúa (barbijo) en Argentina. Caminás entre los pingüinos que no tienen miedo. Incluye la Estancia Harberton — la más antigua de T. del Fuego (1886).',pasos:['Las excursiones salen desde el Puerto Turístico de Ushuaia','Empresa más recomendada: Piratour — incluye Estancia Harberton','Navegás 1.5 hs hasta Harberton por el Canal Beagle','Desde Harberton: zodiac hasta Isla Martillo','SOLO disponible de noviembre a marzo'],transport:['⛵ Catamarán desde el Puerto Turístico'],lat:-54.88,lon:-67.22,tips:'Reservá con MUCHA anticipación en enero-febrero. Es la excursión más especial de Ushuaia.'},
+   ]},
 ];
 
-const MAP_POS={1:{x:95,y:132},2:{x:85,y:152},3:{x:195,y:148},4:{x:295,y:152},5:{x:98,y:108},6:{x:78,y:92},7:{x:290,y:218},8:{x:302,y:208},9:{x:88,y:212},10:{x:142,y:352},11:{x:128,y:332},12:{x:152,y:458}};
+// ===== GLOBALS =====
+const MAP_POS={1:{x:93,y:130},2:{x:83,y:150},3:{x:192,y:145},4:{x:292,y:150},5:{x:96,y:105},6:{x:76,y:90},7:{x:288,y:215},8:{x:300,y:205},9:{x:86,y:210},10:{x:140,y:350},11:{x:126,y:330},12:{x:150,y:455}};
 const WI={0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',51:'🌦️',61:'🌧️',71:'❄️',80:'🌦️',95:'⛈️'};
-let lang='es',favorites=new Set(),climaCache={},currentFilter='todas';
+const DIAS=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+let lang='es', favorites=new Set(), climaCache={}, currentFilter='todas';
 
 const T={
-  es:{appTitle:'Patagonia<br>Secreta',appSub:'Descubrí la magia del sur argentino',search:'Buscá tu próximo destino...',navHome:'Inicio',navMap:'Mapa',navFav:'Favoritos',navLey:'Leyendas',navAbout:'Acerca de',statDest:'Destinos',statProv:'Provincias',statT:'Turistas/año',slFav:'Favoritos',slClima:'Clima en vivo',mapTitle:'🗺️ Mapa de la Patagonia',mapHeader:'📍 TODOS LOS DESTINOS',mapTip:'Tocá un punto',favTitle:'❤️ Mis Favoritos',favSub:'Tus destinos guardados',favEmpty:'Todavía no tenés favoritos.\nTocá ❤️ en cualquier destino.',leyTitle:'👻 Leyendas Patagónicas',leySub:'Misterios del sur del mundo',clima:'Clima',epoca:'Mejor época',dist:'Distancia',tipo:'Tipo',openMaps:'🗺️ Cómo llegar — Google Maps',viewHotels:'🏨 Ver hoteles en Booking',addFav:'🤍 Agregar a Favoritos',remFav:'❤️ En Favoritos',badge:'🇦🇷 APP OFICIAL'},
-  en:{appTitle:'Secret<br>Patagonia',appSub:'Discover the magic of southern Argentina',search:'Search your next destination...',navHome:'Home',navMap:'Map',navFav:'Favorites',navLey:'Legends',navAbout:'About',statDest:'Destinations',statProv:'Provinces',statT:'Tourists/year',slFav:'Favorites',slClima:'Live Weather',mapTitle:'🗺️ Patagonia Map',mapHeader:'📍 ALL DESTINATIONS',mapTip:'Tap a point',favTitle:'❤️ My Favorites',favSub:'Your saved destinations',favEmpty:'No favorites yet.\nTap ❤️ on any destination.',leyTitle:'👻 Patagonian Legends',leySub:'Mysteries of the end of the world',clima:'Climate',epoca:'Best time',dist:'Distance',tipo:'Type',openMaps:'🗺️ How to get there — Google Maps',viewHotels:'🏨 View hotels on Booking',addFav:'🤍 Add to Favorites',remFav:'❤️ In Favorites',badge:'🇦🇷 OFFICIAL APP'}
+  es:{
+    appTitle:'Patagonia<br>Secreta',appSub:'Descubrí la magia del sur argentino',badge:'🇦🇷 APP OFICIAL',
+    search:'Buscá tu próximo destino...',
+    hsDest:'Destinos',hsLug:'Lugarcitos',hsProv:'Provincias',
+    slDest:'Destinos',slFav:'Favoritos',slClima:'Clima en vivo',
+    navHome:'Inicio',navMap:'Mapa',navFav:'Favoritos',navLey:'Leyendas',navAbout:'Acerca de',
+    mapTitle:'🗺️ Mapa de la Patagonia',mapHeader:'📍 TODOS LOS DESTINOS',mapTip:'Tocá un punto',
+    favTitle:'❤️ Mis Favoritos',favSub:'Tus destinos guardados',favEmpty:'Todavía no tenés favoritos.\nTocá ❤️ en cualquier destino para guardarlo.',
+    leyTitle:'👻 Leyendas Patagónicas',leySub:'Misterios del sur del mundo',
+    clima:'Clima',epoca:'Mejor época',dist:'Distancia',tipo:'Tipo',
+    lugarcitos:'Lugarcitos y cómo llegar',
+    hoteles:'🏨 Dónde dormir',restos:'🍽️ Dónde comer',leyenda:'👻 Leyenda',
+    pasoAPaso:'🗺️ Cómo llegar paso a paso',
+    openMaps:'🗺️ Cómo llegar — Google Maps',viewHotels:'🏨 Ver precio en Booking',
+    addFav:'🤍 Agregar a Favoritos',remFav:'❤️ En Favoritos',back:'← Volver',
+    todoElAño:'Todo el año',destinos:'destinos',results:'resultados',
+    dif:{Fácil:'✅ Fácil',Moderado:'⚠️ Moderado',Difícil:'🔴 Difícil'},
+    tips:'💡 Tips locales:'
+  },
+  en:{
+    appTitle:'Secret<br>Patagonia',appSub:'Discover the magic of southern Argentina',badge:'🇦🇷 OFFICIAL APP',
+    search:'Search your next destination...',
+    hsDest:'Destinations',hsLug:'Spots',hsProv:'Provinces',
+    slDest:'Destinations',slFav:'Favorites',slClima:'Live Weather',
+    navHome:'Home',navMap:'Map',navFav:'Favorites',navLey:'Legends',navAbout:'About',
+    mapTitle:'🗺️ Patagonia Map',mapHeader:'📍 ALL DESTINATIONS',mapTip:'Tap a point',
+    favTitle:'❤️ My Favorites',favSub:'Your saved destinations',favEmpty:'No favorites yet.\nTap ❤️ on any destination to save it.',
+    leyTitle:'👻 Patagonian Legends',leySub:'Mysteries of the end of the world',
+    clima:'Climate',epoca:'Best time',dist:'Distance',tipo:'Type',
+    lugarcitos:'Spots & how to get there',
+    hoteles:'🏨 Where to sleep',restos:'🍽️ Where to eat',leyenda:'👻 Legend',
+    pasoAPaso:'🗺️ How to get there step by step',
+    openMaps:'🗺️ How to get there — Google Maps',viewHotels:'🏨 View price on Booking',
+    addFav:'🤍 Add to Favorites',remFav:'❤️ In Favorites',back:'← Back',
+    todoElAño:'Year-round',destinos:'destinations',results:'results',
+    dif:{Fácil:'✅ Easy',Moderado:'⚠️ Moderate',Difícil:'🔴 Hard'},
+    tips:'💡 Local tips:'
+  }
 };
 
-function setLang(l,btn){lang=l;document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');updateTexts();renderPlaces(currentFilter);renderMapPlaces();renderFavoritos();renderLeyendas();}
+// ===== FUNCTIONS =====
+function setLang(l,btn){
+  lang=l;
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  updateTexts();
+  const cur=document.querySelector('.screen.active').id.replace('screen-','');
+  if(cur==='home') renderPlaces(currentFilter);
+  else if(cur==='map') renderMapPlaces();
+  else if(cur==='favoritos') renderFavoritos();
+  else if(cur==='leyendas') renderLeyendas();
+}
 
 function updateTexts(){
   const t=T[lang];
   document.getElementById('app-title').innerHTML=t.appTitle;
   document.getElementById('app-subtitle').textContent=t.appSub;
-  document.getElementById('search-input').placeholder=t.search;
   document.getElementById('badge-text').textContent=t.badge;
-  document.getElementById('stat-dest').textContent=t.statDest;
-  document.getElementById('stat-prov').textContent=t.statProv;
-  document.getElementById('stat-t').textContent=t.statT;
-  document.getElementById('sl-fav-num').textContent=favorites.size;
+  document.getElementById('search-input').placeholder=t.search;
+  document.getElementById('hs-dest').textContent=t.hsDest;
+  document.getElementById('hs-lug').textContent=t.hsLug;
+  document.getElementById('hs-prov').textContent=t.hsProv;
+  document.getElementById('sl-dest').textContent=t.slDest;
   document.getElementById('sl-fav').textContent=t.slFav;
   document.getElementById('sl-clima').textContent=t.slClima;
+  document.getElementById('sl-fav-num').textContent=favorites.size;
+  document.getElementById('nav-home').textContent=t.navHome;
+  document.getElementById('nav-map').textContent=t.navMap;
+  document.getElementById('nav-fav').textContent=t.navFav;
+  document.getElementById('nav-ley').textContent=t.navLey;
+  document.getElementById('nav-about').textContent=t.navAbout;
   document.getElementById('map-title-text').textContent=t.mapTitle;
   document.getElementById('map-header-text').textContent=t.mapHeader;
   document.getElementById('map-tip-text').textContent=t.mapTip;
@@ -341,11 +797,6 @@ function updateTexts(){
   document.getElementById('fav-subtitle').textContent=t.favSub;
   document.getElementById('ley-title').textContent=t.leyTitle;
   document.getElementById('ley-subtitle').textContent=t.leySub;
-  document.getElementById('nav-home').textContent=t.navHome;
-  document.getElementById('nav-map').textContent=t.navMap;
-  document.getElementById('nav-fav').textContent=t.navFav;
-  document.getElementById('nav-ley').textContent=t.navLey;
-  document.getElementById('nav-about').textContent=t.navAbout;
 }
 
 function showScreen(s,el){
@@ -370,44 +821,70 @@ function handleSearch(q){
   if(!q){renderPlaces(currentFilter);return;}
   const filtered=PLACES.filter(p=>{
     const n=lang==='es'?p.name:p.nameEn;
-    return n.toLowerCase().includes(q.toLowerCase())||p.tags.some(t=>t.toLowerCase().includes(q.toLowerCase()))||p.regionName.toLowerCase().includes(q.toLowerCase());
+    return n.toLowerCase().includes(q.toLowerCase())||
+           p.tags.some(t=>t.toLowerCase().includes(q.toLowerCase()))||
+           p.regionName.toLowerCase().includes(q.toLowerCase())||
+           (p.subdestinos&&p.subdestinos.some(s=>s.name.toLowerCase().includes(q.toLowerCase())));
   });
   const c=document.getElementById('places-container');
-  c.innerHTML=`<div style="padding:12px 16px;font-size:0.78rem;color:#888;">${filtered.length} ${lang==='es'?'resultados':'results'}</div>`+
-  filtered.map(p=>`<div style="margin:0 16px 10px;background:white;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06);cursor:pointer;" onclick="openDetail(${p.id})">
-    <div style="font-size:2rem;background:${p.color}22;width:48px;height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center;">${p.emoji}</div>
-    <div style="flex:1;"><div style="font-family:'Playfair Display',serif;font-size:0.9rem;font-weight:700;color:var(--oscuro);">${lang==='es'?p.name:p.nameEn}</div><div style="font-size:0.65rem;color:#888;">${p.regionName}</div></div>
-    <div style="color:#ccc;">›</div></div>`).join('');
+  c.innerHTML=`<div style="padding:11px 16px;font-size:0.75rem;color:#aaa;">${filtered.length} ${T[lang].results}</div>`+
+  filtered.map(p=>`
+    <div style="margin:0 16px 9px;background:white;border-radius:12px;padding:11px 13px;display:flex;align-items:center;gap:11px;box-shadow:0 2px 8px rgba(0,0,0,0.06);cursor:pointer;" onclick="openCityDetail(${p.id})">
+      <div style="font-size:1.9rem;background:${p.color}22;width:46px;height:46px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${p.emoji}</div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-family:'Playfair Display',serif;font-size:0.88rem;font-weight:700;color:var(--oscuro);">${lang==='es'?p.name:p.nameEn}</div>
+        <div style="font-size:0.62rem;color:#aaa;">${p.regionName}</div>
+        <div style="display:flex;gap:4px;margin-top:4px;flex-wrap:wrap;">${p.tags.slice(0,2).map(t=>`<span style="background:#f0f7f4;color:var(--verde);font-size:0.55rem;padding:2px 6px;border-radius:10px;font-weight:700;">${t}</span>`).join('')}</div>
+      </div>
+      <div style="color:#ddd;font-size:1.2rem;">›</div>
+    </div>`).join('');
 }
 
-function renderPlaces(region){
-  const provinces=[{id:'rio-negro',name:'Río Negro',emoji:'🏔️'},{id:'neuquen',name:'Neuquén',emoji:'🌋'},{id:'chubut',name:'Chubut',emoji:'🐋'},{id:'santa-cruz',name:'Santa Cruz',emoji:'🧊'},{id:'tierra-del-fuego',name:'Tierra del Fuego',emoji:'🌎'}];
-  const c=document.getElementById('places-container');
-  const makeCards=(places)=>places.map(p=>`
-    <div class="place-card ${favorites.has(p.id)?'favorited':''}" onclick="openDetail(${p.id})" style="position:relative;">
-      <div class="place-photo" style="background:linear-gradient(135deg,${p.color}cc,${p.color}66);">
-        <span style="z-index:1;">${p.emoji}</span>
+function makeCard(p){
+  return `
+    <div class="place-card ${favorites.has(p.id)?'favorited':''}" onclick="openCityDetail(${p.id})" style="position:relative;">
+      <div class="place-photo" style="background:linear-gradient(135deg,${p.color}dd,${p.color}88);">
+        <img src="${p.img}" alt="${lang==='es'?p.name:p.nameEn}" loading="lazy" onerror="this.style.display='none'"/>
         <div class="place-photo-overlay"></div>
-        <div class="fav-icon" onclick="event.stopPropagation();toggleFav(${p.id})">${favorites.has(p.id)?'❤️':'🤍'}</div>
+        <div class="fav-icon" onclick="event.stopPropagation();toggleFav(${p.id},this);">${favorites.has(p.id)?'❤️':'🤍'}</div>
+        <div class="rating-badge">⭐ ${p.rating}</div>
       </div>
       <div class="place-info">
         <div class="place-name">${lang==='es'?p.name:p.nameEn}</div>
         <div class="place-region">${p.regionName}</div>
         <div class="place-clima" id="cc-${p.id}">🌡️ ...</div>
       </div>
-    </div>`).join('');
+    </div>`;
+}
+
+function renderPlaces(region){
+  const provinces=[
+    {id:'rio-negro',name:'Río Negro',emoji:'🏔️'},
+    {id:'neuquen',name:'Neuquén',emoji:'🌋'},
+    {id:'chubut',name:'Chubut',emoji:'🐋'},
+    {id:'santa-cruz',name:'Santa Cruz',emoji:'🧊'},
+    {id:'tierra-del-fuego',name:'Tierra del Fuego',emoji:'🌎'},
+  ];
+  const c=document.getElementById('places-container');
+  const t=T[lang];
   if(region!=='todas'){
     const filtered=PLACES.filter(p=>p.region===region);
-    c.innerHTML=`<div style="padding:12px 16px 0;"><div style="display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;">${makeCards(filtered)}</div></div>`;
+    c.innerHTML=`<div style="padding:12px 16px 0;"><div style="display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px;">${filtered.map(p=>makeCard(p)).join('')}</div></div>`;
     filtered.forEach(p=>loadClimaCard(p));
     return;
   }
   c.innerHTML=provinces.map(prov=>{
     const places=PLACES.filter(p=>p.region===prov.id);
-    return `<div class="province-section">
-      <div class="province-header"><span style="font-size:1.4rem;">${prov.emoji}</span><span class="province-name">${prov.name}</span><span class="province-count">${places.length} ${lang==='es'?'destinos':'destinations'}</span></div>
-      <div class="places-scroll">${makeCards(places)}</div>
-    </div><div class="section-divider"></div>`;
+    return `
+      <div class="province-section">
+        <div class="province-header">
+          <span class="province-emoji">${prov.emoji}</span>
+          <span class="province-name">${prov.name}</span>
+          <span class="province-count">${places.length} ${t.destinos}</span>
+        </div>
+        <div class="places-scroll">${places.map(p=>makeCard(p)).join('')}</div>
+      </div>
+      <div class="section-divider"></div>`;
   }).join('');
   PLACES.forEach(p=>loadClimaCard(p));
 }
@@ -416,7 +893,9 @@ async function loadClimaCard(p){
   if(climaCache[p.id]){updateCC(p.id,climaCache[p.id]);return;}
   try{
     const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${p.lat}&longitude=${p.lon}&current=temperature_2m,weathercode&timezone=America%2FArgentina%2FBuenos_Aires`);
-    const d=await r.json();climaCache[p.id]=d;updateCC(p.id,d);
+    const d=await r.json();
+    climaCache[p.id]=d;
+    updateCC(p.id,d);
   }catch(e){}
 }
 function updateCC(id,d){
@@ -428,19 +907,26 @@ function renderMapPlaces(){
   const svg=document.getElementById('map-svg');
   document.querySelectorAll('.map-dot').forEach(d=>d.remove());
   PLACES.forEach(p=>{
-    const pos=MAP_POS[p.id];if(!pos) return;
+    const pos=MAP_POS[p.id];if(!pos)return;
     const g=document.createElementNS('http://www.w3.org/2000/svg','g');
-    g.setAttribute('class','map-dot');g.setAttribute('transform',`translate(${pos.x},${pos.y})`);
-    const circle=document.createElementNS('http://www.w3.org/2000/svg','circle');
-    circle.setAttribute('r','10');circle.setAttribute('fill',p.color);circle.setAttribute('stroke','white');circle.setAttribute('stroke-width','2');circle.setAttribute('opacity','0.9');
-    const text=document.createElementNS('http://www.w3.org/2000/svg','text');
-    text.setAttribute('text-anchor','middle');text.setAttribute('dy','4');text.setAttribute('font-size','10');text.textContent=p.emoji;
-    g.appendChild(circle);g.appendChild(text);g.onclick=()=>openDetail(p.id);svg.appendChild(g);
+    g.setAttribute('class','map-dot');
+    g.setAttribute('transform',`translate(${pos.x},${pos.y})`);
+    const c=document.createElementNS('http://www.w3.org/2000/svg','circle');
+    c.setAttribute('r','11');c.setAttribute('fill',p.color);
+    c.setAttribute('stroke','white');c.setAttribute('stroke-width','2');c.setAttribute('opacity','0.88');
+    const t=document.createElementNS('http://www.w3.org/2000/svg','text');
+    t.setAttribute('text-anchor','middle');t.setAttribute('dy','4.5');t.setAttribute('font-size','11');t.textContent=p.emoji;
+    g.appendChild(c);g.appendChild(t);
+    g.onclick=()=>openCityDetail(p.id);
+    svg.appendChild(g);
   });
   document.getElementById('map-places-grid').innerHTML=PLACES.map(p=>`
-    <div class="map-place-item" onclick="openDetail(${p.id})">
-      <span style="font-size:1.2rem;">${p.emoji}</span>
-      <div><div style="font-size:0.72rem;font-weight:700;color:var(--oscuro);">${lang==='es'?p.name:p.nameEn}</div><div style="font-size:0.58rem;color:#888;">${p.regionName}</div></div>
+    <div class="map-place-item" onclick="openCityDetail(${p.id})">
+      <span style="font-size:1.15rem;">${p.emoji}</span>
+      <div>
+        <div style="font-size:0.7rem;font-weight:700;color:var(--oscuro);">${lang==='es'?p.name:p.nameEn}</div>
+        <div style="font-size:0.57rem;color:#aaa;">${p.regionName}</div>
+      </div>
     </div>`).join('');
 }
 
@@ -451,75 +937,223 @@ function renderFavoritos(){
   if(favorites.size===0){c.innerHTML=`<div class="fav-empty">${t.favEmpty}</div>`;return;}
   const favPlaces=PLACES.filter(p=>favorites.has(p.id));
   c.innerHTML=`<div class="fav-list">${favPlaces.map(p=>`
-    <div class="fav-item" onclick="openDetail(${p.id})">
-      <div style="font-size:1.6rem;">${p.emoji}</div>
-      <div><div style="font-family:'Playfair Display',serif;font-size:0.88rem;font-weight:700;color:var(--oscuro);">${lang==='es'?p.name:p.nameEn}</div><div style="font-size:0.65rem;color:#888;">${p.regionName}</div></div>
-      <div style="margin-left:auto;color:#ccc;cursor:pointer;" onclick="event.stopPropagation();toggleFav(${p.id});renderFavoritos();">✕</div>
+    <div class="fav-item" onclick="openCityDetail(${p.id})">
+      <span style="font-size:1.6rem;">${p.emoji}</span>
+      <div style="flex:1;">
+        <div style="font-family:'Playfair Display',serif;font-size:0.86rem;font-weight:700;color:var(--oscuro);">${lang==='es'?p.name:p.nameEn}</div>
+        <div style="font-size:0.62rem;color:#aaa;">${p.regionName}</div>
+      </div>
+      <div style="color:#ddd;cursor:pointer;padding:4px;" onclick="event.stopPropagation();toggleFav(${p.id});renderFavoritos();">✕</div>
     </div>`).join('')}</div>`;
 }
 
 function renderLeyendas(){
   document.getElementById('leyendas-content').innerHTML=PLACES.map(p=>`
-    <div class="leyenda-card" onclick="openDetail(${p.id})">
+    <div class="leyenda-card-full" onclick="openCityDetail(${p.id})">
       <div class="leyenda-lugar">📍 ${lang==='es'?p.name:p.nameEn} — ${p.regionName}</div>
       <div class="leyenda-titulo">${p.emoji} ${lang==='es'?'Leyenda local':'Local legend'}</div>
       <div class="leyenda-texto">"${lang==='es'?p.leyenda:p.leyendaEn}"</div>
-      <div style="color:#CE93D8;font-size:0.65rem;margin-top:8px;font-weight:700;">${lang==='es'?'Ver más →':'See more →'}</div>
+      <div style="color:#CE93D8;font-size:0.62rem;margin-top:8px;font-weight:700;">${lang==='es'?'Ver el destino completo →':'See full destination →'}</div>
     </div>`).join('');
 }
 
-function toggleFav(id){
+function toggleFav(id,iconEl){
   favorites.has(id)?favorites.delete(id):favorites.add(id);
-  document.querySelectorAll('.place-card').forEach(card=>{
-    if(card.getAttribute('onclick')===`openDetail(${id})`){
+  // Update all fav icons for this id
+  document.querySelectorAll('.fav-icon').forEach(el=>{
+    const card=el.closest('.place-card');
+    if(card&&card.getAttribute('onclick')===`openCityDetail(${id})`){
+      el.textContent=favorites.has(id)?'❤️':'🤍';
       favorites.has(id)?card.classList.add('favorited'):card.classList.remove('favorited');
-    }
-  });
-  document.querySelectorAll('.fav-icon').forEach(icon=>{
-    if(icon.getAttribute('onclick')===`event.stopPropagation();toggleFav(${id})`){
-      icon.textContent=favorites.has(id)?'❤️':'🤍';
     }
   });
   document.getElementById('sl-fav-num').textContent=favorites.size;
 }
 
-function openDetail(id){
-  const p=PLACES.find(x=>x.id===id);if(!p) return;
-  const t=T[lang];const isFav=favorites.has(id);
-  document.getElementById('detail-emoji').textContent=p.emoji;
+// ===== CITY DETAIL =====
+function openCityDetail(id){
+  const p=PLACES.find(x=>x.id===id);if(!p)return;
+  const t=T[lang];
+  const isFav=favorites.has(id);
+  const stepColor=p.color;
+  const favBgColor=isFav?'crimson':p.color;
+
   document.getElementById('detail-hero').style.background=`linear-gradient(135deg,${p.color}ee,${p.color}88)`;
+  // Try to show image
+  const existingImg=document.getElementById('detail-hero').querySelector('img');
+  if(existingImg) existingImg.remove();
+  if(p.img){
+    const img=document.createElement('img');
+    img.src=p.img;img.alt=lang==='es'?p.name:p.nameEn;
+    img.onerror=()=>img.remove();
+    document.getElementById('detail-hero').appendChild(img);
+  }
   document.getElementById('detail-name').textContent=lang==='es'?p.name:p.nameEn;
-  document.getElementById('detail-sub').textContent='📍 '+p.regionName;
-  document.getElementById('detail-body').innerHTML=`
-    <p style="font-size:0.85rem;color:#555;line-height:1.7;margin-bottom:14px;">${lang==='es'?p.desc:p.descEn}</p>
-    <div class="detail-tags">${p.tags.map(tag=>`<span class="detail-tag">${tag}</span>`).join('')}</div>
-    <div class="detail-info-grid">
-      <div class="detail-info-item"><div style="font-size:1.2rem;margin-bottom:3px;">🌡️</div><div style="font-size:0.58rem;color:#888;text-transform:uppercase;">${t.clima}</div><div style="font-size:0.75rem;font-weight:700;color:var(--oscuro);margin-top:2px;">${lang==='es'?p.info.clima:p.info.climaEn}</div></div>
-      <div class="detail-info-item"><div style="font-size:1.2rem;margin-bottom:3px;">📅</div><div style="font-size:0.58rem;color:#888;text-transform:uppercase;">${t.epoca}</div><div style="font-size:0.75rem;font-weight:700;color:var(--oscuro);margin-top:2px;">${lang==='es'?p.info.epoca:p.info.epocaEn}</div></div>
-      <div class="detail-info-item"><div style="font-size:1.2rem;margin-bottom:3px;">📍</div><div style="font-size:0.58rem;color:#888;text-transform:uppercase;">${t.dist}</div><div style="font-size:0.75rem;font-weight:700;color:var(--oscuro);margin-top:2px;">${p.info.dist}</div></div>
-      <div class="detail-info-item"><div style="font-size:1.2rem;margin-bottom:3px;">🏷️</div><div style="font-size:0.58rem;color:#888;text-transform:uppercase;">${t.tipo}</div><div style="font-size:0.75rem;font-weight:700;color:var(--oscuro);margin-top:2px;">${lang==='es'?p.info.tipo:p.info.tipoEn}</div></div>
+  document.getElementById('detail-sub').textContent='📍 '+p.regionName+' · ⭐ '+p.rating;
+
+  // Build clima section
+  const climaHtml=climaCache[p.id]&&climaCache[p.id].current?`
+    <div style="background:linear-gradient(135deg,${p.color}cc,${p.color}88);border-radius:12px;padding:13px;margin-bottom:14px;color:white;display:flex;align-items:center;gap:12px;">
+      <div style="font-size:2.2rem;">${WI[climaCache[p.id].current.weathercode]||'🌡️'}</div>
+      <div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;line-height:1;">${Math.round(climaCache[p.id].current.temperature_2m)}°C</div>
+        <div style="font-size:0.68rem;opacity:0.85;">🌡️ ${lang==='es'?'En vivo':'Live'} · ${new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'})}</div>
+      </div>
+      <div style="margin-left:auto;text-align:right;font-size:0.65rem;opacity:0.8;">${lang==='es'?p.name:p.nameEn}<br>${p.regionName}</div>
+    </div>`:'';
+
+  // Build subdestinos
+  const subHtml=p.subdestinos?`
+    <div class="section-title">${t.lugarcitos}</div>
+    <div style="background:linear-gradient(135deg,${p.color}cc,${p.color}88);border-radius:12px;padding:12px;margin-bottom:12px;color:white;">
+      <div style="font-size:0.72rem;font-weight:700;margin-bottom:3px;letter-spacing:1px;">💡 INFO LOCAL EXCLUSIVA</div>
+      <div style="font-size:0.7rem;opacity:0.9;line-height:1.5;">${lang==='es'?'Instrucciones reales paso a paso con acceso directo a Google Maps.':'Real step-by-step instructions with direct Google Maps access.'}</div>
     </div>
+    <div style="display:flex;flex-direction:column;gap:11px;">
+    ${p.subdestinos.map((s,i)=>`
+      <div class="subdest-card">
+        <div class="subdest-img-wrap" style="background:${p.color}44;">
+          <img src="${s.img}" alt="${s.name}" loading="lazy" onerror="this.style.display='none';" style="z-index:1;"/>
+          <div class="subdest-img-overlay" style="z-index:2;"></div>
+          <div class="subdest-img-badges" style="z-index:3;">
+            <span class="sib sib-${s.dif.toLowerCase()}">${t.dif[s.dif]||s.dif}</span>
+            <span class="sib ${s.entrada==='Gratis'||s.entrada==='Gratuita'?'sib-gratis':'sib-pago'}">${s.entrada==='Gratis'||s.entrada==='Gratuita'?'🆓 Gratis':'💰 Pago'}</span>
+          </div>
+          <div class="subdest-img-dist" style="z-index:3;">📍 ${s.dist}</div>
+          <div class="subdest-img-dur" style="z-index:3;">⏱️ ${s.dur}</div>
+        </div>
+        <div class="subdest-header" onclick="toggleSub('sd-${id}-${i}')">
+          <div style="flex:1;min-width:0;">
+            <div class="subdest-name">${s.emoji} ${s.name}</div>
+            <div class="subdest-tagline">${s.tagline}</div>
+          </div>
+          <div class="subdest-expand" id="sa-${id}-${i}">▼</div>
+        </div>
+        <div class="subdest-body" id="sd-${id}-${i}">
+          <div class="subdest-desc">${s.desc}</div>
+          <div class="como-llegar-box">
+            <div class="como-llegar-title">${t.pasoAPaso}</div>
+            ${s.pasos.map((paso,j)=>`
+              <div class="como-llegar-step">
+                <div class="step-num" style="background:${stepColor};flex-shrink:0;">${j+1}</div>
+                <div>${paso}</div>
+              </div>`).join('')}
+            <div class="transport-options">${s.transporte.map(tr=>`<span class="transport-badge">${tr}</span>`).join('')}</div>
+          </div>
+          <div class="tips-box"><strong>${t.tips}</strong> ${s.tips}</div>
+          <button class="maps-btn" onclick="window.open('https://www.google.com/maps/dir/?api=1&destination=${s.lat},${s.lon}&travelmode=driving','_blank')">🗺️ ${t.openMaps}</button>
+        </div>
+      </div>`).join('')}
+    </div>
+  `:'';
+
+  // Build hoteles
+  const hotelesHtml=p.hoteles?`
+    <div class="section-title" style="margin-top:14px;">${t.hoteles}</div>
+    <div class="hotel-list">
+      ${p.hoteles.map(h=>`
+        <div class="hotel-card">
+          <div style="flex:1;min-width:0;">
+            <div class="hotel-name">${h.name}</div>
+            <div class="hotel-stars">${h.stars}</div>
+            <div class="hotel-cat">${h.cat}</div>
+          </div>
+          <button class="hotel-booking-btn" data-booking="${h.booking}" onclick="openBookingHotelName(this.getAttribute('data-booking'))">🏨 ${lang==='es'?'Ver precio':'View price'}</button>
+        </div>`).join('')}
+    </div>`:'';
+
+  // Build restos
+  const restosHtml=p.restos?`
+    <div class="section-title">${t.restos}</div>
+    <div class="resto-list">
+      ${p.restos.map(r=>{
+        const parts=r.split(' — ');
+        return `<div class="resto-item"><div class="resto-name">${parts[0]}</div>${parts[1]?`<div class="resto-desc">${parts[1]}</div>`:''}</div>`;
+      }).join('')}
+    </div>`:'';
+
+  document.getElementById('detail-body').innerHTML=`
+    <p style="font-size:0.83rem;color:#555;line-height:1.75;margin-bottom:13px;">${lang==='es'?p.desc:p.descEn}</p>
+    <div class="detail-tags">${p.tags.map(tag=>`<span class="detail-tag">${tag}</span>`).join('')}</div>
+    ${climaHtml}
+    <div class="detail-info-grid">
+      <div class="detail-info-item"><div style="font-size:1.2rem;margin-bottom:3px;">🌡️</div><div style="font-size:0.57rem;color:#aaa;text-transform:uppercase;">${t.clima}</div><div style="font-size:0.75rem;font-weight:700;color:var(--oscuro);margin-top:2px;">${lang==='es'?p.info.clima:p.info.climaEn}</div></div>
+      <div class="detail-info-item"><div style="font-size:1.2rem;margin-bottom:3px;">📅</div><div style="font-size:0.57rem;color:#aaa;text-transform:uppercase;">${t.epoca}</div><div style="font-size:0.75rem;font-weight:700;color:var(--oscuro);margin-top:2px;">${lang==='es'?p.info.epoca:p.info.epocaEn}</div></div>
+      <div class="detail-info-item"><div style="font-size:1.2rem;margin-bottom:3px;">📍</div><div style="font-size:0.57rem;color:#aaa;text-transform:uppercase;">${t.dist}</div><div style="font-size:0.75rem;font-weight:700;color:var(--oscuro);margin-top:2px;">${p.info.dist}</div></div>
+      <div class="detail-info-item"><div style="font-size:1.2rem;margin-bottom:3px;">🏷️</div><div style="font-size:0.57rem;color:#aaa;text-transform:uppercase;">${t.tipo}</div><div style="font-size:0.75rem;font-weight:700;color:var(--oscuro);margin-top:2px;">${lang==='es'?p.info.tipo:p.info.tipoEn}</div></div>
+    </div>
+    ${subHtml}
+    ${hotelesHtml}
+    ${restosHtml}
     <div class="detail-legend">
       <div class="detail-legend-title">👻 ${lang==='es'?'LEYENDA LOCAL':'LOCAL LEGEND'}</div>
       <div class="detail-legend-text">"${lang==='es'?p.leyenda:p.leyendaEn}"</div>
     </div>
-    <button class="action-btn maps-btn-d" onclick="window.open('https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lon}&travelmode=driving','_blank')">${t.openMaps}</button>
-    <button class="action-btn booking-btn-d" onclick="window.open('https://www.booking.com/search.html?ss=${encodeURIComponent(lang==='es'?p.name:p.nameEn)}&lang=${lang}','_blank')">${t.viewHotels}</button>
-    <button class="action-btn fav-btn-d" id="fav-detail-btn" style="background:${isFav?'#E53935':'var(--verde)'};" onclick="toggleFav(${id});updateFavBtn(${id})">${isFav?t.remFav:t.addFav}</button>`;
+    <button class="maps-btn" onclick="openMapsFor(${p.lat},${p.lon})">🗺️ ${t.openMaps}</button>
+    <button class="booking-btn" onclick="openBookingFor(${id})">🏨 ${t.viewHotels}</button>
+    <button class="fav-btn" id="fav-detail-btn" data-cityid="${id}" data-color="${p.color}" style="background:${favBgColor};" onclick="toggleFavDetail(${id})">${isFav?t.remFav:t.addFav}</button>
+  `;
+
   document.getElementById('detail-overlay').classList.add('open');
   document.getElementById('detail-panel').scrollTop=0;
+  // Load clima if not cached
+  if(!climaCache[p.id]) loadClimaCard(p).then(()=>{
+    // Refresh clima in detail
+    if(climaCache[p.id]&&climaCache[p.id].current){
+      const climaDiv=document.querySelector('#detail-body>div[style*="gradient"]');
+      if(climaDiv){
+        climaDiv.querySelector('div>div:first-child').textContent=WI[climaCache[p.id].current.weathercode]||'🌡️';
+      }
+    }
+  });
 }
 
-function updateFavBtn(id){
-  const t=T[lang];const btn=document.getElementById('fav-detail-btn');
-  if(btn){btn.textContent=favorites.has(id)?t.remFav:t.addFav;btn.style.background=favorites.has(id)?'#E53935':'var(--verde)';}
+function toggleSub(id){
+  const b=document.getElementById(id);
+  // id es como "sd-1-0", el arrow es "sa-1-0"
+  const arrowId=id.replace('sd-','sa-');
+  const a=document.getElementById(arrowId);
+  if(b){b.classList.toggle('open');}
+  if(a){a.classList.toggle('open');}
 }
+
+function openMapsFor(lat,lon){
+  window.open('https://www.google.com/maps/dir/?api=1&destination='+lat+','+lon+'&travelmode=driving','_blank');
+}
+function openBookingFor(id){
+  const p=PLACES.find(x=>x.id===id);if(!p)return;
+  const name=lang==='es'?p.name:p.nameEn;
+  window.open('https://www.booking.com/search.html?ss='+encodeURIComponent(name)+'&lang='+lang,'_blank');
+}
+function openBookingHotelName(booking){
+  window.open('https://www.booking.com/search.html?ss='+encodeURIComponent(booking.replace(/\+/g,' '))+'&lang='+lang,'_blank');
+}
+function toggleFavDetail(id){
+  toggleFav(id);
+  const btn=document.getElementById('fav-detail-btn');
+  if(btn){
+    const t=T[lang];
+    const color=btn.getAttribute('data-color');
+    btn.textContent=favorites.has(id)?t.remFav:t.addFav;
+    btn.style.background=favorites.has(id)?'#E53935':color;
+  }
+}
+function updateFavBtn(id,color){
+  const t=T[lang];
+  const btn=document.getElementById('fav-detail-btn');
+  if(btn){
+    btn.textContent=favorites.has(id)?t.remFav:t.addFav;
+    btn.style.background=favorites.has(id)?'#E53935':color;
+  }
+}
+
 function closeDetail(){document.getElementById('detail-overlay').classList.remove('open');}
-function handleOverlayClick(e){if(e.target===document.getElementById('detail-overlay')) closeDetail();}
+function handleOverlayClick(e){if(e.target===document.getElementById('detail-overlay'))closeDetail();}
 
-// INIT
+// ===== INIT =====
 renderPlaces('todas');
 renderMapPlaces();
 </script>
 </body>
 </html>
+
