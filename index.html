@@ -30,6 +30,22 @@ h1{margin:0}
   border:none;
 }
 
+.filtros{
+  display:flex;
+  gap:10px;
+  padding:10px;
+  overflow:auto;
+}
+
+.filtros button{
+  background:#1e293b;
+  border:none;
+  color:white;
+  padding:8px 12px;
+  border-radius:20px;
+  cursor:pointer;
+}
+
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
@@ -42,6 +58,7 @@ h1{margin:0}
   border-radius:10px;
   overflow:hidden;
   cursor:pointer;
+  position:relative;
 }
 
 .card img{
@@ -52,6 +69,18 @@ h1{margin:0}
 
 .card h3{
   margin:10px;
+}
+
+.card .rating{
+  margin:0 10px 10px;
+  font-size:14px;
+}
+
+.fav{
+  position:absolute;
+  top:10px;
+  right:10px;
+  font-size:18px;
 }
 
 .detalle{
@@ -66,6 +95,7 @@ h1{margin:0}
   border-radius:8px;
   color:white;
   cursor:pointer;
+  margin-bottom:10px;
 }
 </style>
 </head>
@@ -77,21 +107,31 @@ h1{margin:0}
   <input class="search" placeholder="Buscar destino..." oninput="buscar(this.value)">
 </header>
 
+<div class="filtros">
+  <button onclick="filtrar('todos')">Todos</button>
+  <button onclick="filtrar('rio-negro')">Río Negro</button>
+  <button onclick="filtrar('neuquen')">Neuquén</button>
+  <button onclick="filtrar('chubut')">Chubut</button>
+  <button onclick="filtrar('santa-cruz')">Santa Cruz</button>
+  <button onclick="filtrar('tierra-del-fuego')">Tierra del Fuego</button>
+</div>
+
 <div id="lista" class="grid"></div>
 <div id="detalle" class="detalle"></div>
 
 <script>
 
-const PLACES = [
+// 👉 TUS DATOS (PUEDEN SER COMO LOS TENÍAS)
+let PLACES = [
 {
   id:1,
-  name:"Bariloche",
-  region:"rio-negro",
+  nombre:"Bariloche",
+  provincia:"rio-negro",
   img:"https://picsum.photos/400/300?bariloche",
   rating:4.9,
   lat:-41.13,
   lon:-71.3,
-  desc:"Lagos, nieve y montañas.",
+  descripcion:"Destino icónico con lagos y nieve.",
   hoteles:["Llao Llao","Edelweiss"],
   restos:["Alto el Fuego"],
   subdestinos:[
@@ -101,13 +141,13 @@ const PLACES = [
 },
 {
   id:2,
-  name:"El Bolsón",
-  region:"rio-negro",
+  nombre:"El Bolsón",
+  provincia:"rio-negro",
   img:"https://picsum.photos/400/300?bolson",
   rating:4.8,
   lat:-41.96,
   lon:-71.53,
-  desc:"Naturaleza y feria artesanal.",
+  descripcion:"Naturaleza y feria artesanal.",
   hoteles:["Cabañas"],
   restos:["Cervecerías"],
   subdestinos:[
@@ -116,13 +156,13 @@ const PLACES = [
 },
 {
   id:3,
-  name:"Ushuaia",
-  region:"tierra-del-fuego",
+  nombre:"Ushuaia",
+  provincia:"tierra-del-fuego",
   img:"https://picsum.photos/400/300?ushuaia",
   rating:4.9,
   lat:-54.8,
   lon:-68.3,
-  desc:"Fin del mundo.",
+  descripcion:"Fin del mundo.",
   hoteles:["Arakur"],
   restos:["Volver"],
   subdestinos:[
@@ -130,6 +170,14 @@ const PLACES = [
   ]
 }
 ];
+
+// 🔥 PARCHE AUTOMÁTICO (EL BUG SOLUCIONADO)
+PLACES = PLACES.map(p => ({
+  ...p,
+  name: p.name || p.nombre,
+  region: p.region || p.provincia,
+  desc: p.desc || p.descripcion
+}));
 
 const lista = document.getElementById("lista");
 const detalle = document.getElementById("detalle");
@@ -144,9 +192,10 @@ function render(data){
     div.className="card";
 
     div.innerHTML=`
+      <span class="fav">❤️</span>
       <img src="${p.img}">
       <h3>${p.name}</h3>
-      <p style="margin:10px">⭐ ${p.rating}</p>
+      <p class="rating">⭐ ${p.rating}</p>
     `;
 
     div.onclick=()=>ver(p);
@@ -161,7 +210,7 @@ function ver(p){
 
   detalle.innerHTML=`
     <button class="btn" onclick="volver()">⬅ Volver</button>
-    <img src="${p.img}" style="width:100%;border-radius:10px;margin-top:10px;">
+    <img src="${p.img}" style="width:100%;border-radius:10px;">
     <h2>${p.name}</h2>
     <p>${p.desc}</p>
 
@@ -174,7 +223,7 @@ function ver(p){
     <h3>🍽 Restaurantes</h3>
     ${p.restos.map(r=>`<p>${r}</p>`).join("")}
 
-    <h3>🌡 Clima en vivo</h3>
+    <h3>🌡 Clima</h3>
     <p id="clima">Cargando...</p>
   `;
 
@@ -185,18 +234,19 @@ function volver(){
   render(PLACES);
 }
 
+function filtrar(region){
+  if(region==="todos") return render(PLACES);
+  render(PLACES.filter(p=>p.region===region));
+}
+
 function buscar(texto){
-  const res = PLACES.filter(p=>p.name.toLowerCase().includes(texto.toLowerCase()));
-  render(res);
+  render(PLACES.filter(p=>p.name.toLowerCase().includes(texto.toLowerCase())));
 }
 
 async function cargarClima(lat,lon){
-  const url=`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
-  const res=await fetch(url);
+  const res=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
   const data=await res.json();
-
-  document.getElementById("clima").innerText =
-    data.current_weather.temperature + "°C";
+  document.getElementById("clima").innerText = data.current_weather.temperature+"°C";
 }
 
 render(PLACES);
