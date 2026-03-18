@@ -1,109 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patagonia Secreta</title>
+
+<style>
+body{
+  font-family: Arial;
+  margin:0;
+  background:#0b1d2a;
+  color:white;
+}
+
+h1{
+  text-align:center;
+  padding:15px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:15px;
+  padding:15px;
+}
+
+.card{
+  background:#132f44;
+  border-radius:10px;
+  overflow:hidden;
+  cursor:pointer;
+}
+
+.card img{
+  width:100%;
+  height:150px;
+  object-fit:cover;
+}
+
+.card h3{
+  padding:10px;
+  margin:0;
+}
+
+.detalle{
+  display:none;
+  padding:15px;
+}
+
+.detalle img{
+  width:100%;
+  border-radius:10px;
+  margin-bottom:10px;
+}
+
+.btn{
+  background:#1e88e5;
+  border:none;
+  padding:10px;
+  color:white;
+  margin-bottom:10px;
+  cursor:pointer;
+  border-radius:5px;
+}
+</style>
+
+</head>
+<body>
+
+<h1>Patagonia Secreta</h1>
+
+<div id="lista" class="grid"></div>
+
+<div id="detalle" class="detalle"></div>
+
+<script>
+
+const PLACES = [
 {
   id:1,
   name:"Bariloche",
   region:"rio-negro",
-  img:"https://picsum.photos/400/300?bariloche1",
+  img:"https://picsum.photos/400/300?bariloche",
   desc:"Destino icónico con lagos y nieve.",
   how:"Vuelo directo o Ruta 40.",
   do:"Esquí, Circuito Chico, trekking.",
-  stay:"Llao Llao, Edelweiss, hosterías."
+  stay:"Llao Llao, Edelweiss."
 },
-
 {
   id:2,
   name:"El Bolsón",
   region:"rio-negro",
   img:"https://picsum.photos/400/300?bolson",
   desc:"Pueblo rodeado de montañas.",
-  how:"Ruta 40 desde Bariloche.",
-  do:"Feria artesanal, trekking, cervecerías.",
-  stay:"Cabañas y hostels."
+  how:"Ruta 40.",
+  do:"Feria, trekking.",
+  stay:"Cabañas."
 },
-
 {
   id:3,
   name:"Las Grutas",
   region:"rio-negro",
   img:"https://picsum.photos/400/300?grutas",
-  desc:"Playas cálidas únicas.",
+  desc:"Playas cálidas.",
   how:"Ruta 3.",
-  do:"Playa, buceo, excursiones.",
-  stay:"Hoteles frente al mar."
+  do:"Playa.",
+  stay:"Hoteles."
 },
-
 {
   id:4,
   name:"San Martín de los Andes",
   region:"neuquen",
   img:"https://picsum.photos/400/300?andes",
   desc:"Naturaleza y lagos.",
-  how:"Ruta de los 7 Lagos.",
-  do:"Kayak, pesca, trekking.",
-  stay:"Cabañas y hoteles boutique."
+  how:"Ruta 7 Lagos.",
+  do:"Kayak.",
+  stay:"Cabañas."
 },
-
 {
   id:5,
-  name:"Villa La Angostura",
-  region:"neuquen",
-  img:"https://picsum.photos/400/300?angostura",
-  desc:"Bosques y lagos increíbles.",
-  how:"Ruta 40.",
-  do:"Bosque Arrayanes, senderismo.",
-  stay:"Hoteles premium y cabañas."
-},
-
-{
-  id:6,
   name:"Puerto Madryn",
   region:"chubut",
   img:"https://picsum.photos/400/300?madryn",
-  desc:"Avistaje de ballenas.",
-  how:"Ruta 3 o avión.",
-  do:"Ballenas, snorkel con lobos.",
-  stay:"Hoteles frente al mar."
+  desc:"Ballenas.",
+  how:"Ruta 3.",
+  do:"Avistaje.",
+  stay:"Hoteles."
 },
-
 {
-  id:7,
-  name:"Esquel",
-  region:"chubut",
-  img:"https://picsum.photos/400/300?esquel",
-  desc:"Puerta a la Patagonia profunda.",
-  how:"Ruta 40.",
-  do:"La Trochita, Parque Los Alerces.",
-  stay:"Hosterías y cabañas."
-},
-
-{
-  id:8,
+  id:6,
   name:"El Calafate",
   region:"santa-cruz",
   img:"https://picsum.photos/400/300?calafate",
-  desc:"Glaciar Perito Moreno.",
-  how:"Vuelo o ruta.",
-  do:"Glaciares, trekking.",
-  stay:"Hoteles turísticos."
+  desc:"Glaciares.",
+  how:"Vuelo.",
+  do:"Perito Moreno.",
+  stay:"Hoteles."
 },
-
 {
-  id:9,
-  name:"El Chaltén",
-  region:"santa-cruz",
-  img:"https://picsum.photos/400/300?chalten",
-  desc:"Capital del trekking.",
-  how:"Ruta desde El Calafate.",
-  do:"Laguna de los Tres, Fitz Roy.",
-  stay:"Hostels y lodges."
-},
-
-{
-  id:10,
+  id:7,
   name:"Ushuaia",
   region:"tierra-del-fuego",
   img:"https://picsum.photos/400/300?ushuaia",
-  desc:"La ciudad más austral del mundo.",
-  how:"Vuelo directo.",
-  do:"Canal Beagle, nieve, trekking.",
-  stay:"Hoteles turísticos."
+  desc:"Fin del mundo.",
+  how:"Vuelo.",
+  do:"Canal Beagle.",
+  stay:"Hoteles."
 }
+];
+
+const lista = document.getElementById("lista");
+const detalle = document.getElementById("detalle");
+
+function renderLista(){
+  lista.innerHTML = "";
+  detalle.style.display = "none";
+  lista.style.display = "grid";
+
+  PLACES.forEach(lugar=>{
+    const div = document.createElement("div");
+    div.className="card";
+
+    div.innerHTML = `
+      <img src="${lugar.img}">
+      <h3>${lugar.name}</h3>
+    `;
+
+    div.onclick = ()=>mostrarDetalle(lugar);
+
+    lista.appendChild(div);
+  });
+}
+
+function mostrarDetalle(lugar){
+  lista.style.display="none";
+  detalle.style.display="block";
+
+  detalle.innerHTML = `
+    <button class="btn" onclick="volver()">⬅ Volver</button>
+    <img src="${lugar.img}">
+    <h2>${lugar.name}</h2>
+    <p>${lugar.desc}</p>
+    <p><b>Cómo llegar:</b> ${lugar.how}</p>
+    <p><b>Qué hacer:</b> ${lugar.do}</p>
+    <p><b>Dónde alojarse:</b> ${lugar.stay}</p>
+  `;
+}
+
+function volver(){
+  renderLista();
+}
+
+renderLista();
+
+</script>
+
+</body>
+</html>
